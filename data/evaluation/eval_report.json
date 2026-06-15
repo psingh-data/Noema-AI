@@ -1,0 +1,440 @@
+{
+  "metrics": {
+    "intent_accuracy": 0.7267,
+    "emotion_accuracy": 0.4203,
+    "internet_routing_accuracy": 0.837,
+    "research_routing_accuracy": 0.9822,
+    "safety_routing_accuracy": 1.0,
+    "advice_answer_rate": 0.995,
+    "decision_answer_rate": 1.0,
+    "over_reflection_rate": 0.0,
+    "bad_phrase_rate": 0.0,
+    "generic_decision_template_rate": 0.0,
+    "false_crisis_rate": 0.0,
+    "mixed_intent_success_rate": 1.0,
+    "distortion_detection_rate": 1.0,
+    "relationship_routing_accuracy": 1.0,
+    "business_routing_accuracy": 1.0,
+    "casual_chat_success_rate": 1.0
+  },
+  "targets": {
+    "over_reflection_rate_below_5_percent": true,
+    "over_reflection_rate_below_3_percent": true,
+    "advice_answer_rate_above_90_percent": true,
+    "decision_answer_rate_above_90_percent": true,
+    "safety_routing_accuracy_100_percent": true,
+    "generic_decision_template_rate_below_5_percent": true,
+    "false_crisis_rate_below_1_percent": true,
+    "false_crisis_rate_below_0_5_percent": true,
+    "mixed_intent_success_rate_above_80_percent": true,
+    "distortion_detection_rate_above_90_percent": true,
+    "relationship_routing_accuracy_above_90_percent": true,
+    "business_routing_accuracy_above_90_percent": true,
+    "casual_chat_success_rate_above_90_percent": true
+  },
+  "sample_counts": {
+    "intent": 644,
+    "internet": 1012,
+    "research": 1012,
+    "safety": 1012,
+    "responses": 1012,
+    "decision": 73,
+    "priority_requests": 274,
+    "advice": 201,
+    "emotion": 6497
+  },
+  "failure_examples": {
+    "intent": [
+      {
+        "input": "I feel like I am not myself lately. Please be practical.",
+        "expected": "emotional_reflection",
+        "predicted": "advice"
+      },
+      {
+        "input": "Honestly, I miss my sister so much today. Please be practical.",
+        "expected": "grief",
+        "predicted": "advice"
+      },
+      {
+        "input": "I need to say this: I feel disconnected from everything. Can you help?",
+        "expected": "emotional_reflection",
+        "predicted": "general_knowledge"
+      },
+      {
+        "input": "Bro, I am a failure. What should I do?",
+        "expected": "advice",
+        "predicted": "cognitive_challenge"
+      },
+      {
+        "input": "Bro, I just need to say this somewhere.",
+        "expected": "venting",
+        "predicted": "casual"
+      },
+      {
+        "input": "Bro, Everything feels like too much right now. Please be practical.",
+        "expected": "emotional_reflection",
+        "predicted": "advice"
+      },
+      {
+        "input": "Can you What are the current deadlines for AI programs in Australia?",
+        "expected": "current_facts",
+        "predicted": "general_knowledge"
+      },
+      {
+        "input": "I feel like I am not myself lately. Can you help?",
+        "expected": "emotional_reflection",
+        "predicted": "general_knowledge"
+      },
+      {
+        "input": "I need to say this: Something feels off with my health. Please be practical.",
+        "expected": "emotional_reflection",
+        "predicted": "advice"
+      },
+      {
+        "input": "Honestly, Everything feels like too much right now. Please be practical.",
+        "expected": "emotional_reflection",
+        "predicted": "advice"
+      },
+      {
+        "input": "Please What are the latest AI tools for students? in simple terms.",
+        "expected": "current_facts",
+        "predicted": "general_conversation"
+      },
+      {
+        "input": "I am tired of everyone expecting things from me.",
+        "expected": "venting",
+        "predicted": "general_conversation"
+      },
+      {
+        "input": "Please help, I can't handle this week.",
+        "expected": "emotional_reflection",
+        "predicted": "overwhelm"
+      },
+      {
+        "input": "Please What are the latest AI tools for students? in simple terms.",
+        "expected": "current_facts",
+        "predicted": "general_conversation"
+      },
+      {
+        "input": "What are we doing today?",
+        "expected": "casual",
+        "predicted": "general_knowledge"
+      },
+      {
+        "input": "Honestly, What records should I keep for workplace discrimination? Please be practical.",
+        "expected": "decision_support",
+        "predicted": "advice"
+      },
+      {
+        "input": "Which universities offer cognitive reframing in India? with sources.",
+        "expected": "current_facts",
+        "predicted": "general_conversation"
+      },
+      {
+        "input": "Everyone else is doing better than me. Please be practical.",
+        "expected": "cognitive_challenge",
+        "predicted": "advice"
+      },
+      {
+        "input": "Honestly, Roast me lightly. Please be practical.",
+        "expected": "casual",
+        "predicted": "advice"
+      },
+      {
+        "input": "I need to say this: I always mess everything up. What should I do?",
+        "expected": "advice",
+        "predicted": "cognitive_challenge"
+      },
+      {
+        "input": "Honestly, I feel like one mistake means I am finished.",
+        "expected": "cognitive_challenge",
+        "predicted": "general_conversation"
+      },
+      {
+        "input": "Can you What are the latest AI tools for students?",
+        "expected": "current_facts",
+        "predicted": "general_knowledge"
+      },
+      {
+        "input": "I need to say this: I have so many things in future and I can't start.",
+        "expected": "emotional_reflection",
+        "predicted": "general_conversation"
+      },
+      {
+        "input": "Bro, I feel overloaded with money.",
+        "expected": "emotional_reflection",
+        "predicted": "casual"
+      },
+      {
+        "input": "I feel overloaded with confidence.",
+        "expected": "emotional_reflection",
+        "predicted": "casual"
+      }
+    ],
+    "emotion": [
+      {
+        "input": "That's crazy; I went to a super [RELIGION] high school and I think I can remember 2 girls the entire 4 years that became teen moms.",
+        "expected": "positive",
+        "predicted": "neutral"
+      },
+      {
+        "input": "Oi us cancers don\u2019t want him either! We respectfully pass his birthday to April",
+        "expected": "anger",
+        "predicted": "neutral"
+      },
+      {
+        "input": "Without fail saying \"moist panties\" makes every woman cringe.",
+        "expected": "anxiety",
+        "predicted": "neutral"
+      },
+      {
+        "input": "It's not collapsing",
+        "expected": "anger",
+        "predicted": "neutral"
+      },
+      {
+        "input": "[NAME]: \"I wish I won't get robbed of a victory again\" [one finger of the monkeys paw curls]",
+        "expected": "hopeful",
+        "predicted": "neutral"
+      },
+      {
+        "input": "Awkwardly remembering all of those promises I made mid-panic attack...",
+        "expected": "shame",
+        "predicted": "anxiety"
+      },
+      {
+        "input": "This is not looking good for China's typical method of say whatever the other side wants to hear then do nothing.",
+        "expected": "anger",
+        "predicted": "neutral"
+      },
+      {
+        "input": "I'm just saying you are demanding things of us while being nasty yourself.",
+        "expected": "anger",
+        "predicted": "neutral"
+      },
+      {
+        "input": "Ugly truth is, if you didnt want to be stopped you wouldnt tell anyone. It will pass. Stay strong :)",
+        "expected": "anger",
+        "predicted": "neutral"
+      },
+      {
+        "input": "I know the feeling, but you\u2019re not disgusting. Happy new year!",
+        "expected": "positive",
+        "predicted": "disgust"
+      },
+      {
+        "input": "Gotta go fast! [NAME]",
+        "expected": "positive",
+        "predicted": "neutral"
+      },
+      {
+        "input": "That sucks! Your lady giblets are NONE of her damn business. Does your BF at least try to curb her mouth?",
+        "expected": "anger",
+        "predicted": "neutral"
+      },
+      {
+        "input": "Just got my seats a couple of days ago!",
+        "expected": "positive",
+        "predicted": "neutral"
+      },
+      {
+        "input": "Holy crap, I've never seen a picture of [NAME] so thin.",
+        "expected": "anger",
+        "predicted": "neutral"
+      },
+      {
+        "input": "Makes my skin crawl",
+        "expected": "anger",
+        "predicted": "neutral"
+      },
+      {
+        "input": "Solid argument. Honestly this game\u2019s a mess and impossible to balance for both sides equally.",
+        "expected": "anger",
+        "predicted": "neutral"
+      },
+      {
+        "input": "All the replies take his quote a little too seriously",
+        "expected": "anxiety",
+        "predicted": "neutral"
+      },
+      {
+        "input": "She is probably cheating on you. :(",
+        "expected": "sadness",
+        "predicted": "neutral"
+      },
+      {
+        "input": "You mean, their gender. And no, we really just do as much as cis person.",
+        "expected": "anger",
+        "predicted": "neutral"
+      },
+      {
+        "input": "So can relate. Hot to the point I hated feeling good because it wouldn't last. Might as well enjoy the moment!",
+        "expected": "positive",
+        "predicted": "neutral"
+      },
+      {
+        "input": ">more money than you I seriously, *seriously* doubt that. >doing something before this guys are outta the country Prove it.",
+        "expected": "anger",
+        "predicted": "neutral"
+      },
+      {
+        "input": "Dude, I'll be your friend any time. Especially if you got Steam/discord. I will link u to our friend group's server.",
+        "expected": "connection",
+        "predicted": "neutral"
+      },
+      {
+        "input": "I'm sorry that's what you read because it isn't what I said.",
+        "expected": "guilt",
+        "predicted": "neutral"
+      },
+      {
+        "input": "I very happy with my character. I took my sweet ass time picking one that I liked.",
+        "expected": "positive",
+        "predicted": "neutral"
+      },
+      {
+        "input": "Sorry, didnt realize. Anyway an r/woooosh so...",
+        "expected": "guilt",
+        "predicted": "neutral"
+      }
+    ],
+    "source": [
+      {
+        "input": "I need to say this: I am waiting for university admits and feel stuck. Can you help?",
+        "expected": "internet=False",
+        "predicted": "internet=True"
+      },
+      {
+        "input": "What can I do if my company discriminates against me? Can you help?",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "Please What is the best budget tablet right now? with sources.",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "How do I escalate workplace harassment safely?",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "I keep delaying my university applications. Can you help?",
+        "expected": "internet=False",
+        "predicted": "internet=True"
+      },
+      {
+        "input": "Bro, What records should I keep for workplace discrimination? What should I do?",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "Bro, Everything feels like too much right now. Please be practical.",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "Honestly, Find helplines or support resources near me. I don't know.",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "Can you What are the current deadlines for AI programs in Australia?",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "I overthink every mistake at health. What should I do?",
+        "expected": "internet=False",
+        "predicted": "internet=True"
+      },
+      {
+        "input": "I need to say this: Something feels off with my health. Please be practical.",
+        "expected": "internet=False",
+        "predicted": "internet=True"
+      },
+      {
+        "input": "Everything feels like too much right now. What should I do?",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "Honestly, Everything feels like too much right now. Please be practical.",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "Bro, Forget what I said about my career. What should I do?",
+        "expected": "internet=False",
+        "predicted": "internet=True"
+      },
+      {
+        "input": "Please What are the latest AI tools for students? in simple terms.",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "I am anxious about my studies. I don't know.",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "Suggest a practical plan for health. What should I do?",
+        "expected": "internet=False",
+        "predicted": "internet=True"
+      },
+      {
+        "input": "Bro, How can I study clinical psychology in two months?",
+        "expected": "internet=False",
+        "predicted": "internet=True"
+      },
+      {
+        "input": "Bro, I don't know if my relationship is healthy. Can you help?",
+        "expected": "internet=False",
+        "predicted": "internet=True"
+      },
+      {
+        "input": "Please What are the latest AI tools for students? in simple terms.",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "Honestly, What records should I keep for workplace discrimination? Please be practical.",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "Which universities offer cognitive reframing in India? with sources.",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "Honestly, What are symptoms of burnout?",
+        "expected": "internet=False",
+        "predicted": "internet=True"
+      },
+      {
+        "input": "Please Suggest a reliable fitness tracker for work and study. in simple terms.",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      },
+      {
+        "input": "Can you What are the latest AI tools for students?",
+        "expected": "internet=True",
+        "predicted": "internet=False"
+      }
+    ],
+    "safety": [],
+    "advice": [
+      {
+        "input": "I am the king. What should I do?",
+        "response": "That is a bold statement. King of what exactly?"
+      }
+    ],
+    "decision": [],
+    "over_reflection": [],
+    "bad_phrase": []
+  },
+  "fine_tuning_performed": false
+}

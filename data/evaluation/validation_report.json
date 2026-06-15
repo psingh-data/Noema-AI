@@ -1,0 +1,63 @@
+{
+  "valid": true,
+  "total_records": 225215,
+  "error_count": 0,
+  "warning_count": 0,
+  "errors": [],
+  "warnings": [],
+  "records_by_source": {
+    "noema_10k": 10000,
+    "noema_seed": 180,
+    "goemotions": 57932,
+    "emotion_69k": 64636,
+    "counselchat": 1480,
+    "hh_helpful_train": 43834,
+    "hh_helpful_test": 2354,
+    "hh_harmless_train": 42491,
+    "hh_harmless_test": 2308
+  },
+  "records_by_split": {
+    "train": 193865,
+    "validation": 13492,
+    "test": 17858
+  },
+  "records_by_intent": {
+    "advice": 2668,
+    "decision_support": 1005,
+    "loneliness": 215,
+    "general_knowledge": 221,
+    "self_esteem": 312,
+    "casual": 256,
+    "current_facts": 487,
+    "emotional_reflection": 1473,
+    "research": 527,
+    "anger": 190,
+    "study_career": 215,
+    "follow_up_clarification": 126,
+    "health_info": 263,
+    "legal_workplace_info": 112,
+    "cognitive_challenge": 406,
+    "product_recommendation": 206,
+    "workplace_discrimination": 349,
+    "grief": 314,
+    "relationship": 298,
+    "motivation": 227,
+    "crisis_safety": 351,
+    "venting": 342,
+    "family": 175,
+    "user_feedback": 122,
+    "memory_request": 119,
+    "anxiety_stress": 370,
+    "internet_resource_request": 153,
+    "journaling": 119,
+    "financial_decision": 39,
+    "emotion_detection": 122568,
+    "response_quality": 90987
+  },
+  "checks": {
+    "required_schema": true,
+    "unique_ids": true,
+    "emotion_sources_excluded_from_generation": true,
+    "fine_tuning_performed": false
+  }
+}

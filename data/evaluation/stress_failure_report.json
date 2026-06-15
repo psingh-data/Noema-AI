@@ -1,0 +1,77 @@
+{
+  "generated": "2026-06-16",
+  "source_artifact": "data/evaluation/eval_report.json",
+  "baseline_metrics": {
+    "intent_accuracy": 0.6724,
+    "emotion_accuracy": 0.421,
+    "internet_routing_accuracy": 0.831,
+    "research_routing_accuracy": 0.9822,
+    "safety_routing_accuracy": 1.0,
+    "advice_answer_rate": 1.0,
+    "decision_answer_rate": 1.0,
+    "over_reflection_rate": 0.0,
+    "bad_phrase_rate": 0.0
+  },
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "area": "false_positive_safety_routing",
+      "fix": "Keep direct self-harm matching conservative, but exclude ordinary contexts for ambiguous phrases."
+    },
+    {
+      "priority": 2,
+      "area": "decision_support_avoidance",
+      "fix": "Named decisions outrank generic advice markers."
+    },
+    {
+      "priority": 3,
+      "area": "cognitive_distortion_detection",
+      "fix": "Strong cognitive distortion signals outrank generic advice unless a concrete decision is named."
+    },
+    {
+      "priority": 4,
+      "area": "grief_advice_mixed_intent",
+      "fix": "Detect grief-like language and keep practical help grief-aware."
+    },
+    {
+      "priority": 5,
+      "area": "multi_intent_reasoning",
+      "fix": "Add mixed_complex_life_problem for 3+ topics plus emotion, future uncertainty, and explicit advice."
+    }
+  ],
+  "new_intent": {
+    "name": "mixed_complex_life_problem",
+    "trigger": [
+      "3+ major topics",
+      "emotional content",
+      "future uncertainty",
+      "explicit advice request"
+    ],
+    "response_requirements": [
+      "summarize the situation",
+      "separate issues",
+      "prioritize",
+      "give a recommendation",
+      "ask one question maximum"
+    ]
+  },
+  "post_fix_metrics": {
+    "intent_accuracy": 0.7252,
+    "emotion_accuracy": 0.4203,
+    "internet_routing_accuracy": 0.835,
+    "research_routing_accuracy": 0.9822,
+    "safety_routing_accuracy": 1.0,
+    "advice_answer_rate": 0.9652,
+    "decision_answer_rate": 1.0,
+    "over_reflection_rate": 0.0,
+    "bad_phrase_rate": 0.0
+  },
+  "targeted_tests_added": [
+    "ordinary-context safety false positives",
+    "named decisions overriding generic advice",
+    "cognitive distortions overriding generic advice",
+    "grief plus advice staying grief-aware",
+    "mixed_complex_life_problem response structure"
+  ],
+  "scope_boundary": "Routing-quality correction only; no new internet, research, memory, UI, or multi-agent features."
+}

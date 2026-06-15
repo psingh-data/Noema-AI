@@ -1,0 +1,66 @@
+{
+  "default_country": "IN",
+  "verified_on": "2026-06-15",
+  "countries": {
+    "IN": {
+      "name": "India",
+      "emergency": {
+        "label": "Emergency Response Support System",
+        "number": "112",
+        "url": "https://112.gov.in/",
+        "verified_on": "2026-06-15"
+      },
+      "crisis": [
+        {
+          "label": "Tele-MANAS",
+          "contact": "14416",
+          "availability": "24/7",
+          "url": "https://telemanas.mohfw.gov.in/",
+          "verified_on": "2026-06-15"
+        }
+      ]
+    },
+    "US": {
+      "name": "United States",
+      "emergency": {
+        "label": "Emergency services",
+        "number": "911",
+        "url": "https://www.911.gov/",
+        "verified_on": "2026-06-15"
+      },
+      "crisis": [
+        {
+          "label": "988 Suicide & Crisis Lifeline",
+          "contact": "Call or text 988",
+          "availability": "24/7/365",
+          "url": "https://988lifeline.org/",
+          "verified_on": "2026-06-15"
+        }
+      ]
+    },
+    "CA": {
+      "name": "Canada",
+      "emergency": {
+        "label": "Emergency services",
+        "number": "911",
+        "url": "https://www.canada.ca/en/public-health/services/mental-health-services/mental-health-get-help.html",
+        "verified_on": "2026-06-15"
+      },
+      "crisis": [
+        {
+          "label": "9-8-8 Suicide Crisis Helpline",
+          "contact": "Call or text 988",
+          "availability": "24/7",
+          "url": "https://988.ca/",
+          "verified_on": "2026-06-15"
+        }
+      ]
+    }
+  },
+  "international": {
+    "label": "Find A Helpline",
+    "url": "https://findahelpline.com/",
+    "note": "Maintained country-by-country crisis and emotional-support directory."
+  }
+}
+

@@ -1,0 +1,188 @@
+{
+  "classifier_type": "deterministic phrase rules",
+  "keywords_and_rules": {
+    "immediate_phrases": [
+      "kill myself",
+      "end my life",
+      "take my life",
+      "suicide plan",
+      "going to die tonight",
+      "hurt myself now",
+      "about to kill myself",
+      "going to kill myself",
+      "ready to die",
+      "might do something bad to myself tonight"
+    ],
+    "concern_phrases": [
+      "want to die",
+      "don't want to live",
+      "do not want to live",
+      "wish i was dead",
+      "wish i were dead",
+      "hurt myself",
+      "hurting myself",
+      "harm myself",
+      "harming myself",
+      "feel like hurting myself",
+      "feel like harming myself",
+      "self harm",
+      "suicidal",
+      "no reason to live",
+      "better off without me",
+      "feel like dying",
+      "feeling like dying",
+      "life is not worth living",
+      "life isn't worth living",
+      "rather be dead",
+      "can't go on",
+      "cannot go on",
+      "want to disappear forever",
+      "nobody would care if i disappeared",
+      "feel unsafe with myself",
+      "unsafe with myself",
+      "don't want to be here anymore",
+      "do not want to be here anymore"
+    ],
+    "ambiguous_concern_phrases": [
+      "can't go on",
+      "cannot go on",
+      "don't want to be here anymore",
+      "do not want to be here anymore"
+    ],
+    "ordinary_context_markers": [
+      "with this assignment",
+      "with this exam",
+      "with this project",
+      "with this job",
+      "with this class",
+      "with it",
+      "at this party",
+      "at this meeting",
+      "in this class",
+      "in this city",
+      "in this job",
+      "on this app",
+      "watching this"
+    ],
+    "negated_phrases": [
+      "not suicidal",
+      "not going to kill myself",
+      "don't want to die",
+      "do not want to die",
+      "never wanted to die",
+      "no thoughts of suicide",
+      "not about suicide",
+      "not self harm",
+      "not self-harm",
+      "i mean this place"
+    ]
+  },
+  "regex_rules": [],
+  "thresholds": {
+    "immediate": "any immediate phrase after negation screening",
+    "concern": "any concern phrase after negation and ordinary-context screening"
+  },
+  "embedding_scores": "not used",
+  "confusion_matrix": {
+    "true_positive": 5,
+    "true_negative": 4,
+    "false_positive": 0,
+    "false_negative": 0
+  },
+  "false_positive_rate": 0.0,
+  "examples": [
+    {
+      "input": "I have not received a promotion in 4 years. Should I leave?",
+      "expected_crisis": false,
+      "predicted_crisis": false,
+      "safety_level": "none",
+      "matched_phrases": [],
+      "route_intent": "decision support",
+      "route_topic": "workplace"
+    },
+    {
+      "input": "I have Rs 2 lakh. Should I start a clothing brand or invest in my education?",
+      "expected_crisis": false,
+      "predicted_crisis": false,
+      "safety_level": "none",
+      "matched_phrases": [],
+      "route_intent": "decision support",
+      "route_topic": "education"
+    },
+    {
+      "input": "I love psychology but Data Science pays more.",
+      "expected_crisis": false,
+      "predicted_crisis": false,
+      "safety_level": "none",
+      "matched_phrases": [],
+      "route_intent": "decision support",
+      "route_topic": "education"
+    },
+    {
+      "input": "My grandfather died last year. I am waiting for Germany admissions. I feel behind compared to my friends. Part of me wants to start a business. I am worried I am making the wrong decision with my life.",
+      "expected_crisis": false,
+      "predicted_crisis": false,
+      "safety_level": "none",
+      "matched_phrases": [],
+      "route_intent": "mixed complex life problem",
+      "route_topic": "grief"
+    },
+    {
+      "input": "I want to end my life.",
+      "expected_crisis": true,
+      "predicted_crisis": true,
+      "safety_level": "immediate",
+      "matched_phrases": [
+        "end my life"
+      ],
+      "route_intent": "crisis / safety",
+      "route_topic": "general"
+    },
+    {
+      "input": "I feel like dying.",
+      "expected_crisis": true,
+      "predicted_crisis": true,
+      "safety_level": "concern",
+      "matched_phrases": [
+        "feel like dying"
+      ],
+      "route_intent": "crisis / safety",
+      "route_topic": "general"
+    },
+    {
+      "input": "I feel like hurting myself.",
+      "expected_crisis": true,
+      "predicted_crisis": true,
+      "safety_level": "concern",
+      "matched_phrases": [
+        "hurting myself",
+        "feel like hurting myself"
+      ],
+      "route_intent": "crisis / safety",
+      "route_topic": "general"
+    },
+    {
+      "input": "I feel unsafe with myself.",
+      "expected_crisis": true,
+      "predicted_crisis": true,
+      "safety_level": "concern",
+      "matched_phrases": [
+        "feel unsafe with myself",
+        "unsafe with myself"
+      ],
+      "route_intent": "crisis / safety",
+      "route_topic": "general"
+    },
+    {
+      "input": "Nobody would care if I disappeared.",
+      "expected_crisis": true,
+      "predicted_crisis": true,
+      "safety_level": "concern",
+      "matched_phrases": [
+        "nobody would care if i disappeared"
+      ],
+      "route_intent": "crisis / safety",
+      "route_topic": "general"
+    }
+  ]
+}

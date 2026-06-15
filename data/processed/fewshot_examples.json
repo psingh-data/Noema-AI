@@ -1,0 +1,1988 @@
+{
+  "version": 1,
+  "fine_tuning_performed": false,
+  "selection_policy": "Training-split examples only; explicit advice and named decisions have priority. Emotion-only datasets are excluded from response examples.",
+  "intents": {
+    "grief": {
+      "strong_examples": [
+        {
+          "id": "noema10k_00189",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, Everyone says I should move on but I can't. Can you help?",
+          "ideal_response": "I\u2019m sorry you\u2019re carrying this. Grief does not follow a fixed timetable. Crying can simply mean the bond still matters. A gentle next step: write one memory or one thing you miss, without trying to fix the feeling today.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00202",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, A memory of my father hit me and I broke down. I don't know.",
+          "ideal_response": "I\u2019m sorry you\u2019re carrying this. Grief does not follow a fixed timetable. Crying can simply mean the bond still matters. A gentle next step: write one memory or one thing you miss, without trying to fix the feeling today.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00442",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, Everyone says I should move on but I can't. Please be practical.",
+          "ideal_response": "I\u2019m sorry you\u2019re carrying this. Grief does not follow a fixed timetable. Crying can simply mean the bond still matters. A gentle next step: write one memory or one thing you miss, without trying to fix the feeling today.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00541",
+          "dataset_source": "noema_10k",
+          "user_input": "My pet died today and I don't know what to do. Can you help?",
+          "ideal_response": "I\u2019m sorry you\u2019re carrying this. Grief does not follow a fixed timetable. Crying can simply mean the bond still matters. A gentle next step: write one memory or one thing you miss, without trying to fix the feeling today.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00587",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, My pet died today and I don't know what to do.",
+          "ideal_response": "I\u2019m sorry you\u2019re carrying this. Grief does not follow a fixed timetable. Crying can simply mean the bond still matters. A gentle next step: write one memory or one thing you miss, without trying to fix the feeling today.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00647",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, My pet died today and I don't know what to do. Can you help?",
+          "ideal_response": "I\u2019m sorry you\u2019re carrying this. Grief does not follow a fixed timetable. Crying can simply mean the bond still matters. A gentle next step: write one memory or one thing you miss, without trying to fix the feeling today.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00685",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, My boss passed away and I still cry. Can you help?",
+          "ideal_response": "I\u2019m sorry you\u2019re carrying this. Grief does not follow a fixed timetable. Crying can simply mean the bond still matters. A gentle next step: write one memory or one thing you miss, without trying to fix the feeling today.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00710",
+          "dataset_source": "noema_10k",
+          "user_input": "I miss my boss so much today. Can you help?",
+          "ideal_response": "I\u2019m sorry you\u2019re carrying this. Grief does not follow a fixed timetable. Crying can simply mean the bond still matters. A gentle next step: write one memory or one thing you miss, without trying to fix the feeling today.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00736",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: My pet died today and I don't know what to do. Please be practical.",
+          "ideal_response": "I\u2019m sorry you\u2019re carrying this. Grief does not follow a fixed timetable. Crying can simply mean the bond still matters. A gentle next step: write one memory or one thing you miss, without trying to fix the feeling today.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00812",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, My pet died today and I don't know what to do. Can you help?",
+          "ideal_response": "I\u2019m sorry you\u2019re carrying this. Grief does not follow a fixed timetable. Crying can simply mean the bond still matters. A gentle next step: write one memory or one thing you miss, without trying to fix the feeling today.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        }
+      ],
+      "bad_response_traps": [
+        "I want to understand the pattern before jumping to advice.",
+        "I hear you, what is the story behind that?",
+        "There is no need to turn this into a problem to solve right away.",
+        "Can you share more context?",
+        "What feels most present for you as you say this out loud?"
+      ],
+      "expected_response_structure": [
+        "Acknowledge the loss naturally.",
+        "Explore what the person misses or is carrying.",
+        "Do not rush into coping tips unless advice was requested.",
+        "Ask at most one accessible question."
+      ]
+    },
+    "advice": {
+      "strong_examples": [
+        {
+          "id": "noema10k_00154",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, I have been in the same role for years with no promotion. What should I do?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_01072",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: I feel discriminated against at work. What should I do?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_01313",
+          "dataset_source": "noema_10k",
+          "user_input": "My boss ignores my work but praises others. What should I do?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_01365",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, I feel discriminated against at work. What should I do?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_01461",
+          "dataset_source": "noema_10k",
+          "user_input": "I have been in the same role for years with no promotion. What should I do?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_01878",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, I have been in the same role for years with no promotion. What should I do?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_02282",
+          "dataset_source": "noema_10k",
+          "user_input": "I have been in the same role for years with no promotion. What should I do?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_02506",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, My boss ignores my work but praises others. What should I do?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_02536",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: I want to change the company because of unfair treatment. What should I do?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_02681",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: I think my client is racist and I don't know what to do. What should I do?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        }
+      ],
+      "bad_response_traps": [
+        "Say a little more about that and we can take it from there.",
+        "That adds something important to what you have already shared.",
+        "Can you share more context?",
+        "What feels most present for you as you say this out loud?",
+        "The effect on your everyday life matters here."
+      ],
+      "expected_response_structure": [
+        "Validate briefly.",
+        "Give practical suggestions immediately.",
+        "Explain why the suggestions may help.",
+        "Ask at most one clarifying question after the advice."
+      ]
+    },
+    "decision_support": {
+      "strong_examples": [
+        {
+          "id": "noema10k_00083",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, I feel sick and stressed. What should I consider?",
+          "ideal_response": "That can have many causes, so treat this as health information, not a diagnosis. Explain common possibilities, red flags, and practical next steps. If symptoms are severe, sudden, persistent, or worsening, recommend professional medical help.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_00179",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I feel sick and stressed. What should I consider? Please be practical.",
+          "ideal_response": "That can have many causes, so treat this as health information, not a diagnosis. Explain common possibilities, red flags, and practical next steps. If symptoms are severe, sudden, persistent, or worsening, recommend professional medical help.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_00316",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I feel sick and stressed. What should I consider?",
+          "ideal_response": "That can have many causes, so treat this as health information, not a diagnosis. Explain common possibilities, red flags, and practical next steps. If symptoms are severe, sudden, persistent, or worsening, recommend professional medical help.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_00324",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: I feel sick and stressed. What should I consider?",
+          "ideal_response": "That can have many causes, so treat this as health information, not a diagnosis. Explain common possibilities, red flags, and practical next steps. If symptoms are severe, sudden, persistent, or worsening, recommend professional medical help.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_00344",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: I feel sick and stressed. What should I consider? I don't know.",
+          "ideal_response": "That can have many causes, so treat this as health information, not a diagnosis. Explain common possibilities, red flags, and practical next steps. If symptoms are severe, sudden, persistent, or worsening, recommend professional medical help.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_00717",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, I feel sick and stressed. What should I consider? Please be practical.",
+          "ideal_response": "That can have many causes, so treat this as health information, not a diagnosis. Explain common possibilities, red flags, and practical next steps. If symptoms are severe, sudden, persistent, or worsening, recommend professional medical help.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_01445",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, I feel sick and stressed. What should I consider? Can you help?",
+          "ideal_response": "That can have many causes, so treat this as health information, not a diagnosis. Explain common possibilities, red flags, and practical next steps. If symptoms are severe, sudden, persistent, or worsening, recommend professional medical help.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_01644",
+          "dataset_source": "noema_10k",
+          "user_input": "I feel sick and stressed. What should I consider? I don't know.",
+          "ideal_response": "That can have many causes, so treat this as health information, not a diagnosis. Explain common possibilities, red flags, and practical next steps. If symptoms are severe, sudden, persistent, or worsening, recommend professional medical help.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_01676",
+          "dataset_source": "noema_10k",
+          "user_input": "I feel sick and stressed. What should I consider? Can you help?",
+          "ideal_response": "That can have many causes, so treat this as health information, not a diagnosis. Explain common possibilities, red flags, and practical next steps. If symptoms are severe, sudden, persistent, or worsening, recommend professional medical help.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        },
+        {
+          "id": "noema10k_02079",
+          "dataset_source": "noema_10k",
+          "user_input": "I feel sick and stressed. What should I consider? Can you help?",
+          "ideal_response": "That can have many causes, so treat this as health information, not a diagnosis. Explain common possibilities, red flags, and practical next steps. If symptoms are severe, sudden, persistent, or worsening, recommend professional medical help.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 2.0
+        }
+      ],
+      "bad_response_traps": [
+        "Can you share more context?",
+        "The effect on your everyday life matters here.",
+        "This may be grief around grief.",
+        "There is no need to turn this into a problem to solve right away.",
+        "What feels most present for you as you say this out loud?"
+      ],
+      "expected_response_structure": [
+        "Name the options already provided.",
+        "Compare benefits, costs, risks, values, and reversibility.",
+        "Offer a practical decision process or recommendation.",
+        "Ask at most one question after comparing options."
+      ]
+    },
+    "workplace_discrimination": {
+      "strong_examples": [
+        {
+          "id": "noema10k_00082",
+          "dataset_source": "noema_10k",
+          "user_input": "I want to change the company because of unfair treatment.",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00087",
+          "dataset_source": "noema_10k",
+          "user_input": "My boss ignores my work but praises others. Can you help?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00126",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I feel discriminated against at work.",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00160",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: I want to change the company because of unfair treatment. Can you help?",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00309",
+          "dataset_source": "noema_10k",
+          "user_input": "My boss ignores my work but praises others.",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00402",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, I think my manager is racist and I don't know what to do.",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00461",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: I have been in the same role for years with no promotion.",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00474",
+          "dataset_source": "noema_10k",
+          "user_input": "My boss ignores my work but praises others.",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00506",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: I have been in the same role for years with no promotion.",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00545",
+          "dataset_source": "noema_10k",
+          "user_input": "I want to change the company because of unfair treatment.",
+          "ideal_response": "That sounds frustrating and unfair to experience. Take it seriously, but avoid acting only from anger. Document promotion decisions, your achievements, feedback, and dates. Ask for clear promotion criteria in writing. Quietly explore other companies while protecting your income.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        }
+      ],
+      "bad_response_traps": [
+        "The effect on your everyday life matters here.",
+        "I want to understand the pattern before jumping to advice.",
+        "I hear you, what is the story behind that?",
+        "Say a little more about that and we can take it from there.",
+        "What feels most present for you as you say this out loud?"
+      ],
+      "expected_response_structure": [
+        "Validate the experience without making unverified legal conclusions.",
+        "Recommend documenting dates, words, witnesses, and impact.",
+        "Suggest careful HR, union, regulator, or legal guidance as appropriate.",
+        "Consider a quiet job search when safety or retaliation is a concern."
+      ]
+    },
+    "cognitive_challenge": {
+      "strong_examples": [
+        {
+          "id": "noema10k_00081",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, Nobody cares about me.",
+          "ideal_response": "I hear the pain in that thought, but it may be treating one event as a final verdict. A more balanced version is: this went badly, but it gives me information about what to improve. Identify the specific weakness, not your whole identity.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00106",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, Nobody cares about me.",
+          "ideal_response": "I hear the pain in that thought, but it may be treating one event as a final verdict. A more balanced version is: this went badly, but it gives me information about what to improve. Identify the specific weakness, not your whole identity.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00116",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, I always mess everything up. I don't know.",
+          "ideal_response": "I hear the pain in that thought, but it may be treating one event as a final verdict. A more balanced version is: this went badly, but it gives me information about what to improve. Identify the specific weakness, not your whole identity.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00299",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, I always mess everything up.",
+          "ideal_response": "I hear the pain in that thought, but it may be treating one event as a final verdict. A more balanced version is: this went badly, but it gives me information about what to improve. Identify the specific weakness, not your whole identity.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00495",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I always mess everything up.",
+          "ideal_response": "I hear the pain in that thought, but it may be treating one event as a final verdict. A more balanced version is: this went badly, but it gives me information about what to improve. Identify the specific weakness, not your whole identity.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00577",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I feel like one mistake means I am finished. Please be practical.",
+          "ideal_response": "I hear the pain in that thought, but it may be treating one event as a final verdict. A more balanced version is: this went badly, but it gives me information about what to improve. Identify the specific weakness, not your whole identity.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00666",
+          "dataset_source": "noema_10k",
+          "user_input": "One bad grade means I am not smart.",
+          "ideal_response": "I hear the pain in that thought, but it may be treating one event as a final verdict. A more balanced version is: this went badly, but it gives me information about what to improve. Identify the specific weakness, not your whole identity.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00698",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, If this fails, my whole future is ruined.",
+          "ideal_response": "I hear the pain in that thought, but it may be treating one event as a final verdict. A more balanced version is: this went badly, but it gives me information about what to improve. Identify the specific weakness, not your whole identity.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00744",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: If this fails, my whole future is ruined. Please be practical.",
+          "ideal_response": "I hear the pain in that thought, but it may be treating one event as a final verdict. A more balanced version is: this went badly, but it gives me information about what to improve. Identify the specific weakness, not your whole identity.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00811",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, I failed one interview, so I will never get a job. Can you help?",
+          "ideal_response": "I hear the pain in that thought, but it may be treating one event as a final verdict. A more balanced version is: this went badly, but it gives me information about what to improve. Identify the specific weakness, not your whole identity.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        }
+      ],
+      "bad_response_traps": [
+        "What feels most present for you as you say this out loud?",
+        "That adds something important to what you have already shared.",
+        "Let us not force this into a category yet.",
+        "Say a little more about that and we can take it from there.",
+        "There is no need to turn this into a problem to solve right away."
+      ],
+      "expected_response_structure": [
+        "Validate the emotion before challenging the conclusion.",
+        "Identify absolute or unsupported thinking tentatively.",
+        "Compare evidence for and against the thought.",
+        "Offer a more balanced alternative."
+      ]
+    },
+    "venting": {
+      "strong_examples": [
+        {
+          "id": "noema10k_00080",
+          "dataset_source": "noema_10k",
+          "user_input": "I just need to say this somewhere.",
+          "ideal_response": "I\u2019m here. No advice, no analysis. Say it the messy way if you need to. I\u2019ll just follow what you\u2019re saying.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00125",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, I hate how unfair my university applications feels.",
+          "ideal_response": "I\u2019m here. No advice, no analysis. Say it the messy way if you need to. I\u2019ll just follow what you\u2019re saying.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00144",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, I don't want advice, just let me complain about my studies. Just listen.",
+          "ideal_response": "I\u2019m here. No advice, no analysis. Say it the messy way if you need to. I\u2019ll just follow what you\u2019re saying.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00227",
+          "dataset_source": "noema_10k",
+          "user_input": "I am tired of everyone expecting things from me. Just listen.",
+          "ideal_response": "I\u2019m here. No advice, no analysis. Say it the messy way if you need to. I\u2019ll just follow what you\u2019re saying.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00240",
+          "dataset_source": "noema_10k",
+          "user_input": "I just need to say this somewhere.",
+          "ideal_response": "I\u2019m here. No advice, no analysis. Say it the messy way if you need to. I\u2019ll just follow what you\u2019re saying.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00283",
+          "dataset_source": "noema_10k",
+          "user_input": "Please don't analyze me, just hear me out. Don't give advice.",
+          "ideal_response": "I\u2019m here. No advice, no analysis. Say it the messy way if you need to. I\u2019ll just follow what you\u2019re saying.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00314",
+          "dataset_source": "noema_10k",
+          "user_input": "I am tired of everyone expecting things from me. Just listen.",
+          "ideal_response": "I\u2019m here. No advice, no analysis. Say it the messy way if you need to. I\u2019ll just follow what you\u2019re saying.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00390",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, I am tired of everyone expecting things from me. Just listen.",
+          "ideal_response": "I\u2019m here. No advice, no analysis. Say it the messy way if you need to. I\u2019ll just follow what you\u2019re saying.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00443",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, I don't want advice, just let me complain about my studies. Just listen.",
+          "ideal_response": "I\u2019m here. No advice, no analysis. Say it the messy way if you need to. I\u2019ll just follow what you\u2019re saying.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00481",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I just need to say this somewhere. Don't give advice.",
+          "ideal_response": "I\u2019m here. No advice, no analysis. Say it the messy way if you need to. I\u2019ll just follow what you\u2019re saying.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        }
+      ],
+      "bad_response_traps": [
+        "What feels most present for you as you say this out loud?",
+        "The effect on your everyday life matters here.",
+        "I hear you, what is the story behind that?",
+        "Say a little more about that and we can take it from there.",
+        "There is no need to turn this into a problem to solve right away."
+      ],
+      "expected_response_structure": [
+        "Listen without advice or reframing.",
+        "Reflect the specific frustration naturally.",
+        "Ask at most one question that helps the person continue."
+      ]
+    },
+    "casual": {
+      "strong_examples": [
+        {
+          "id": "noema10k_00008",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, Tell me something random. I don't know.",
+          "ideal_response": "That\u2019s a bold entrance \ud83d\ude04 King of what today \u2014 confidence, chaos, or productivity?",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00050",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, Tell me something random. I don't know.",
+          "ideal_response": "That\u2019s a bold entrance \ud83d\ude04 King of what today \u2014 confidence, chaos, or productivity?",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00072",
+          "dataset_source": "noema_10k",
+          "user_input": "Tell me something random.",
+          "ideal_response": "That\u2019s a bold entrance \ud83d\ude04 King of what today \u2014 confidence, chaos, or productivity?",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00084",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: Talk to me like a friend.",
+          "ideal_response": "That\u2019s a bold entrance \ud83d\ude04 King of what today \u2014 confidence, chaos, or productivity?",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00216",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, Talk to me like a friend. Can you help?",
+          "ideal_response": "That\u2019s a bold entrance \ud83d\ude04 King of what today \u2014 confidence, chaos, or productivity?",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00229",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, Tell me something random. Can you help?",
+          "ideal_response": "That\u2019s a bold entrance \ud83d\ude04 King of what today \u2014 confidence, chaos, or productivity?",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00258",
+          "dataset_source": "noema_10k",
+          "user_input": "Bro, Roast me lightly. Please be practical.",
+          "ideal_response": "That\u2019s a bold entrance \ud83d\ude04 King of what today \u2014 confidence, chaos, or productivity?",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00317",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, Tell me something random. Can you help?",
+          "ideal_response": "That\u2019s a bold entrance \ud83d\ude04 King of what today \u2014 confidence, chaos, or productivity?",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00328",
+          "dataset_source": "noema_10k",
+          "user_input": "I need to say this: I am the king. Please be practical.",
+          "ideal_response": "That\u2019s a bold entrance \ud83d\ude04 King of what today \u2014 confidence, chaos, or productivity?",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00431",
+          "dataset_source": "noema_10k",
+          "user_input": "Honestly, Give me a random life lesson. Can you help?",
+          "ideal_response": "That\u2019s a bold entrance \ud83d\ude04 King of what today \u2014 confidence, chaos, or productivity?",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        }
+      ],
+      "bad_response_traps": [
+        "There is no need to turn this into a problem to solve right away.",
+        "Let us not force this into a category yet.",
+        "I want to understand the pattern before jumping to advice.",
+        "The effect on your everyday life matters here.",
+        "That adds something important to what you have already shared."
+      ],
+      "expected_response_structure": [
+        "Respond like ordinary conversation.",
+        "Do not force emotional analysis.",
+        "Match playful or neutral tone appropriately."
+      ]
+    },
+    "current_facts": {
+      "strong_examples": [
+        {
+          "id": "noema10k_00009",
+          "dataset_source": "noema_10k",
+          "user_input": "Which universities offer anxiety in Netherlands?",
+          "ideal_response": "This needs current information. Use live web retrieval, prefer official or reputable sources, summarize only what the sources support, include dates when relevant, and clearly state uncertainty if sources disagree.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00039",
+          "dataset_source": "noema_10k",
+          "user_input": "Can you What is the current salary for procrastination roles in Netherlands?",
+          "ideal_response": "This needs current information. Use live web retrieval, prefer official or reputable sources, summarize only what the sources support, include dates when relevant, and clearly state uncertainty if sources disagree.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00059",
+          "dataset_source": "noema_10k",
+          "user_input": "Can you What happened in AI news this week? with sources.",
+          "ideal_response": "This needs current information. Use live web retrieval, prefer official or reputable sources, summarize only what the sources support, include dates when relevant, and clearly state uncertainty if sources disagree.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00077",
+          "dataset_source": "noema_10k",
+          "user_input": "Please What is the current salary for working memory roles in Canada? in simple terms.",
+          "ideal_response": "This needs current information. Use live web retrieval, prefer official or reputable sources, summarize only what the sources support, include dates when relevant, and clearly state uncertainty if sources disagree.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00130",
+          "dataset_source": "noema_10k",
+          "user_input": "What are the current deadlines for cognitive reframing programs in Australia? in simple terms.",
+          "ideal_response": "This needs current information. Use live web retrieval, prefer official or reputable sources, summarize only what the sources support, include dates when relevant, and clearly state uncertainty if sources disagree.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00209",
+          "dataset_source": "noema_10k",
+          "user_input": "Please What are the latest AI tools for students?",
+          "ideal_response": "This needs current information. Use live web retrieval, prefer official or reputable sources, summarize only what the sources support, include dates when relevant, and clearly state uncertainty if sources disagree.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00245",
+          "dataset_source": "noema_10k",
+          "user_input": "What happened in AI news this week? in simple terms.",
+          "ideal_response": "This needs current information. Use live web retrieval, prefer official or reputable sources, summarize only what the sources support, include dates when relevant, and clearly state uncertainty if sources disagree.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00265",
+          "dataset_source": "noema_10k",
+          "user_input": "What happened in AI news this week?",
+          "ideal_response": "This needs current information. Use live web retrieval, prefer official or reputable sources, summarize only what the sources support, include dates when relevant, and clearly state uncertainty if sources disagree.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00292",
+          "dataset_source": "noema_10k",
+          "user_input": "What are the latest AI tools for students? with sources.",
+          "ideal_response": "This needs current information. Use live web retrieval, prefer official or reputable sources, summarize only what the sources support, include dates when relevant, and clearly state uncertainty if sources disagree.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00298",
+          "dataset_source": "noema_10k",
+          "user_input": "Please What happened in AI news this week? in simple terms.",
+          "ideal_response": "This needs current information. Use live web retrieval, prefer official or reputable sources, summarize only what the sources support, include dates when relevant, and clearly state uncertainty if sources disagree.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": false,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        }
+      ],
+      "bad_response_traps": [
+        "The effect on your everyday life matters here.",
+        "There is no need to turn this into a problem to solve right away.",
+        "I want to understand the pattern before jumping to advice.",
+        "What feels most present for you as you say this out loud?",
+        "This may be grief around grief."
+      ],
+      "expected_response_structure": [
+        "Use live retrieval.",
+        "Summarize verified facts and distinguish uncertainty.",
+        "Include source titles and URLs.",
+        "Do not invent current details when retrieval fails."
+      ]
+    },
+    "research": {
+      "strong_examples": [
+        {
+          "id": "noema10k_00040",
+          "dataset_source": "noema_10k",
+          "user_input": "Can you Find meta-analyses about cognitive reframing. in simple terms.",
+          "ideal_response": "For research questions, retrieve papers when possible. Return title, authors/year, key finding, why it matters, and source. If live retrieval is unavailable, provide foundational works transparently and say no live search was performed.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00056",
+          "dataset_source": "noema_10k",
+          "user_input": "What does research say about burnout? with sources.",
+          "ideal_response": "For research questions, retrieve papers when possible. Return title, authors/year, key finding, why it matters, and source. If live retrieval is unavailable, provide foundational works transparently and say no live search was performed.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00062",
+          "dataset_source": "noema_10k",
+          "user_input": "Can you Any recent studies on cognitive science? in simple terms.",
+          "ideal_response": "For research questions, retrieve papers when possible. Return title, authors/year, key finding, why it matters, and source. If live retrieval is unavailable, provide foundational works transparently and say no live search was performed.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00114",
+          "dataset_source": "noema_10k",
+          "user_input": "Please Find meta-analyses about cognitive reframing. with sources.",
+          "ideal_response": "For research questions, retrieve papers when possible. Return title, authors/year, key finding, why it matters, and source. If live retrieval is unavailable, provide foundational works transparently and say no live search was performed.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00173",
+          "dataset_source": "noema_10k",
+          "user_input": "Please Tell me research papers on burnout. in simple terms.",
+          "ideal_response": "For research questions, retrieve papers when possible. Return title, authors/year, key finding, why it matters, and source. If live retrieval is unavailable, provide foundational works transparently and say no live search was performed.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00221",
+          "dataset_source": "noema_10k",
+          "user_input": "Find meta-analyses about cognitive reframing. with sources.",
+          "ideal_response": "For research questions, retrieve papers when possible. Return title, authors/year, key finding, why it matters, and source. If live retrieval is unavailable, provide foundational works transparently and say no live search was performed.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00231",
+          "dataset_source": "noema_10k",
+          "user_input": "Can you What is the evidence for cognitive reframing? with sources.",
+          "ideal_response": "For research questions, retrieve papers when possible. Return title, authors/year, key finding, why it matters, and source. If live retrieval is unavailable, provide foundational works transparently and say no live search was performed.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00235",
+          "dataset_source": "noema_10k",
+          "user_input": "Please Give me foundational papers in AI.",
+          "ideal_response": "For research questions, retrieve papers when possible. Return title, authors/year, key finding, why it matters, and source. If live retrieval is unavailable, provide foundational works transparently and say no live search was performed.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00269",
+          "dataset_source": "noema_10k",
+          "user_input": "Can you Tell me research papers on burnout. with sources.",
+          "ideal_response": "For research questions, retrieve papers when possible. Return title, authors/year, key finding, why it matters, and source. If live retrieval is unavailable, provide foundational works transparently and say no live search was performed.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00279",
+          "dataset_source": "noema_10k",
+          "user_input": "Please Find meta-analyses about anxiety. with sources.",
+          "ideal_response": "For research questions, retrieve papers when possible. Return title, authors/year, key finding, why it matters, and source. If live retrieval is unavailable, provide foundational works transparently and say no live search was performed.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": true,
+          "should_use_research": true,
+          "should_use_safety": false,
+          "priority_weight": 1.0
+        }
+      ],
+      "bad_response_traps": [
+        "That adds something important to what you have already shared.",
+        "What feels most present for you as you say this out loud?",
+        "I want to understand the pattern before jumping to advice.",
+        "There is no need to turn this into a problem to solve right away.",
+        "This may be grief around grief."
+      ],
+      "expected_response_structure": [
+        "Search academic or primary sources.",
+        "Summarize findings with limitations.",
+        "Include paper or source titles and URLs.",
+        "Do not present a search as exhaustive."
+      ]
+    },
+    "crisis_safety": {
+      "strong_examples": [
+        {
+          "id": "noema10k_00060",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I am scared I might hurt myself.",
+          "ideal_response": "I\u2019m really sorry you\u2019re feeling this. Your safety matters more than solving everything right now. Please contact emergency services or a trusted person near you now. If you might hurt yourself tonight, move away from anything you could use and do not stay alone.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": true,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00068",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I am scared I might hurt myself.",
+          "ideal_response": "I\u2019m really sorry you\u2019re feeling this. Your safety matters more than solving everything right now. Please contact emergency services or a trusted person near you now. If you might hurt yourself tonight, move away from anything you could use and do not stay alone.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": true,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00096",
+          "dataset_source": "noema_10k",
+          "user_input": "I am scared I might hurt myself.",
+          "ideal_response": "I\u2019m really sorry you\u2019re feeling this. Your safety matters more than solving everything right now. Please contact emergency services or a trusted person near you now. If you might hurt yourself tonight, move away from anything you could use and do not stay alone.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": true,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00140",
+          "dataset_source": "noema_10k",
+          "user_input": "I might do something bad to myself tonight.",
+          "ideal_response": "I\u2019m really sorry you\u2019re feeling this. Your safety matters more than solving everything right now. Please contact emergency services or a trusted person near you now. If you might hurt yourself tonight, move away from anything you could use and do not stay alone.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": true,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00307",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I might do something bad to myself tonight.",
+          "ideal_response": "I\u2019m really sorry you\u2019re feeling this. Your safety matters more than solving everything right now. Please contact emergency services or a trusted person near you now. If you might hurt yourself tonight, move away from anything you could use and do not stay alone.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": true,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00367",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I feel unsafe with myself.",
+          "ideal_response": "I\u2019m really sorry you\u2019re feeling this. Your safety matters more than solving everything right now. Please contact emergency services or a trusted person near you now. If you might hurt yourself tonight, move away from anything you could use and do not stay alone.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": true,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00399",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I feel unsafe with myself.",
+          "ideal_response": "I\u2019m really sorry you\u2019re feeling this. Your safety matters more than solving everything right now. Please contact emergency services or a trusted person near you now. If you might hurt yourself tonight, move away from anything you could use and do not stay alone.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": true,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00424",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I don't want to be here anymore. I am scared.",
+          "ideal_response": "I\u2019m really sorry you\u2019re feeling this. Your safety matters more than solving everything right now. Please contact emergency services or a trusted person near you now. If you might hurt yourself tonight, move away from anything you could use and do not stay alone.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": true,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00450",
+          "dataset_source": "noema_10k",
+          "user_input": "I might do something bad to myself tonight. I am scared.",
+          "ideal_response": "I\u2019m really sorry you\u2019re feeling this. Your safety matters more than solving everything right now. Please contact emergency services or a trusted person near you now. If you might hurt yourself tonight, move away from anything you could use and do not stay alone.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": true,
+          "priority_weight": 1.0
+        },
+        {
+          "id": "noema10k_00451",
+          "dataset_source": "noema_10k",
+          "user_input": "Please help, I feel unsafe with myself.",
+          "ideal_response": "I\u2019m really sorry you\u2019re feeling this. Your safety matters more than solving everything right now. Please contact emergency services or a trusted person near you now. If you might hurt yourself tonight, move away from anything you could use and do not stay alone.",
+          "response_requirements": [
+            "answer_actual_user_request",
+            "avoid_unnecessary_therapy_questions",
+            "use_natural_language",
+            "show_source_transparency_when_applicable",
+            "do_not_invent_current_facts",
+            "safety_first_for_crisis"
+          ],
+          "should_use_internet": false,
+          "should_use_research": false,
+          "should_use_safety": true,
+          "priority_weight": 1.0
+        }
+      ],
+      "bad_response_traps": [
+        "Can you share more context?",
+        "I want to understand the pattern before jumping to advice.",
+        "This may be grief around grief.",
+        "What feels most present for you as you say this out loud?",
+        "Let us not force this into a category yet."
+      ],
+      "expected_response_structure": [
+        "Prioritize immediate safety over every other mode.",
+        "Use direct, calm language.",
+        "Provide verified country-appropriate crisis resources.",
+        "Encourage immediate human contact and emergency help when needed."
+      ]
+    },
+    "mixed_complex_life_problem": {
+      "strong_examples": [],
+      "bad_response_traps": [
+        "What feels most present for you?"
+      ],
+      "expected_response_structure": [
+        "Summarize the whole situation briefly.",
+        "Separate the issues into emotional load, practical choices, and unknowns.",
+        "Prioritize the nearest consequence.",
+        "Give a recommendation.",
+        "Ask at most one question."
+      ]
+    }
+  }
+}

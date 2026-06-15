@@ -1,0 +1,3754 @@
+{
+  "version": 1,
+  "source": "training-split emotion classification rows",
+  "response_generation_allowed": false,
+  "emotions": {
+    "sadness": [
+      {
+        "token": "sadly",
+        "score": 2.6259,
+        "count": 49,
+        "precision": 0.6712
+      },
+      {
+        "token": "painful",
+        "score": 1.6794,
+        "count": 24,
+        "precision": 0.5217
+      }
+    ],
+    "anger": [
+      {
+        "token": "fuck",
+        "score": 3.7952,
+        "count": 276,
+        "precision": 0.6748
+      },
+      {
+        "token": "irritating",
+        "score": 3.6487,
+        "count": 41,
+        "precision": 0.9762
+      },
+      {
+        "token": "fucking",
+        "score": 3.2989,
+        "count": 220,
+        "precision": 0.6111
+      },
+      {
+        "token": "peeved",
+        "score": 3.2773,
+        "count": 48,
+        "precision": 0.8421
+      },
+      {
+        "token": "annoying",
+        "score": 3.1101,
+        "count": 97,
+        "precision": 0.6783
+      },
+      {
+        "token": "nerves",
+        "score": 3.0721,
+        "count": 74,
+        "precision": 0.7115
+      },
+      {
+        "token": "irritated",
+        "score": 3.0466,
+        "count": 63,
+        "precision": 0.7326
+      },
+      {
+        "token": "pissed",
+        "score": 3.0317,
+        "count": 109,
+        "precision": 0.645
+      },
+      {
+        "token": "annoyed",
+        "score": 2.9773,
+        "count": 86,
+        "precision": 0.6667
+      },
+      {
+        "token": "angry",
+        "score": 2.9294,
+        "count": 212,
+        "precision": 0.5464
+      },
+      {
+        "token": "asshole",
+        "score": 2.7151,
+        "count": 25,
+        "precision": 0.8333
+      },
+      {
+        "token": "irked",
+        "score": 2.7047,
+        "count": 21,
+        "precision": 0.875
+      },
+      {
+        "token": "stupid",
+        "score": 2.6662,
+        "count": 177,
+        "precision": 0.5145
+      },
+      {
+        "token": "frustrating",
+        "score": 2.5169,
+        "count": 53,
+        "precision": 0.631
+      },
+      {
+        "token": "annoys",
+        "score": 2.4464,
+        "count": 15,
+        "precision": 0.8824
+      },
+      {
+        "token": "idiots",
+        "score": 2.4324,
+        "count": 32,
+        "precision": 0.6957
+      },
+      {
+        "token": "keyed",
+        "score": 2.3979,
+        "count": 10,
+        "precision": 1.0
+      },
+      {
+        "token": "inconsiderate",
+        "score": 2.3676,
+        "count": 12,
+        "precision": 0.9231
+      },
+      {
+        "token": "bastard",
+        "score": 2.3419,
+        "count": 20,
+        "precision": 0.7692
+      },
+      {
+        "token": "overcharged",
+        "score": 2.3105,
+        "count": 15,
+        "precision": 0.8333
+      },
+      {
+        "token": "printer",
+        "score": 2.2938,
+        "count": 29,
+        "precision": 0.6744
+      },
+      {
+        "token": "pimple",
+        "score": 2.2872,
+        "count": 13,
+        "precision": 0.8667
+      },
+      {
+        "token": "knocking",
+        "score": 2.2872,
+        "count": 13,
+        "precision": 0.8667
+      },
+      {
+        "token": "stubbed",
+        "score": 2.2417,
+        "count": 29,
+        "precision": 0.6591
+      },
+      {
+        "token": "bitch",
+        "score": 2.2417,
+        "count": 29,
+        "precision": 0.6591
+      },
+      {
+        "token": "dent",
+        "score": 2.2079,
+        "count": 64,
+        "precision": 0.5289
+      },
+      {
+        "token": "assholes",
+        "score": 2.1985,
+        "count": 12,
+        "precision": 0.8571
+      },
+      {
+        "token": "unfinished",
+        "score": 2.1972,
+        "count": 8,
+        "precision": 1.0
+      },
+      {
+        "token": "annoy",
+        "score": 2.1799,
+        "count": 10,
+        "precision": 0.9091
+      },
+      {
+        "token": "bullshit",
+        "score": 2.1517,
+        "count": 32,
+        "precision": 0.6154
+      },
+      {
+        "token": "aggravated",
+        "score": 2.0794,
+        "count": 15,
+        "precision": 0.75
+      },
+      {
+        "token": "idiot",
+        "score": 2.0565,
+        "count": 58,
+        "precision": 0.5043
+      },
+      {
+        "token": "rear",
+        "score": 2.0304,
+        "count": 23,
+        "precision": 0.6389
+      },
+      {
+        "token": "aggravating",
+        "score": 2.0181,
+        "count": 13,
+        "precision": 0.7647
+      },
+      {
+        "token": "shut",
+        "score": 1.9945,
+        "count": 53,
+        "precision": 0.5
+      },
+      {
+        "token": "disagree",
+        "score": 1.9696,
+        "count": 36,
+        "precision": 0.5455
+      },
+      {
+        "token": "bothering",
+        "score": 1.9655,
+        "count": 17,
+        "precision": 0.68
+      },
+      {
+        "token": "fucked",
+        "score": 1.9043,
+        "count": 26,
+        "precision": 0.5778
+      },
+      {
+        "token": "bugged",
+        "score": 1.8839,
+        "count": 9,
+        "precision": 0.8182
+      },
+      {
+        "token": "dare",
+        "score": 1.8597,
+        "count": 34,
+        "precision": 0.5231
+      },
+      {
+        "token": "wtf",
+        "score": 1.8132,
+        "count": 28,
+        "precision": 0.5385
+      },
+      {
+        "token": "irrelevant",
+        "score": 1.8057,
+        "count": 13,
+        "precision": 0.6842
+      },
+      {
+        "token": "punished",
+        "score": 1.7578,
+        "count": 8,
+        "precision": 0.8
+      },
+      {
+        "token": "ticked",
+        "score": 1.7435,
+        "count": 16,
+        "precision": 0.6154
+      },
+      {
+        "token": "interrupts",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      },
+      {
+        "token": "gears",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      },
+      {
+        "token": "disturbing",
+        "score": 1.619,
+        "count": 16,
+        "precision": 0.5714
+      },
+      {
+        "token": "intentionally",
+        "score": 1.6079,
+        "count": 11,
+        "precision": 0.6471
+      },
+      {
+        "token": "bastards",
+        "score": 1.5986,
+        "count": 10,
+        "precision": 0.6667
+      },
+      {
+        "token": "unacceptable",
+        "score": 1.598,
+        "count": 8,
+        "precision": 0.7273
+      },
+      {
+        "token": "cans",
+        "score": 1.598,
+        "count": 8,
+        "precision": 0.7273
+      },
+      {
+        "token": "enraged",
+        "score": 1.5941,
+        "count": 9,
+        "precision": 0.6923
+      },
+      {
+        "token": "barking",
+        "score": 1.585,
+        "count": 17,
+        "precision": 0.5484
+      },
+      {
+        "token": "bothered",
+        "score": 1.5797,
+        "count": 14,
+        "precision": 0.5833
+      },
+      {
+        "token": "goddamn",
+        "score": 1.5594,
+        "count": 13,
+        "precision": 0.5909
+      },
+      {
+        "token": "refrigerator",
+        "score": 1.539,
+        "count": 12,
+        "precision": 0.6
+      },
+      {
+        "token": "livid",
+        "score": 1.5223,
+        "count": 20,
+        "precision": 0.5
+      },
+      {
+        "token": "bugging",
+        "score": 1.5186,
+        "count": 11,
+        "precision": 0.6111
+      },
+      {
+        "token": "anger",
+        "score": 1.5143,
+        "count": 18,
+        "precision": 0.5143
+      },
+      {
+        "token": "unpopular",
+        "score": 1.4987,
+        "count": 10,
+        "precision": 0.625
+      },
+      {
+        "token": "frustration",
+        "score": 1.4802,
+        "count": 9,
+        "precision": 0.6429
+      },
+      {
+        "token": "treated",
+        "score": 1.4722,
+        "count": 18,
+        "precision": 0.5
+      },
+      {
+        "token": "racial",
+        "score": 1.4648,
+        "count": 8,
+        "precision": 0.6667
+      },
+      {
+        "token": "nonsense",
+        "score": 1.4582,
+        "count": 14,
+        "precision": 0.5385
+      },
+      {
+        "token": "repeatedly",
+        "score": 1.4295,
+        "count": 13,
+        "precision": 0.5417
+      },
+      {
+        "token": "useless",
+        "score": 1.4166,
+        "count": 16,
+        "precision": 0.5
+      },
+      {
+        "token": "oven",
+        "score": 1.4166,
+        "count": 16,
+        "precision": 0.5
+      },
+      {
+        "token": "unhealthy",
+        "score": 1.4105,
+        "count": 10,
+        "precision": 0.5882
+      },
+      {
+        "token": "repairs",
+        "score": 1.4105,
+        "count": 10,
+        "precision": 0.5882
+      },
+      {
+        "token": "disrespect",
+        "score": 1.3816,
+        "count": 9,
+        "precision": 0.6
+      },
+      {
+        "token": "increasing",
+        "score": 1.3667,
+        "count": 11,
+        "precision": 0.55
+      },
+      {
+        "token": "refund",
+        "score": 1.354,
+        "count": 14,
+        "precision": 0.5
+      },
+      {
+        "token": "dumbass",
+        "score": 1.354,
+        "count": 14,
+        "precision": 0.5
+      },
+      {
+        "token": "utter",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      },
+      {
+        "token": "speakers",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      },
+      {
+        "token": "behaving",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      },
+      {
+        "token": "fuckin",
+        "score": 1.3016,
+        "count": 11,
+        "precision": 0.5238
+      },
+      {
+        "token": "equally",
+        "score": 1.2952,
+        "count": 9,
+        "precision": 0.5625
+      },
+      {
+        "token": "mosquito",
+        "score": 1.2556,
+        "count": 8,
+        "precision": 0.5714
+      },
+      {
+        "token": "duties",
+        "score": 1.2556,
+        "count": 8,
+        "precision": 0.5714
+      },
+      {
+        "token": "lame",
+        "score": 1.2425,
+        "count": 11,
+        "precision": 0.5
+      },
+      {
+        "token": "washed",
+        "score": 1.1989,
+        "count": 10,
+        "precision": 0.5
+      },
+      {
+        "token": "users",
+        "score": 1.1719,
+        "count": 8,
+        "precision": 0.5333
+      },
+      {
+        "token": "overrated",
+        "score": 1.1719,
+        "count": 8,
+        "precision": 0.5333
+      }
+    ],
+    "connection": [
+      {
+        "token": "memories",
+        "score": 4.6276,
+        "count": 191,
+        "precision": 0.8802
+      },
+      {
+        "token": "love",
+        "score": 4.5328,
+        "count": 1657,
+        "precision": 0.6114
+      },
+      {
+        "token": "nostalgic",
+        "score": 4.495,
+        "count": 93,
+        "precision": 0.9894
+      },
+      {
+        "token": "childhood",
+        "score": 4.3237,
+        "count": 231,
+        "precision": 0.7938
+      },
+      {
+        "token": "sentimental",
+        "score": 3.9151,
+        "count": 53,
+        "precision": 0.9815
+      },
+      {
+        "token": "reminded",
+        "score": 3.8363,
+        "count": 118,
+        "precision": 0.8027
+      },
+      {
+        "token": "albums",
+        "score": 3.5902,
+        "count": 42,
+        "precision": 0.9545
+      },
+      {
+        "token": "pictures",
+        "score": 3.4363,
+        "count": 135,
+        "precision": 0.6995
+      },
+      {
+        "token": "reminisce",
+        "score": 3.3232,
+        "count": 30,
+        "precision": 0.9677
+      },
+      {
+        "token": "sisters",
+        "score": 3.2056,
+        "count": 96,
+        "precision": 0.7007
+      },
+      {
+        "token": "photos",
+        "score": 3.1751,
+        "count": 106,
+        "precision": 0.6795
+      },
+      {
+        "token": "loved",
+        "score": 3.0537,
+        "count": 221,
+        "precision": 0.5652
+      },
+      {
+        "token": "photographs",
+        "score": 2.9444,
+        "count": 18,
+        "precision": 1.0
+      },
+      {
+        "token": "reminiscing",
+        "score": 2.8332,
+        "count": 16,
+        "precision": 1.0
+      },
+      {
+        "token": "nes",
+        "score": 2.7895,
+        "count": 18,
+        "precision": 0.9474
+      },
+      {
+        "token": "grandfathers",
+        "score": 2.759,
+        "count": 24,
+        "precision": 0.8571
+      },
+      {
+        "token": "attic",
+        "score": 2.6529,
+        "count": 36,
+        "precision": 0.7347
+      },
+      {
+        "token": "pyrex",
+        "score": 2.5649,
+        "count": 12,
+        "precision": 1.0
+      },
+      {
+        "token": "shelter",
+        "score": 2.5611,
+        "count": 40,
+        "precision": 0.6897
+      },
+      {
+        "token": "comforted",
+        "score": 2.5275,
+        "count": 14,
+        "precision": 0.9333
+      },
+      {
+        "token": "caring",
+        "score": 2.527,
+        "count": 47,
+        "precision": 0.6528
+      },
+      {
+        "token": "responsibilities",
+        "score": 2.5184,
+        "count": 16,
+        "precision": 0.8889
+      },
+      {
+        "token": "toys",
+        "score": 2.4878,
+        "count": 51,
+        "precision": 0.6296
+      },
+      {
+        "token": "teary",
+        "score": 2.4849,
+        "count": 11,
+        "precision": 1.0
+      },
+      {
+        "token": "braclet",
+        "score": 2.4849,
+        "count": 11,
+        "precision": 1.0
+      },
+      {
+        "token": "reminds",
+        "score": 2.4499,
+        "count": 87,
+        "precision": 0.5472
+      },
+      {
+        "token": "remembering",
+        "score": 2.4073,
+        "count": 36,
+        "precision": 0.6667
+      },
+      {
+        "token": "drawings",
+        "score": 2.3979,
+        "count": 10,
+        "precision": 1.0
+      },
+      {
+        "token": "photo",
+        "score": 2.3624,
+        "count": 73,
+        "precision": 0.5489
+      },
+      {
+        "token": "kitten",
+        "score": 2.2918,
+        "count": 43,
+        "precision": 0.6056
+      },
+      {
+        "token": "compassionate",
+        "score": 2.2778,
+        "count": 11,
+        "precision": 0.9167
+      },
+      {
+        "token": "diary",
+        "score": 2.1985,
+        "count": 12,
+        "precision": 0.8571
+      },
+      {
+        "token": "remeber",
+        "score": 2.1972,
+        "count": 8,
+        "precision": 1.0
+      },
+      {
+        "token": "adulting",
+        "score": 2.1972,
+        "count": 8,
+        "precision": 1.0
+      },
+      {
+        "token": "sailor",
+        "score": 2.0723,
+        "count": 9,
+        "precision": 0.9
+      },
+      {
+        "token": "grandfather",
+        "score": 2.0612,
+        "count": 49,
+        "precision": 0.5269
+      },
+      {
+        "token": "nursed",
+        "score": 2.052,
+        "count": 12,
+        "precision": 0.8
+      },
+      {
+        "token": "yearbook",
+        "score": 2.0473,
+        "count": 17,
+        "precision": 0.7083
+      },
+      {
+        "token": "emotional",
+        "score": 2.0216,
+        "count": 47,
+        "precision": 0.5222
+      },
+      {
+        "token": "stumbled",
+        "score": 2.0181,
+        "count": 13,
+        "precision": 0.7647
+      },
+      {
+        "token": "teddy",
+        "score": 1.9982,
+        "count": 10,
+        "precision": 0.8333
+      },
+      {
+        "token": "donate",
+        "score": 1.9808,
+        "count": 24,
+        "precision": 0.6154
+      },
+      {
+        "token": "babysit",
+        "score": 1.967,
+        "count": 21,
+        "precision": 0.6364
+      },
+      {
+        "token": "artwork",
+        "score": 1.9524,
+        "count": 11,
+        "precision": 0.7857
+      },
+      {
+        "token": "necklace",
+        "score": 1.9313,
+        "count": 24,
+        "precision": 0.6
+      },
+      {
+        "token": "album",
+        "score": 1.884,
+        "count": 36,
+        "precision": 0.5217
+      },
+      {
+        "token": "pics",
+        "score": 1.861,
+        "count": 29,
+        "precision": 0.5472
+      },
+      {
+        "token": "stray",
+        "score": 1.8153,
+        "count": 22,
+        "precision": 0.5789
+      },
+      {
+        "token": "adopted",
+        "score": 1.7903,
+        "count": 33,
+        "precision": 0.5077
+      },
+      {
+        "token": "loving",
+        "score": 1.7777,
+        "count": 34,
+        "precision": 0.5
+      },
+      {
+        "token": "emotions",
+        "score": 1.7707,
+        "count": 25,
+        "precision": 0.5435
+      },
+      {
+        "token": "cadillac",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      },
+      {
+        "token": "rings",
+        "score": 1.7128,
+        "count": 10,
+        "precision": 0.7143
+      },
+      {
+        "token": "grandpa",
+        "score": 1.7082,
+        "count": 21,
+        "precision": 0.5526
+      },
+      {
+        "token": "rewarding",
+        "score": 1.6484,
+        "count": 14,
+        "precision": 0.6087
+      },
+      {
+        "token": "volunteer",
+        "score": 1.619,
+        "count": 16,
+        "precision": 0.5714
+      },
+      {
+        "token": "cared",
+        "score": 1.6094,
+        "count": 24,
+        "precision": 0.5
+      },
+      {
+        "token": "apples",
+        "score": 1.5986,
+        "count": 10,
+        "precision": 0.6667
+      },
+      {
+        "token": "hometown",
+        "score": 1.5355,
+        "count": 17,
+        "precision": 0.5312
+      },
+      {
+        "token": "eyed",
+        "score": 1.5186,
+        "count": 11,
+        "precision": 0.6111
+      },
+      {
+        "token": "nephews",
+        "score": 1.4916,
+        "count": 13,
+        "precision": 0.5652
+      },
+      {
+        "token": "inherited",
+        "score": 1.4802,
+        "count": 9,
+        "precision": 0.6429
+      },
+      {
+        "token": "disneyland",
+        "score": 1.4341,
+        "count": 15,
+        "precision": 0.5172
+      },
+      {
+        "token": "paw",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      },
+      {
+        "token": "cartoon",
+        "score": 1.2825,
+        "count": 12,
+        "precision": 0.5
+      },
+      {
+        "token": "other's",
+        "score": 1.2556,
+        "count": 8,
+        "precision": 0.5714
+      },
+      {
+        "token": "grandmothers",
+        "score": 1.1719,
+        "count": 8,
+        "precision": 0.5333
+      },
+      {
+        "token": "earrings",
+        "score": 1.1719,
+        "count": 8,
+        "precision": 0.5333
+      }
+    ],
+    "neutral": [
+      {
+        "token": "remindme",
+        "score": 3.0456,
+        "count": 23,
+        "precision": 0.9583
+      },
+      {
+        "token": "weaker",
+        "score": 1.9531,
+        "count": 8,
+        "precision": 0.8889
+      },
+      {
+        "token": "prevent",
+        "score": 1.8445,
+        "count": 10,
+        "precision": 0.7692
+      },
+      {
+        "token": "socialism",
+        "score": 1.7329,
+        "count": 15,
+        "precision": 0.625
+      },
+      {
+        "token": "depends",
+        "score": 1.7304,
+        "count": 29,
+        "precision": 0.5088
+      },
+      {
+        "token": "net",
+        "score": 1.6789,
+        "count": 16,
+        "precision": 0.5926
+      },
+      {
+        "token": "hello",
+        "score": 1.6613,
+        "count": 23,
+        "precision": 0.5227
+      },
+      {
+        "token": "according",
+        "score": 1.619,
+        "count": 16,
+        "precision": 0.5714
+      },
+      {
+        "token": "mafia",
+        "score": 1.598,
+        "count": 8,
+        "precision": 0.7273
+      },
+      {
+        "token": "leftists",
+        "score": 1.598,
+        "count": 8,
+        "precision": 0.7273
+      },
+      {
+        "token": "evolution",
+        "score": 1.598,
+        "count": 8,
+        "precision": 0.7273
+      },
+      {
+        "token": "billion",
+        "score": 1.5594,
+        "count": 13,
+        "precision": 0.5909
+      },
+      {
+        "token": "discord",
+        "score": 1.5186,
+        "count": 11,
+        "precision": 0.6111
+      },
+      {
+        "token": "create",
+        "score": 1.489,
+        "count": 17,
+        "precision": 0.5152
+      },
+      {
+        "token": "various",
+        "score": 1.4802,
+        "count": 9,
+        "precision": 0.6429
+      },
+      {
+        "token": "terrorists",
+        "score": 1.4802,
+        "count": 9,
+        "precision": 0.6429
+      },
+      {
+        "token": "effect",
+        "score": 1.4722,
+        "count": 18,
+        "precision": 0.5
+      },
+      {
+        "token": "philly",
+        "score": 1.4648,
+        "count": 8,
+        "precision": 0.6667
+      },
+      {
+        "token": "calories",
+        "score": 1.4648,
+        "count": 8,
+        "precision": 0.6667
+      },
+      {
+        "token": "burns",
+        "score": 1.4648,
+        "count": 8,
+        "precision": 0.6667
+      },
+      {
+        "token": "further",
+        "score": 1.4623,
+        "count": 16,
+        "precision": 0.5161
+      },
+      {
+        "token": "screenshot",
+        "score": 1.4386,
+        "count": 11,
+        "precision": 0.5789
+      },
+      {
+        "token": "links",
+        "score": 1.4386,
+        "count": 11,
+        "precision": 0.5789
+      },
+      {
+        "token": "leader",
+        "score": 1.3816,
+        "count": 9,
+        "precision": 0.6
+      },
+      {
+        "token": "delusion",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      },
+      {
+        "token": "crypto",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      },
+      {
+        "token": "whose",
+        "score": 1.3322,
+        "count": 10,
+        "precision": 0.5556
+      },
+      {
+        "token": "cap",
+        "score": 1.3195,
+        "count": 13,
+        "precision": 0.5
+      },
+      {
+        "token": "incels",
+        "score": 1.3016,
+        "count": 11,
+        "precision": 0.5238
+      },
+      {
+        "token": "mediocre",
+        "score": 1.2952,
+        "count": 9,
+        "precision": 0.5625
+      },
+      {
+        "token": "iirc",
+        "score": 1.2952,
+        "count": 9,
+        "precision": 0.5625
+      },
+      {
+        "token": "filming",
+        "score": 1.2952,
+        "count": 9,
+        "precision": 0.5625
+      },
+      {
+        "token": "draw",
+        "score": 1.2825,
+        "count": 12,
+        "precision": 0.5
+      },
+      {
+        "token": "fox",
+        "score": 1.2621,
+        "count": 10,
+        "precision": 0.5263
+      },
+      {
+        "token": "shown",
+        "score": 1.2556,
+        "count": 8,
+        "precision": 0.5714
+      },
+      {
+        "token": "narrative",
+        "score": 1.2556,
+        "count": 8,
+        "precision": 0.5714
+      },
+      {
+        "token": "immigrants",
+        "score": 1.2556,
+        "count": 8,
+        "precision": 0.5714
+      },
+      {
+        "token": "boobs",
+        "score": 1.2556,
+        "count": 8,
+        "precision": 0.5714
+      },
+      {
+        "token": "appears",
+        "score": 1.2425,
+        "count": 11,
+        "precision": 0.5
+      },
+      {
+        "token": "minority",
+        "score": 1.219,
+        "count": 9,
+        "precision": 0.5294
+      },
+      {
+        "token": "described",
+        "score": 1.219,
+        "count": 9,
+        "precision": 0.5294
+      },
+      {
+        "token": "dems",
+        "score": 1.219,
+        "count": 9,
+        "precision": 0.5294
+      },
+      {
+        "token": "cases",
+        "score": 1.1989,
+        "count": 10,
+        "precision": 0.5
+      },
+      {
+        "token": "millions",
+        "score": 1.1719,
+        "count": 8,
+        "precision": 0.5333
+      },
+      {
+        "token": "server",
+        "score": 1.1513,
+        "count": 9,
+        "precision": 0.5
+      },
+      {
+        "token": "ironically",
+        "score": 1.1513,
+        "count": 9,
+        "precision": 0.5
+      },
+      {
+        "token": "hundred",
+        "score": 1.1513,
+        "count": 9,
+        "precision": 0.5
+      },
+      {
+        "token": "guaranteed",
+        "score": 1.1513,
+        "count": 9,
+        "precision": 0.5
+      },
+      {
+        "token": "weren",
+        "score": 1.0986,
+        "count": 8,
+        "precision": 0.5
+      },
+      {
+        "token": "systems",
+        "score": 1.0986,
+        "count": 8,
+        "precision": 0.5
+      },
+      {
+        "token": "reverse",
+        "score": 1.0986,
+        "count": 8,
+        "precision": 0.5
+      },
+      {
+        "token": "identify",
+        "score": 1.0986,
+        "count": 8,
+        "precision": 0.5
+      },
+      {
+        "token": "communism",
+        "score": 1.0986,
+        "count": 8,
+        "precision": 0.5
+      },
+      {
+        "token": "bye",
+        "score": 1.0986,
+        "count": 8,
+        "precision": 0.5
+      },
+      {
+        "token": "belongs",
+        "score": 1.0986,
+        "count": 8,
+        "precision": 0.5
+      }
+    ],
+    "gratitude": [
+      {
+        "token": "thanks",
+        "score": 5.915,
+        "count": 1090,
+        "precision": 0.8456
+      },
+      {
+        "token": "thank",
+        "score": 5.7229,
+        "count": 941,
+        "precision": 0.8357
+      },
+      {
+        "token": "sharing",
+        "score": 2.3888,
+        "count": 65,
+        "precision": 0.5702
+      },
+      {
+        "token": "clarification",
+        "score": 2.3105,
+        "count": 15,
+        "precision": 0.8333
+      },
+      {
+        "token": "clarifying",
+        "score": 1.7578,
+        "count": 8,
+        "precision": 0.8
+      },
+      {
+        "token": "recommendation",
+        "score": 1.5986,
+        "count": 10,
+        "precision": 0.6667
+      },
+      {
+        "token": "correction",
+        "score": 1.598,
+        "count": 8,
+        "precision": 0.7273
+      },
+      {
+        "token": "feedback",
+        "score": 1.5186,
+        "count": 11,
+        "precision": 0.6111
+      },
+      {
+        "token": "insight",
+        "score": 1.4105,
+        "count": 10,
+        "precision": 0.5882
+      },
+      {
+        "token": "input",
+        "score": 1.3667,
+        "count": 11,
+        "precision": 0.55
+      },
+      {
+        "token": "explaining",
+        "score": 1.3195,
+        "count": 13,
+        "precision": 0.5
+      },
+      {
+        "token": "thx",
+        "score": 1.0986,
+        "count": 8,
+        "precision": 0.5
+      },
+      {
+        "token": "kindly",
+        "score": 1.0986,
+        "count": 8,
+        "precision": 0.5
+      }
+    ],
+    "admiration": [
+      {
+        "token": "excellent",
+        "score": 2.3958,
+        "count": 30,
+        "precision": 0.6977
+      },
+      {
+        "token": "fantastic",
+        "score": 2.26,
+        "count": 43,
+        "precision": 0.5972
+      },
+      {
+        "token": "genius",
+        "score": 1.6914,
+        "count": 20,
+        "precision": 0.5556
+      },
+      {
+        "token": "adorable",
+        "score": 1.6479,
+        "count": 26,
+        "precision": 0.5
+      },
+      {
+        "token": "stunning",
+        "score": 1.598,
+        "count": 8,
+        "precision": 0.7273
+      },
+      {
+        "token": "brilliant",
+        "score": 1.5588,
+        "count": 18,
+        "precision": 0.5294
+      },
+      {
+        "token": "handsome",
+        "score": 1.5165,
+        "count": 14,
+        "precision": 0.56
+      },
+      {
+        "token": "honesty",
+        "score": 1.4386,
+        "count": 11,
+        "precision": 0.5789
+      },
+      {
+        "token": "legend",
+        "score": 1.354,
+        "count": 14,
+        "precision": 0.5
+      }
+    ],
+    "amusement": [
+      {
+        "token": "lol",
+        "score": 4.5825,
+        "count": 848,
+        "precision": 0.6795
+      },
+      {
+        "token": "hilarious",
+        "score": 3.0221,
+        "count": 69,
+        "precision": 0.7113
+      },
+      {
+        "token": "haha",
+        "score": 2.8923,
+        "count": 207,
+        "precision": 0.5419
+      },
+      {
+        "token": "funny",
+        "score": 2.8058,
+        "count": 187,
+        "precision": 0.5358
+      },
+      {
+        "token": "hahaha",
+        "score": 2.6566,
+        "count": 50,
+        "precision": 0.6757
+      },
+      {
+        "token": "funniest",
+        "score": 1.9531,
+        "count": 8,
+        "precision": 0.8889
+      },
+      {
+        "token": "hahah",
+        "score": 1.8445,
+        "count": 10,
+        "precision": 0.7692
+      },
+      {
+        "token": "hahahaha",
+        "score": 1.6079,
+        "count": 11,
+        "precision": 0.6471
+      },
+      {
+        "token": "chuckle",
+        "score": 1.0986,
+        "count": 8,
+        "precision": 0.5
+      }
+    ],
+    "disgust": [
+      {
+        "token": "disgusting",
+        "score": 3.0859,
+        "count": 88,
+        "precision": 0.6875
+      }
+    ],
+    "positive": [
+      {
+        "token": "proposed",
+        "score": 1.8742,
+        "count": 23,
+        "precision": 0.5897
+      },
+      {
+        "token": "joyful",
+        "score": 1.8643,
+        "count": 22,
+        "precision": 0.5946
+      },
+      {
+        "token": "cakeday",
+        "score": 1.6484,
+        "count": 14,
+        "precision": 0.6087
+      },
+      {
+        "token": "costco",
+        "score": 1.4657,
+        "count": 12,
+        "precision": 0.5714
+      },
+      {
+        "token": "moon",
+        "score": 1.4623,
+        "count": 16,
+        "precision": 0.5161
+      },
+      {
+        "token": "kiddos",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      },
+      {
+        "token": "husky",
+        "score": 1.1719,
+        "count": 8,
+        "precision": 0.5333
+      }
+    ],
+    "approval": [
+      {
+        "token": "agree",
+        "score": 2.7658,
+        "count": 155,
+        "precision": 0.5477
+      }
+    ],
+    "guilt": [
+      {
+        "token": "guilty",
+        "score": 2.4551,
+        "count": 84,
+        "precision": 0.5526
+      },
+      {
+        "token": "candy",
+        "score": 2.0215,
+        "count": 56,
+        "precision": 0.5
+      },
+      {
+        "token": "grail",
+        "score": 1.9531,
+        "count": 8,
+        "precision": 0.8889
+      },
+      {
+        "token": "remorse",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      },
+      {
+        "token": "hungover",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      },
+      {
+        "token": "waitress",
+        "score": 1.6437,
+        "count": 24,
+        "precision": 0.5106
+      },
+      {
+        "token": "piggy",
+        "score": 1.4802,
+        "count": 9,
+        "precision": 0.6429
+      },
+      {
+        "token": "poisoning",
+        "score": 1.4648,
+        "count": 8,
+        "precision": 0.6667
+      },
+      {
+        "token": "apologized",
+        "score": 1.3322,
+        "count": 10,
+        "precision": 0.5556
+      }
+    ],
+    "hopeful": [
+      {
+        "token": "optimistic",
+        "score": 3.9595,
+        "count": 86,
+        "precision": 0.8866
+      },
+      {
+        "token": "hope",
+        "score": 3.4469,
+        "count": 646,
+        "precision": 0.5326
+      },
+      {
+        "token": "hopeful",
+        "score": 3.3654,
+        "count": 89,
+        "precision": 0.7479
+      },
+      {
+        "token": "hoping",
+        "score": 2.7855,
+        "count": 197,
+        "precision": 0.5267
+      },
+      {
+        "token": "hopefully",
+        "score": 2.5411,
+        "count": 85,
+        "precision": 0.5705
+      },
+      {
+        "token": "praying",
+        "score": 1.9696,
+        "count": 36,
+        "precision": 0.5455
+      },
+      {
+        "token": "wishing",
+        "score": 1.8232,
+        "count": 26,
+        "precision": 0.5532
+      },
+      {
+        "token": "hopes",
+        "score": 1.7828,
+        "count": 23,
+        "precision": 0.561
+      },
+      {
+        "token": "remaining",
+        "score": 1.7578,
+        "count": 8,
+        "precision": 0.8
+      },
+      {
+        "token": "bid",
+        "score": 1.7435,
+        "count": 16,
+        "precision": 0.6154
+      },
+      {
+        "token": "someday",
+        "score": 1.6944,
+        "count": 17,
+        "precision": 0.5862
+      },
+      {
+        "token": "finances",
+        "score": 1.5632,
+        "count": 16,
+        "precision": 0.5517
+      },
+      {
+        "token": "crossed",
+        "score": 1.4916,
+        "count": 13,
+        "precision": 0.5652
+      },
+      {
+        "token": "recover",
+        "score": 1.4166,
+        "count": 16,
+        "precision": 0.5
+      }
+    ],
+    "realization": [
+      {
+        "token": "realised",
+        "score": 1.3322,
+        "count": 10,
+        "precision": 0.5556
+      }
+    ],
+    "confusion": [
+      {
+        "token": "confused",
+        "score": 3.0448,
+        "count": 70,
+        "precision": 0.7143
+      },
+      {
+        "token": "confusing",
+        "score": 1.8223,
+        "count": 11,
+        "precision": 0.7333
+      },
+      {
+        "token": "confusion",
+        "score": 1.3322,
+        "count": 10,
+        "precision": 0.5556
+      }
+    ],
+    "grief": [
+      {
+        "token": "crushed",
+        "score": 3.2228,
+        "count": 50,
+        "precision": 0.8197
+      },
+      {
+        "token": "heartbroken",
+        "score": 3.0202,
+        "count": 53,
+        "precision": 0.7571
+      },
+      {
+        "token": "devestated",
+        "score": 2.8612,
+        "count": 24,
+        "precision": 0.8889
+      },
+      {
+        "token": "equipped",
+        "score": 2.3676,
+        "count": 12,
+        "precision": 0.9231
+      },
+      {
+        "token": "devastated",
+        "score": 1.9476,
+        "count": 44,
+        "precision": 0.5116
+      },
+      {
+        "token": "miscarriage",
+        "score": 1.4657,
+        "count": 12,
+        "precision": 0.5714
+      },
+      {
+        "token": "pancreatitis",
+        "score": 1.3816,
+        "count": 9,
+        "precision": 0.6
+      }
+    ],
+    "shame": [
+      {
+        "token": "embarrassment",
+        "score": 2.1026,
+        "count": 11,
+        "precision": 0.8462
+      },
+      {
+        "token": "embarrassing",
+        "score": 2.0967,
+        "count": 36,
+        "precision": 0.5806
+      },
+      {
+        "token": "vase",
+        "score": 1.9161,
+        "count": 22,
+        "precision": 0.6111
+      },
+      {
+        "token": "pant",
+        "score": 1.8223,
+        "count": 11,
+        "precision": 0.7333
+      },
+      {
+        "token": "drunken",
+        "score": 1.4802,
+        "count": 9,
+        "precision": 0.6429
+      },
+      {
+        "token": "pizzas",
+        "score": 1.3816,
+        "count": 9,
+        "precision": 0.6
+      },
+      {
+        "token": "assignment",
+        "score": 1.3322,
+        "count": 10,
+        "precision": 0.5556
+      }
+    ],
+    "curiosity": [
+      {
+        "token": "curious",
+        "score": 3.6964,
+        "count": 106,
+        "precision": 0.791
+      },
+      {
+        "token": "curiosity",
+        "score": 2.4365,
+        "count": 23,
+        "precision": 0.7667
+      }
+    ],
+    "disappointment": [
+      {
+        "token": "disappointment",
+        "score": 1.7084,
+        "count": 11,
+        "precision": 0.6875
+      },
+      {
+        "token": "disappointing",
+        "score": 1.6243,
+        "count": 23,
+        "precision": 0.5111
+      }
+    ],
+    "anxiety": [
+      {
+        "token": "scared",
+        "score": 5.6539,
+        "count": 900,
+        "precision": 0.831
+      },
+      {
+        "token": "afraid",
+        "score": 4.7946,
+        "count": 380,
+        "precision": 0.8068
+      },
+      {
+        "token": "scary",
+        "score": 4.7784,
+        "count": 279,
+        "precision": 0.848
+      },
+      {
+        "token": "terrified",
+        "score": 4.2953,
+        "count": 105,
+        "precision": 0.9211
+      },
+      {
+        "token": "haunted",
+        "score": 4.2863,
+        "count": 91,
+        "precision": 0.9479
+      },
+      {
+        "token": "scares",
+        "score": 3.4804,
+        "count": 38,
+        "precision": 0.95
+      },
+      {
+        "token": "wasp",
+        "score": 3.4538,
+        "count": 34,
+        "precision": 0.9714
+      },
+      {
+        "token": "nervous",
+        "score": 3.4211,
+        "count": 438,
+        "precision": 0.5623
+      },
+      {
+        "token": "noises",
+        "score": 3.4155,
+        "count": 51,
+        "precision": 0.8644
+      },
+      {
+        "token": "terrifying",
+        "score": 3.2526,
+        "count": 53,
+        "precision": 0.8154
+      },
+      {
+        "token": "ghost",
+        "score": 3.1762,
+        "count": 52,
+        "precision": 0.8
+      },
+      {
+        "token": "frightened",
+        "score": 3.1328,
+        "count": 25,
+        "precision": 0.9615
+      },
+      {
+        "token": "freaked",
+        "score": 3.1325,
+        "count": 45,
+        "precision": 0.8182
+      },
+      {
+        "token": "chased",
+        "score": 3.0995,
+        "count": 34,
+        "precision": 0.8718
+      },
+      {
+        "token": "rollercoasters",
+        "score": 2.9444,
+        "count": 18,
+        "precision": 1.0
+      },
+      {
+        "token": "scare",
+        "score": 2.9404,
+        "count": 56,
+        "precision": 0.7273
+      },
+      {
+        "token": "monsters",
+        "score": 2.8571,
+        "count": 28,
+        "precision": 0.8485
+      },
+      {
+        "token": "horror",
+        "score": 2.8189,
+        "count": 53,
+        "precision": 0.7067
+      },
+      {
+        "token": "coaster",
+        "score": 2.7766,
+        "count": 59,
+        "precision": 0.6782
+      },
+      {
+        "token": "jumpscares",
+        "score": 2.7726,
+        "count": 15,
+        "precision": 1.0
+      },
+      {
+        "token": "spider",
+        "score": 2.7655,
+        "count": 69,
+        "precision": 0.6509
+      },
+      {
+        "token": "dark",
+        "score": 2.739,
+        "count": 119,
+        "precision": 0.5721
+      },
+      {
+        "token": "fear",
+        "score": 2.5994,
+        "count": 76,
+        "precision": 0.5984
+      },
+      {
+        "token": "roller",
+        "score": 2.5963,
+        "count": 60,
+        "precision": 0.6316
+      },
+      {
+        "token": "scariest",
+        "score": 2.5649,
+        "count": 12,
+        "precision": 1.0
+      },
+      {
+        "token": "anxious",
+        "score": 2.5416,
+        "count": 102,
+        "precision": 0.5484
+      },
+      {
+        "token": "noise",
+        "score": 2.5321,
+        "count": 72,
+        "precision": 0.5902
+      },
+      {
+        "token": "heights",
+        "score": 2.4924,
+        "count": 37,
+        "precision": 0.6852
+      },
+      {
+        "token": "snakes",
+        "score": 2.4636,
+        "count": 22,
+        "precision": 0.7857
+      },
+      {
+        "token": "shaky",
+        "score": 2.4506,
+        "count": 13,
+        "precision": 0.9286
+      },
+      {
+        "token": "mri",
+        "score": 2.4506,
+        "count": 13,
+        "precision": 0.9286
+      },
+      {
+        "token": "awoke",
+        "score": 2.4091,
+        "count": 18,
+        "precision": 0.8182
+      },
+      {
+        "token": "nightlight",
+        "score": 2.4041,
+        "count": 21,
+        "precision": 0.7778
+      },
+      {
+        "token": "growling",
+        "score": 2.3979,
+        "count": 10,
+        "precision": 1.0
+      },
+      {
+        "token": "grudge",
+        "score": 2.3676,
+        "count": 12,
+        "precision": 0.9231
+      },
+      {
+        "token": "shaking",
+        "score": 2.3398,
+        "count": 17,
+        "precision": 0.8095
+      },
+      {
+        "token": "snake",
+        "score": 2.3034,
+        "count": 68,
+        "precision": 0.544
+      },
+      {
+        "token": "seagulls",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "rollercoaster",
+        "score": 2.2994,
+        "count": 22,
+        "precision": 0.7333
+      },
+      {
+        "token": "spiders",
+        "score": 2.2938,
+        "count": 29,
+        "precision": 0.6744
+      },
+      {
+        "token": "tornado",
+        "score": 2.2859,
+        "count": 31,
+        "precision": 0.6596
+      },
+      {
+        "token": "recluse",
+        "score": 2.1972,
+        "count": 8,
+        "precision": 1.0
+      },
+      {
+        "token": "coasters",
+        "score": 2.1944,
+        "count": 27,
+        "precision": 0.6585
+      },
+      {
+        "token": "whispered",
+        "score": 2.1799,
+        "count": 10,
+        "precision": 0.9091
+      },
+      {
+        "token": "following",
+        "score": 2.1284,
+        "count": 52,
+        "precision": 0.5361
+      },
+      {
+        "token": "thunder",
+        "score": 2.1026,
+        "count": 11,
+        "precision": 0.8462
+      },
+      {
+        "token": "frightening",
+        "score": 2.1026,
+        "count": 11,
+        "precision": 0.8462
+      },
+      {
+        "token": "intruder",
+        "score": 2.0723,
+        "count": 9,
+        "precision": 0.9
+      },
+      {
+        "token": "bungee",
+        "score": 2.052,
+        "count": 12,
+        "precision": 0.8
+      },
+      {
+        "token": "stressed",
+        "score": 2.0416,
+        "count": 33,
+        "precision": 0.5789
+      },
+      {
+        "token": "dangerous",
+        "score": 2.0088,
+        "count": 37,
+        "precision": 0.5522
+      },
+      {
+        "token": "goin",
+        "score": 1.9982,
+        "count": 10,
+        "precision": 0.8333
+      },
+      {
+        "token": "screamed",
+        "score": 1.9709,
+        "count": 22,
+        "precision": 0.6286
+      },
+      {
+        "token": "bang",
+        "score": 1.9709,
+        "count": 22,
+        "precision": 0.6286
+      },
+      {
+        "token": "chasing",
+        "score": 1.9559,
+        "count": 27,
+        "precision": 0.587
+      },
+      {
+        "token": "rob",
+        "score": 1.9531,
+        "count": 8,
+        "precision": 0.8889
+      },
+      {
+        "token": "clown",
+        "score": 1.8929,
+        "count": 18,
+        "precision": 0.6429
+      },
+      {
+        "token": "robber",
+        "score": 1.8839,
+        "count": 9,
+        "precision": 0.8182
+      },
+      {
+        "token": "ghosts",
+        "score": 1.8445,
+        "count": 10,
+        "precision": 0.7692
+      },
+      {
+        "token": "unknown",
+        "score": 1.8361,
+        "count": 19,
+        "precision": 0.6129
+      },
+      {
+        "token": "turbulence",
+        "score": 1.8223,
+        "count": 11,
+        "precision": 0.7333
+      },
+      {
+        "token": "panicked",
+        "score": 1.8057,
+        "count": 13,
+        "precision": 0.6842
+      },
+      {
+        "token": "tent",
+        "score": 1.7329,
+        "count": 15,
+        "precision": 0.625
+      },
+      {
+        "token": "speeches",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      },
+      {
+        "token": "clowns",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      },
+      {
+        "token": "crawled",
+        "score": 1.7128,
+        "count": 10,
+        "precision": 0.7143
+      },
+      {
+        "token": "irrational",
+        "score": 1.71,
+        "count": 12,
+        "precision": 0.6667
+      },
+      {
+        "token": "butterflies",
+        "score": 1.71,
+        "count": 12,
+        "precision": 0.6667
+      },
+      {
+        "token": "sounded",
+        "score": 1.6457,
+        "count": 20,
+        "precision": 0.5405
+      },
+      {
+        "token": "spooked",
+        "score": 1.5986,
+        "count": 10,
+        "precision": 0.6667
+      },
+      {
+        "token": "antsy",
+        "score": 1.5941,
+        "count": 9,
+        "precision": 0.6923
+      },
+      {
+        "token": "horrifying",
+        "score": 1.5811,
+        "count": 19,
+        "precision": 0.5278
+      },
+      {
+        "token": "rode",
+        "score": 1.5588,
+        "count": 18,
+        "precision": 0.5294
+      },
+      {
+        "token": "airplane",
+        "score": 1.4979,
+        "count": 19,
+        "precision": 0.5
+      },
+      {
+        "token": "aliens",
+        "score": 1.4657,
+        "count": 12,
+        "precision": 0.5714
+      },
+      {
+        "token": "stephen",
+        "score": 1.4648,
+        "count": 8,
+        "precision": 0.6667
+      },
+      {
+        "token": "uneasy",
+        "score": 1.4623,
+        "count": 16,
+        "precision": 0.5161
+      },
+      {
+        "token": "nightmares",
+        "score": 1.4623,
+        "count": 16,
+        "precision": 0.5161
+      },
+      {
+        "token": "panic",
+        "score": 1.4341,
+        "count": 15,
+        "precision": 0.5172
+      },
+      {
+        "token": "trapped",
+        "score": 1.4105,
+        "count": 10,
+        "precision": 0.5882
+      },
+      {
+        "token": "wracking",
+        "score": 1.3816,
+        "count": 9,
+        "precision": 0.6
+      },
+      {
+        "token": "tapping",
+        "score": 1.3816,
+        "count": 9,
+        "precision": 0.6
+      },
+      {
+        "token": "lion",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      },
+      {
+        "token": "sharp",
+        "score": 1.3382,
+        "count": 12,
+        "precision": 0.5217
+      },
+      {
+        "token": "threatening",
+        "score": 1.3322,
+        "count": 10,
+        "precision": 0.5556
+      },
+      {
+        "token": "hid",
+        "score": 1.3195,
+        "count": 13,
+        "precision": 0.5
+      },
+      {
+        "token": "jury",
+        "score": 1.2621,
+        "count": 10,
+        "precision": 0.5263
+      },
+      {
+        "token": "forest",
+        "score": 1.2621,
+        "count": 10,
+        "precision": 0.5263
+      },
+      {
+        "token": "unprepared",
+        "score": 1.219,
+        "count": 9,
+        "precision": 0.5294
+      },
+      {
+        "token": "gigantic",
+        "score": 1.219,
+        "count": 9,
+        "precision": 0.5294
+      },
+      {
+        "token": "landing",
+        "score": 1.1989,
+        "count": 10,
+        "precision": 0.5
+      },
+      {
+        "token": "web",
+        "score": 1.1719,
+        "count": 8,
+        "precision": 0.5333
+      },
+      {
+        "token": "stormed",
+        "score": 1.1513,
+        "count": 9,
+        "precision": 0.5
+      }
+    ],
+    "surprise": [],
+    "desire": [],
+    "relief": [],
+    "pride": [],
+    "faithful": [
+      {
+        "token": "faithful",
+        "score": 3.9974,
+        "count": 83,
+        "precision": 0.9022
+      },
+      {
+        "token": "loyal",
+        "score": 3.0578,
+        "count": 59,
+        "precision": 0.7468
+      },
+      {
+        "token": "remained",
+        "score": 2.7047,
+        "count": 21,
+        "precision": 0.875
+      },
+      {
+        "token": "god's",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "girlfiend",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "cheat",
+        "score": 2.0886,
+        "count": 55,
+        "precision": 0.5189
+      },
+      {
+        "token": "betray",
+        "score": 1.5986,
+        "count": 10,
+        "precision": 0.6667
+      },
+      {
+        "token": "flirt",
+        "score": 1.354,
+        "count": 14,
+        "precision": 0.5
+      }
+    ],
+    "sad": [
+      {
+        "token": "goldfish",
+        "score": 2.5872,
+        "count": 19,
+        "precision": 0.8636
+      },
+      {
+        "token": "disheartened",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "jude",
+        "score": 2.1972,
+        "count": 8,
+        "precision": 1.0
+      },
+      {
+        "token": "kindergarten",
+        "score": 1.6969,
+        "count": 25,
+        "precision": 0.5208
+      },
+      {
+        "token": "saddened",
+        "score": 1.62,
+        "count": 12,
+        "precision": 0.6316
+      },
+      {
+        "token": "williams",
+        "score": 1.3816,
+        "count": 9,
+        "precision": 0.6
+      },
+      {
+        "token": "robin",
+        "score": 1.219,
+        "count": 9,
+        "precision": 0.5294
+      }
+    ],
+    "jealous": [
+      {
+        "token": "envious",
+        "score": 5.0757,
+        "count": 169,
+        "precision": 0.9883
+      },
+      {
+        "token": "jealous",
+        "score": 3.3239,
+        "count": 147,
+        "precision": 0.6652
+      },
+      {
+        "token": "envy",
+        "score": 2.7658,
+        "count": 36,
+        "precision": 0.766
+      },
+      {
+        "token": "earns",
+        "score": 2.4849,
+        "count": 11,
+        "precision": 1.0
+      },
+      {
+        "token": "rover",
+        "score": 2.4506,
+        "count": 13,
+        "precision": 0.9286
+      },
+      {
+        "token": "wrangler",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "jordans",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "nicer",
+        "score": 2.2492,
+        "count": 27,
+        "precision": 0.675
+      },
+      {
+        "token": "athletic",
+        "score": 2.2396,
+        "count": 30,
+        "precision": 0.6522
+      },
+      {
+        "token": "bmw",
+        "score": 2.1637,
+        "count": 21,
+        "precision": 0.7
+      },
+      {
+        "token": "mansion",
+        "score": 1.8904,
+        "count": 15,
+        "precision": 0.6818
+      },
+      {
+        "token": "classmate",
+        "score": 1.5594,
+        "count": 13,
+        "precision": 0.5909
+      }
+    ],
+    "grateful": [
+      {
+        "token": "thankful",
+        "score": 4.7238,
+        "count": 277,
+        "precision": 0.8394
+      },
+      {
+        "token": "grateful",
+        "score": 3.5377,
+        "count": 94,
+        "precision": 0.7769
+      },
+      {
+        "token": "appreciative",
+        "score": 3.2911,
+        "count": 42,
+        "precision": 0.875
+      },
+      {
+        "token": "gesture",
+        "score": 1.9709,
+        "count": 22,
+        "precision": 0.6286
+      },
+      {
+        "token": "tuition",
+        "score": 1.6944,
+        "count": 17,
+        "precision": 0.5862
+      },
+      {
+        "token": "funds",
+        "score": 1.5186,
+        "count": 11,
+        "precision": 0.6111
+      }
+    ],
+    "prepared": [
+      {
+        "token": "ready",
+        "score": 3.9065,
+        "count": 702,
+        "precision": 0.5959
+      },
+      {
+        "token": "packed",
+        "score": 3.4082,
+        "count": 78,
+        "precision": 0.78
+      },
+      {
+        "token": "supplies",
+        "score": 3.1288,
+        "count": 89,
+        "precision": 0.6953
+      },
+      {
+        "token": "hurricane",
+        "score": 3.0075,
+        "count": 67,
+        "precision": 0.7128
+      },
+      {
+        "token": "irma",
+        "score": 2.5965,
+        "count": 21,
+        "precision": 0.84
+      },
+      {
+        "token": "generator",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "bunker",
+        "score": 2.2778,
+        "count": 11,
+        "precision": 0.9167
+      },
+      {
+        "token": "essentials",
+        "score": 2.1889,
+        "count": 15,
+        "precision": 0.7895
+      },
+      {
+        "token": "batteries",
+        "score": 2.1799,
+        "count": 10,
+        "precision": 0.9091
+      },
+      {
+        "token": "stocked",
+        "score": 2.0723,
+        "count": 9,
+        "precision": 0.9
+      },
+      {
+        "token": "tote",
+        "score": 2.052,
+        "count": 12,
+        "precision": 0.8
+      },
+      {
+        "token": "gear",
+        "score": 2.0385,
+        "count": 18,
+        "precision": 0.6923
+      },
+      {
+        "token": "kit",
+        "score": 1.7329,
+        "count": 15,
+        "precision": 0.625
+      },
+      {
+        "token": "investing",
+        "score": 1.598,
+        "count": 8,
+        "precision": 0.7273
+      },
+      {
+        "token": "umbrella",
+        "score": 1.2952,
+        "count": 9,
+        "precision": 0.5625
+      }
+    ],
+    "embarrassed": [
+      {
+        "token": "tripped",
+        "score": 3.8414,
+        "count": 104,
+        "precision": 0.8254
+      },
+      {
+        "token": "pants",
+        "score": 3.6496,
+        "count": 178,
+        "precision": 0.7036
+      },
+      {
+        "token": "humiliated",
+        "score": 3.484,
+        "count": 35,
+        "precision": 0.9722
+      },
+      {
+        "token": "mortified",
+        "score": 3.3208,
+        "count": 43,
+        "precision": 0.8776
+      },
+      {
+        "token": "slipped",
+        "score": 2.8715,
+        "count": 45,
+        "precision": 0.75
+      },
+      {
+        "token": "malfunction",
+        "score": 2.7726,
+        "count": 15,
+        "precision": 1.0
+      },
+      {
+        "token": "nightgown",
+        "score": 2.4849,
+        "count": 11,
+        "precision": 1.0
+      },
+      {
+        "token": "tucked",
+        "score": 2.3979,
+        "count": 10,
+        "precision": 1.0
+      },
+      {
+        "token": "wet",
+        "score": 2.3583,
+        "count": 43,
+        "precision": 0.6232
+      },
+      {
+        "token": "washroom",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "pajama",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "cloths",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "spilled",
+        "score": 2.2309,
+        "count": 81,
+        "precision": 0.5062
+      },
+      {
+        "token": "wardrobe",
+        "score": 2.1889,
+        "count": 15,
+        "precision": 0.7895
+      },
+      {
+        "token": "pajamas",
+        "score": 2.1026,
+        "count": 11,
+        "precision": 0.8462
+      },
+      {
+        "token": "farted",
+        "score": 2.0263,
+        "count": 39,
+        "precision": 0.5493
+      },
+      {
+        "token": "fart",
+        "score": 1.9755,
+        "count": 23,
+        "precision": 0.6216
+      },
+      {
+        "token": "pointed",
+        "score": 1.8888,
+        "count": 16,
+        "precision": 0.6667
+      },
+      {
+        "token": "shelf",
+        "score": 1.8445,
+        "count": 10,
+        "precision": 0.7692
+      },
+      {
+        "token": "underwear",
+        "score": 1.7789,
+        "count": 28,
+        "precision": 0.5283
+      },
+      {
+        "token": "embarassed",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      },
+      {
+        "token": "slip",
+        "score": 1.7128,
+        "count": 10,
+        "precision": 0.7143
+      },
+      {
+        "token": "skirt",
+        "score": 1.5986,
+        "count": 10,
+        "precision": 0.6667
+      },
+      {
+        "token": "lap",
+        "score": 1.3382,
+        "count": 12,
+        "precision": 0.5217
+      },
+      {
+        "token": "aisle",
+        "score": 1.2952,
+        "count": 9,
+        "precision": 0.5625
+      },
+      {
+        "token": "loudly",
+        "score": 1.219,
+        "count": 9,
+        "precision": 0.5294
+      },
+      {
+        "token": "zipper",
+        "score": 1.1513,
+        "count": 9,
+        "precision": 0.5
+      },
+      {
+        "token": "stain",
+        "score": 1.1513,
+        "count": 9,
+        "precision": 0.5
+      }
+    ],
+    "angry": [
+      {
+        "token": "rapes",
+        "score": 1.598,
+        "count": 8,
+        "precision": 0.7273
+      },
+      {
+        "token": "renew",
+        "score": 1.5941,
+        "count": 9,
+        "precision": 0.6923
+      },
+      {
+        "token": "slapped",
+        "score": 1.4802,
+        "count": 9,
+        "precision": 0.6429
+      },
+      {
+        "token": "keyboard",
+        "score": 1.1513,
+        "count": 9,
+        "precision": 0.5
+      }
+    ],
+    "loneliness": [
+      {
+        "token": "lonely",
+        "score": 3.339,
+        "count": 147,
+        "precision": 0.6682
+      },
+      {
+        "token": "isolated",
+        "score": 2.9434,
+        "count": 30,
+        "precision": 0.8571
+      },
+      {
+        "token": "ditched",
+        "score": 2.6639,
+        "count": 24,
+        "precision": 0.8276
+      },
+      {
+        "token": "lonesome",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "nester",
+        "score": 2.1972,
+        "count": 8,
+        "precision": 1.0
+      },
+      {
+        "token": "alley",
+        "score": 2.12,
+        "count": 18,
+        "precision": 0.72
+      },
+      {
+        "token": "bowling",
+        "score": 1.7544,
+        "count": 21,
+        "precision": 0.5676
+      },
+      {
+        "token": "rink",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      }
+    ],
+    "surprised": [
+      {
+        "token": "shocked",
+        "score": 4.7311,
+        "count": 415,
+        "precision": 0.7845
+      },
+      {
+        "token": "suprising",
+        "score": 3.5264,
+        "count": 33,
+        "precision": 1.0
+      },
+      {
+        "token": "parcel",
+        "score": 2.8181,
+        "count": 29,
+        "precision": 0.8286
+      },
+      {
+        "token": "startled",
+        "score": 2.5993,
+        "count": 15,
+        "precision": 0.9375
+      },
+      {
+        "token": "unexpected",
+        "score": 2.4547,
+        "count": 73,
+        "precision": 0.5703
+      },
+      {
+        "token": "baffled",
+        "score": 2.3676,
+        "count": 12,
+        "precision": 0.9231
+      },
+      {
+        "token": "shocking",
+        "score": 2.1024,
+        "count": 30,
+        "precision": 0.6122
+      },
+      {
+        "token": "graduation",
+        "score": 2.0914,
+        "count": 50,
+        "precision": 0.5319
+      },
+      {
+        "token": "doorstep",
+        "score": 1.8106,
+        "count": 12,
+        "precision": 0.7059
+      },
+      {
+        "token": "decorated",
+        "score": 1.598,
+        "count": 8,
+        "precision": 0.7273
+      },
+      {
+        "token": "skunk",
+        "score": 1.539,
+        "count": 12,
+        "precision": 0.6
+      },
+      {
+        "token": "astonished",
+        "score": 1.4987,
+        "count": 10,
+        "precision": 0.625
+      },
+      {
+        "token": "bunnies",
+        "score": 1.4802,
+        "count": 9,
+        "precision": 0.6429
+      },
+      {
+        "token": "balloons",
+        "score": 1.4648,
+        "count": 8,
+        "precision": 0.6667
+      },
+      {
+        "token": "pleasantly",
+        "score": 1.4042,
+        "count": 14,
+        "precision": 0.5185
+      },
+      {
+        "token": "jackpot",
+        "score": 1.3816,
+        "count": 9,
+        "precision": 0.6
+      },
+      {
+        "token": "initially",
+        "score": 1.1513,
+        "count": 9,
+        "precision": 0.5
+      }
+    ],
+    "confident": [
+      {
+        "token": "ace",
+        "score": 2.2853,
+        "count": 40,
+        "precision": 0.6154
+      },
+      {
+        "token": "cocky",
+        "score": 1.8839,
+        "count": 9,
+        "precision": 0.8182
+      },
+      {
+        "token": "abilities",
+        "score": 1.7154,
+        "count": 13,
+        "precision": 0.65
+      },
+      {
+        "token": "ikea",
+        "score": 1.5941,
+        "count": 9,
+        "precision": 0.6923
+      },
+      {
+        "token": "haircut",
+        "score": 1.4853,
+        "count": 15,
+        "precision": 0.5357
+      },
+      {
+        "token": "ensure",
+        "score": 1.4648,
+        "count": 8,
+        "precision": 0.6667
+      },
+      {
+        "token": "sats",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      },
+      {
+        "token": "bathing",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      },
+      {
+        "token": "academic",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      },
+      {
+        "token": "biology",
+        "score": 1.0986,
+        "count": 8,
+        "precision": 0.5
+      }
+    ],
+    "disappointed": [
+      {
+        "token": "disappointed",
+        "score": 2.4248,
+        "count": 111,
+        "precision": 0.5139
+      },
+      {
+        "token": "cancel",
+        "score": 1.9793,
+        "count": 37,
+        "precision": 0.5441
+      },
+      {
+        "token": "gambling",
+        "score": 1.4648,
+        "count": 8,
+        "precision": 0.6667
+      },
+      {
+        "token": "hoped",
+        "score": 1.3667,
+        "count": 11,
+        "precision": 0.55
+      }
+    ],
+    "trusting": [
+      {
+        "token": "trusted",
+        "score": 4.1584,
+        "count": 129,
+        "precision": 0.8543
+      },
+      {
+        "token": "trusting",
+        "score": 3.5894,
+        "count": 45,
+        "precision": 0.9375
+      },
+      {
+        "token": "shouldnt",
+        "score": 3.3843,
+        "count": 66,
+        "precision": 0.8049
+      },
+      {
+        "token": "instructor",
+        "score": 2.5965,
+        "count": 21,
+        "precision": 0.84
+      },
+      {
+        "token": "believed",
+        "score": 2.3246,
+        "count": 43,
+        "precision": 0.6143
+      },
+      {
+        "token": "tandem",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "deepest",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "rely",
+        "score": 2.1557,
+        "count": 22,
+        "precision": 0.6875
+      },
+      {
+        "token": "depend",
+        "score": 1.9954,
+        "count": 14,
+        "precision": 0.7368
+      },
+      {
+        "token": "borrow",
+        "score": 1.9291,
+        "count": 40,
+        "precision": 0.5195
+      },
+      {
+        "token": "lent",
+        "score": 1.7329,
+        "count": 15,
+        "precision": 0.625
+      },
+      {
+        "token": "secrets",
+        "score": 1.62,
+        "count": 12,
+        "precision": 0.6316
+      },
+      {
+        "token": "lend",
+        "score": 1.585,
+        "count": 17,
+        "precision": 0.5484
+      },
+      {
+        "token": "gullible",
+        "score": 1.539,
+        "count": 12,
+        "precision": 0.6
+      },
+      {
+        "token": "babysitter",
+        "score": 1.219,
+        "count": 9,
+        "precision": 0.5294
+      }
+    ],
+    "disgusted": [
+      {
+        "token": "grossed",
+        "score": 3.9698,
+        "count": 63,
+        "precision": 0.9545
+      },
+      {
+        "token": "disgusted",
+        "score": 3.8963,
+        "count": 74,
+        "precision": 0.9024
+      },
+      {
+        "token": "gross",
+        "score": 3.5467,
+        "count": 138,
+        "precision": 0.7188
+      },
+      {
+        "token": "squid",
+        "score": 3.2132,
+        "count": 27,
+        "precision": 0.9643
+      },
+      {
+        "token": "eggplant",
+        "score": 2.9957,
+        "count": 19,
+        "precision": 1.0
+      },
+      {
+        "token": "moldy",
+        "score": 2.8904,
+        "count": 17,
+        "precision": 1.0
+      },
+      {
+        "token": "poop",
+        "score": 2.7805,
+        "count": 73,
+        "precision": 0.646
+      },
+      {
+        "token": "vomited",
+        "score": 2.758,
+        "count": 43,
+        "precision": 0.7288
+      },
+      {
+        "token": "stepped",
+        "score": 2.5882,
+        "count": 82,
+        "precision": 0.5857
+      },
+      {
+        "token": "olives",
+        "score": 2.4849,
+        "count": 11,
+        "precision": 1.0
+      },
+      {
+        "token": "sickened",
+        "score": 2.3676,
+        "count": 12,
+        "precision": 0.9231
+      },
+      {
+        "token": "cockroaches",
+        "score": 2.3676,
+        "count": 12,
+        "precision": 0.9231
+      },
+      {
+        "token": "grossest",
+        "score": 2.2778,
+        "count": 11,
+        "precision": 0.9167
+      },
+      {
+        "token": "puked",
+        "score": 2.2252,
+        "count": 22,
+        "precision": 0.7097
+      },
+      {
+        "token": "rotted",
+        "score": 2.1972,
+        "count": 8,
+        "precision": 1.0
+      },
+      {
+        "token": "maggots",
+        "score": 2.1889,
+        "count": 15,
+        "precision": 0.7895
+      },
+      {
+        "token": "burrito",
+        "score": 2.1799,
+        "count": 10,
+        "precision": 0.9091
+      },
+      {
+        "token": "appalled",
+        "score": 2.0794,
+        "count": 15,
+        "precision": 0.75
+      },
+      {
+        "token": "rotting",
+        "score": 2.052,
+        "count": 12,
+        "precision": 0.8
+      },
+      {
+        "token": "yuck",
+        "score": 2.0385,
+        "count": 18,
+        "precision": 0.6923
+      },
+      {
+        "token": "restroom",
+        "score": 2.0285,
+        "count": 21,
+        "precision": 0.6562
+      },
+      {
+        "token": "barefoot",
+        "score": 1.8839,
+        "count": 9,
+        "precision": 0.8182
+      },
+      {
+        "token": "roach",
+        "score": 1.8199,
+        "count": 17,
+        "precision": 0.6296
+      },
+      {
+        "token": "sandwhich",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      },
+      {
+        "token": "mold",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      },
+      {
+        "token": "disgust",
+        "score": 1.7084,
+        "count": 11,
+        "precision": 0.6875
+      },
+      {
+        "token": "tasted",
+        "score": 1.6741,
+        "count": 19,
+        "precision": 0.5588
+      },
+      {
+        "token": "infected",
+        "score": 1.598,
+        "count": 8,
+        "precision": 0.7273
+      },
+      {
+        "token": "roaches",
+        "score": 1.4987,
+        "count": 10,
+        "precision": 0.625
+      },
+      {
+        "token": "vomit",
+        "score": 1.4722,
+        "count": 18,
+        "precision": 0.5
+      },
+      {
+        "token": "rotten",
+        "score": 1.4105,
+        "count": 10,
+        "precision": 0.5882
+      },
+      {
+        "token": "diaper",
+        "score": 1.3723,
+        "count": 13,
+        "precision": 0.52
+      },
+      {
+        "token": "diapers",
+        "score": 1.354,
+        "count": 14,
+        "precision": 0.5
+      },
+      {
+        "token": "dust",
+        "score": 1.1719,
+        "count": 8,
+        "precision": 0.5333
+      }
+    ],
+    "anticipating": [
+      {
+        "token": "anticipating",
+        "score": 1.9709,
+        "count": 22,
+        "precision": 0.6286
+      },
+      {
+        "token": "anxiously",
+        "score": 1.9531,
+        "count": 8,
+        "precision": 0.8889
+      },
+      {
+        "token": "awaiting",
+        "score": 1.5797,
+        "count": 14,
+        "precision": 0.5833
+      },
+      {
+        "token": "dove",
+        "score": 1.4648,
+        "count": 8,
+        "precision": 0.6667
+      },
+      {
+        "token": "anticipation",
+        "score": 1.3723,
+        "count": 13,
+        "precision": 0.52
+      }
+    ],
+    "proud": [
+      {
+        "token": "graduated",
+        "score": 3.3026,
+        "count": 155,
+        "precision": 0.654
+      },
+      {
+        "token": "pride",
+        "score": 2.8025,
+        "count": 55,
+        "precision": 0.6962
+      },
+      {
+        "token": "commands",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "honor",
+        "score": 2.1338,
+        "count": 46,
+        "precision": 0.5542
+      },
+      {
+        "token": "medal",
+        "score": 1.8839,
+        "count": 9,
+        "precision": 0.8182
+      },
+      {
+        "token": "masters",
+        "score": 1.8054,
+        "count": 14,
+        "precision": 0.6667
+      },
+      {
+        "token": "gpa",
+        "score": 1.62,
+        "count": 12,
+        "precision": 0.6316
+      },
+      {
+        "token": "a's",
+        "score": 1.5403,
+        "count": 15,
+        "precision": 0.5556
+      }
+    ],
+    "content": [
+      {
+        "token": "satisfied",
+        "score": 3.7147,
+        "count": 83,
+        "precision": 0.8384
+      },
+      {
+        "token": "relaxing",
+        "score": 3.5883,
+        "count": 84,
+        "precision": 0.8077
+      },
+      {
+        "token": "relaxed",
+        "score": 3.1275,
+        "count": 39,
+        "precision": 0.8478
+      },
+      {
+        "token": "relax",
+        "score": 2.7278,
+        "count": 56,
+        "precision": 0.6747
+      },
+      {
+        "token": "olive",
+        "score": 2.5649,
+        "count": 12,
+        "precision": 1.0
+      },
+      {
+        "token": "shining",
+        "score": 2.5597,
+        "count": 35,
+        "precision": 0.7143
+      },
+      {
+        "token": "content",
+        "score": 2.1518,
+        "count": 61,
+        "precision": 0.5214
+      },
+      {
+        "token": "peaceful",
+        "score": 1.9928,
+        "count": 26,
+        "precision": 0.6047
+      },
+      {
+        "token": "sleeps",
+        "score": 1.7084,
+        "count": 11,
+        "precision": 0.6875
+      },
+      {
+        "token": "patio",
+        "score": 1.3816,
+        "count": 9,
+        "precision": 0.6
+      }
+    ],
+    "impressed": [
+      {
+        "token": "impressed",
+        "score": 3.4206,
+        "count": 131,
+        "precision": 0.7005
+      },
+      {
+        "token": "amazed",
+        "score": 2.9092,
+        "count": 73,
+        "precision": 0.6759
+      },
+      {
+        "token": "impressive",
+        "score": 2.5162,
+        "count": 54,
+        "precision": 0.6279
+      },
+      {
+        "token": "juggling",
+        "score": 2.3026,
+        "count": 9,
+        "precision": 1.0
+      },
+      {
+        "token": "influenced",
+        "score": 2.2872,
+        "count": 13,
+        "precision": 0.8667
+      },
+      {
+        "token": "valedictorian",
+        "score": 2.1442,
+        "count": 13,
+        "precision": 0.8125
+      },
+      {
+        "token": "talent",
+        "score": 2.103,
+        "count": 37,
+        "precision": 0.5781
+      },
+      {
+        "token": "tricks",
+        "score": 2.0328,
+        "count": 19,
+        "precision": 0.6786
+      },
+      {
+        "token": "sebastian",
+        "score": 1.9531,
+        "count": 8,
+        "precision": 0.8889
+      },
+      {
+        "token": "juggle",
+        "score": 1.8445,
+        "count": 10,
+        "precision": 0.7692
+      },
+      {
+        "token": "inspired",
+        "score": 1.5832,
+        "count": 21,
+        "precision": 0.5122
+      },
+      {
+        "token": "tesla",
+        "score": 1.3382,
+        "count": 12,
+        "precision": 0.5217
+      },
+      {
+        "token": "inspiring",
+        "score": 1.2621,
+        "count": 10,
+        "precision": 0.5263
+      },
+      {
+        "token": "amazes",
+        "score": 1.1989,
+        "count": 10,
+        "precision": 0.5
+      }
+    ],
+    "excited": [
+      {
+        "token": "stoked",
+        "score": 3.1182,
+        "count": 55,
+        "precision": 0.7746
+      },
+      {
+        "token": "pumped",
+        "score": 2.6918,
+        "count": 37,
+        "precision": 0.74
+      },
+      {
+        "token": "thrilled",
+        "score": 2.5597,
+        "count": 35,
+        "precision": 0.7143
+      },
+      {
+        "token": "exited",
+        "score": 1.8839,
+        "count": 9,
+        "precision": 0.8182
+      },
+      {
+        "token": "enthusiastic",
+        "score": 1.8839,
+        "count": 9,
+        "precision": 0.8182
+      },
+      {
+        "token": "venom",
+        "score": 1.7269,
+        "count": 9,
+        "precision": 0.75
+      },
+      {
+        "token": "las",
+        "score": 1.71,
+        "count": 12,
+        "precision": 0.6667
+      },
+      {
+        "token": "jurassic",
+        "score": 1.5941,
+        "count": 9,
+        "precision": 0.6923
+      },
+      {
+        "token": "expansion",
+        "score": 1.4657,
+        "count": 12,
+        "precision": 0.5714
+      },
+      {
+        "token": "supercopa",
+        "score": 1.4648,
+        "count": 8,
+        "precision": 0.6667
+      },
+      {
+        "token": "warcraft",
+        "score": 1.3521,
+        "count": 8,
+        "precision": 0.6154
+      }
+    ],
+    "apprehensive": [
+      {
+        "token": "apprehensive",
+        "score": 3.7682,
+        "count": 46,
+        "precision": 0.9787
+      },
+      {
+        "token": "biopsy",
+        "score": 2.3979,
+        "count": 10,
+        "precision": 1.0
+      },
+      {
+        "token": "hesitant",
+        "score": 2.2383,
+        "count": 21,
+        "precision": 0.7241
+      },
+      {
+        "token": "sleepover",
+        "score": 2.1972,
+        "count": 8,
+        "precision": 1.0
+      },
+      {
+        "token": "unsure",
+        "score": 1.8276,
+        "count": 18,
+        "precision": 0.6207
+      },
+      {
+        "token": "dreading",
+        "score": 1.7084,
+        "count": 11,
+        "precision": 0.6875
+      },
+      {
+        "token": "deciding",
+        "score": 1.2621,
+        "count": 10,
+        "precision": 0.5263
+      }
+    ],
+    "i really killed it!": [],
+    "we were in a different country": [],
+    "time to jump on the motorcycle and go cruising!": [],
+    "a boy. i hear all these different labor stories that aren't exactly reassuring!": [],
+    "t think i wold like super heroes": [],
+    "but what i didn't know was that he was working in the next room with the door open. he approached and asked what i had been saying. i knew i was caught. i was so disgusted with myself.": [],
+    "(": []
+  }
+}
