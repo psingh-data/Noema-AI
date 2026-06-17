@@ -911,6 +911,16 @@ def route_message(
             topic,
         )
 
+    if _has_any(normalized, ("do i have adhd", "am i adhd", "could this be adhd")):
+        return RouteDecision(
+            "health / wellness information",
+            "Health Educator",
+            "conversation context",
+            0.9,
+            "The user asks for symptom education about attention difficulties, not a diagnosis.",
+            "health",
+        )
+
     if explicit_decision_requested(normalized):
         return RouteDecision(
             "decision support",

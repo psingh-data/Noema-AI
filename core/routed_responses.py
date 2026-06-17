@@ -211,21 +211,62 @@ def _intervention_response(text: str) -> str:
         )
 
     return (
-        "I would prefer to verify live research before calling anything the strongest "
-        "evidence, so treat this as stable general guidance rather than a paper-level "
-        "review.\n\n"
+        "If this is affecting daily life, it makes sense to look for support that is "
+        "specific, not just comforting words.\n\n"
+        "**Direct answer:** several options may help, depending on what is happening "
+        "for you and how intense or persistent it is.\n\n"
         f"For {focus}, common support options people discuss with clinicians include:\n"
         f"1. {options[0]}.\n"
         f"2. {options[1]}.\n"
         f"3. {options[2]}.\n"
         f"4. {options[3]}.\n"
         f"5. {options[4]}.\n\n"
+        "**Plain-language explanation:** each option helps in a different way. Some "
+        "focus on understanding the loss, some on changing painful thought loops, "
+        "some on rebuilding daily functioning, and some on feeling less alone.\n\n"
         "This is not a diagnosis or a treatment plan. My practical recommendation is "
         "to choose the lowest-pressure first step: one consultation with a qualified "
         "mental health professional, or one structured support option, then judge "
         "whether it feels useful.\n\n"
         "What kind of support feels most realistic right now: private therapy, a "
         "support group, or self-guided practice?"
+    )
+
+
+def _symptom_education_response(text: str) -> str:
+    normalized = text.lower()
+    if "adhd" in normalized or "focus" in normalized or "concentrat" in normalized:
+        return (
+            "Not being able to focus can be genuinely upsetting, especially when it "
+            "starts feeling like a flaw in you rather than a signal that something "
+            "needs attention.\n\n"
+            "Several explanations can look similar from the inside:\n"
+            "1. ADHD-like attention regulation, especially if it has been present "
+            "since childhood and happens across school, work, home, and relationships.\n"
+            "2. Burnout or chronic stress, where your system is overused and attention "
+            "starts collapsing.\n"
+            "3. Anxiety, where worry uses up the mental space needed for focus.\n"
+            "4. Depression-related low energy, where tiredness, emptiness, or low "
+            "motivation make concentration harder.\n"
+            "5. Poor sleep, overwhelm, perfectionism, or too much task pressure.\n\n"
+            "That is why ADHD assessment is more complex than asking whether you can "
+            "focus today. A clinician usually looks at how long this has been present, "
+            "whether it started early in life, whether it appears in multiple settings, "
+            "and whether sleep, anxiety, depression, substances, stress, or medical "
+            "issues could explain it better.\n\n"
+            "This is not a diagnosis. If the problem is persistent or disrupting study, "
+            "work, relationships, or self-care, a professional assessment would be the "
+            "right next step.\n\n"
+            "Have these attention difficulties been present since childhood, or are "
+            "they relatively recent?"
+        )
+    return (
+        "I can explain possible symptom overlaps, but I should not diagnose you from "
+        "a chat message. Similar experiences can come from stress, sleep, grief, "
+        "anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\n"
+        "The useful next step is to notice duration, intensity, daily-life impact, "
+        "and whether the pattern appears in more than one setting. A qualified "
+        "professional can assess that properly."
     )
 
 
@@ -547,12 +588,7 @@ def routed_local_response(
             "and how well the path fits your motivation and values."
         ) + memory_note
     if route.intent == "health / wellness information":
-        return (
-            "I would want to check current, authoritative health sources before "
-            "giving you factual guidance. I do not have a verified live result right "
-            "now, so I will not guess. A qualified clinician can assess symptoms or "
-            "treatment decisions properly."
-        )
+        return _symptom_education_response(text)
     if route.intent == "general knowledge":
         return (
             "I can help with that, but the enhanced general-answer model is not "

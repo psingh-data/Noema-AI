@@ -4,6 +4,13 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from core.clinical_signals import ClinicalSignal, detect_clinical_signals
+from core.clinical_reasoning import (
+    PossibleExplanation,
+    explanation_dicts,
+    possible_explanations,
+    select_response_style,
+    update_style_history,
+)
 from core.pipeline import ReflectionResult, process_reflection
 from core.routed_responses import routed_local_response
 from core.router import RouteDecision, route_message
@@ -54,6 +61,11 @@ class ConversationState:
     narrative_progression: list[str] = field(default_factory=list)
     symptom_profile: dict[str, int] = field(default_factory=empty_symptom_profile)
     possible_clinical_overlaps: list[dict[str, str | int]] = field(default_factory=list)
+    possible_explanations: list[dict[str, str]] = field(default_factory=list)
+    last_5_styles: list[str] = field(default_factory=list)
+    reasoning_style: str = "reflective"
+    interventions_tried: list[str] = field(default_factory=list)
+    interventions_failed: list[str] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -66,6 +78,8 @@ class ConversationReply:
     route: RouteDecision
     symptom_profile: dict[str, int] = field(default_factory=empty_symptom_profile)
     possible_clinical_overlaps: tuple[ClinicalOverlap, ...] = ()
+    possible_explanations: tuple[PossibleExplanation, ...] = ()
+    reasoning_style: str = "reflective"
 
 
 DOMAIN_QUESTIONS = {
@@ -306,6 +320,16 @@ def conversation_state_snapshot(state: ConversationState) -> dict[str, object]:
         "narrative_progression": list(state.narrative_progression),
         "symptom_profile": dict(state.symptom_profile),
         "possible_clinical_overlaps": list(state.possible_clinical_overlaps),
+        "possible_explanations": list(state.possible_explanations),
+        "conversation_stage": (
+            state.narrative_progression[-1]
+            if state.narrative_progression
+            else state.current_intent
+        ),
+        "reasoning_style": state.reasoning_style,
+        "last_5_styles": list(state.last_5_styles),
+        "interventions_tried": list(state.interventions_tried),
+        "interventions_failed": list(state.interventions_failed),
     }
 
 
@@ -322,6 +346,43 @@ def _update_symptom_layer(
         possible_clinical_overlaps(state.symptom_profile)
         or current_overlaps
     )
+
+
+def _update_reasoning_layer(
+    state: ConversationState,
+    explanations: tuple[PossibleExplanation, ...],
+    style: str,
+) -> None:
+    state.possible_explanations = explanation_dicts(explanations)
+    state.reasoning_style = style
+    update_style_history(state.last_5_styles, style)
+
+
+def _update_intervention_tracking(text: str, state: ConversationState) -> None:
+    normalized = " ".join(text.lower().split())
+    intervention_markers = {
+        "breathing": ("breathing", "breathe", "breath"),
+        "grounding": ("grounding", "five things", "5 things"),
+        "journaling": ("journal", "write it down", "writing"),
+        "therapy": ("therapy", "therapist", "counseling", "counselling"),
+        "support group": ("support group",),
+    }
+    failed = any(
+        marker in normalized
+        for marker in (
+            "did not help",
+            "didn't help",
+            "not helping",
+            "had no effect",
+            "doesn't work",
+            "does not work",
+        )
+    )
+    for label, markers in intervention_markers.items():
+        if any(marker in normalized for marker in markers):
+            _remember_once(state.interventions_tried, label, limit=8)
+            if failed:
+                _remember_once(state.interventions_failed, label, limit=8)
 
 
 def _affirmative_risk(text: str) -> bool:
@@ -466,8 +527,10 @@ def _choose_question(
 def _validation(
     analysis: ReflectionResult,
     state: ConversationState,
+    text: str = "",
 ) -> str:
     emotion = analysis.emotion.emotion
+    normalized = " ".join(text.lower().split())
     active_grief = "grief" in state.active_themes
     progression = state.narrative_progression[-4:]
     category = (
@@ -477,6 +540,17 @@ def _validation(
         else analysis.category.category
     )
 
+    if all(marker in normalized for marker in ("empty", "tired", "worthless")):
+        return (
+            "What you described sounds exhausting. Feeling empty, tired, and "
+            "worthless at the same time can leave a person stuck between wanting "
+            "help and not having the energy to reach for it."
+        )
+    if "can't focus" in normalized or "cannot focus" in normalized:
+        return (
+            "That can be genuinely frustrating: wanting your mind to cooperate, "
+            "then watching it slip away no matter how much you try to force it."
+        )
     if active_grief and "overwhelm" in progression:
         return (
             "This seems connected to the grief you started with. The thread has "
@@ -599,7 +673,10 @@ def _mode_question(
                 "What do you miss most right now: the person, the time you had "
                 "together, a particular memory, or something else?"
             )
-        return "What part of this is hardest right now?"
+        return (
+            "When this shows up, does it feel more like heaviness in your body, "
+            "harsh thoughts about yourself, or a loss of motivation?"
+        )
     if (
         mode == "Help me understand my feelings"
         and category == "grief"
@@ -640,7 +717,7 @@ def _exploration(
 ) -> str:
     if mode == "Just listen":
         return (
-            "There is no need to turn this into a problem to solve right away. "
+            "I will stay with the experience before trying to fix it. "
             f"{question}"
         )
 
@@ -720,6 +797,7 @@ def _mode_guidance(
 
 def _compose_human_response(
     *,
+    text: str,
     mode: str,
     analysis: ReflectionResult,
     signals: list[ClinicalSignal],
@@ -728,7 +806,7 @@ def _compose_human_response(
 ) -> str:
     if mode == "Give me advice":
         guidance = _mode_guidance(mode, analysis, state)
-        sections = [_validation(analysis, state)]
+        sections = [_validation(analysis, state, text)]
         if guidance:
             sections.append(guidance)
         sections.append(
@@ -741,7 +819,7 @@ def _compose_human_response(
         return "\n\n".join(section for section in sections if section)
 
     sections = [
-        _validation(analysis, state),
+        _validation(analysis, state, text),
         _exploration(mode, question, signals),
     ]
     guidance = _mode_guidance(mode, analysis, state)
@@ -903,6 +981,14 @@ def continue_conversation(
             confidence=1.0,
             reason="The user explicitly requested research evidence.",
         )
+    current_explanations = possible_explanations(text, current_symptom_profile)
+    current_style = select_response_style(
+        intent=route.intent,
+        emotion=analysis.emotion.emotion,
+        last_5_styles=state.last_5_styles,
+    )
+    _update_reasoning_layer(state, current_explanations, current_style)
+    _update_intervention_tracking(text, state)
     state.current_intent = route.intent
     state.knowledge_route = route.knowledge_route
     if (
@@ -948,6 +1034,8 @@ def continue_conversation(
             route=route,
             symptom_profile=current_symptom_profile,
             possible_clinical_overlaps=current_clinical_overlaps,
+            possible_explanations=current_explanations,
+            reasoning_style=current_style,
         )
 
     question_domain, question = _choose_question(signals, state)
@@ -957,6 +1045,7 @@ def continue_conversation(
         state.safety_followup = True
 
     response = _compose_human_response(
+        text=text,
         mode=state.support_mode,
         analysis=analysis,
         signals=signals,
@@ -983,4 +1072,6 @@ def continue_conversation(
         route=route,
         symptom_profile=current_symptom_profile,
         possible_clinical_overlaps=current_clinical_overlaps,
+        possible_explanations=current_explanations,
+        reasoning_style=current_style,
     )

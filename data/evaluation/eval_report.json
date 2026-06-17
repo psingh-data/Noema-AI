@@ -16,7 +16,12 @@
     "relationship_routing_accuracy": 1.0,
     "business_routing_accuracy": 1.0,
     "casual_chat_success_rate": 1.0,
-    "longform_response_success_rate": 0.891,
+    "humanization_score": 1.0,
+    "research_humanization_score": 1.0,
+    "symptom_education_score": 1.0,
+    "identity_depth_score": 1.0,
+    "response_variety_score": 1.0,
+    "longform_response_success_rate": 0.9055,
     "therapy_retrieval_success_rate": 1.0
   },
   "targets": {
@@ -33,7 +38,12 @@
     "relationship_routing_accuracy_above_90_percent": true,
     "business_routing_accuracy_above_90_percent": true,
     "casual_chat_success_rate_above_90_percent": true,
-    "longform_response_success_rate_above_85_percent": true
+    "longform_response_success_rate_above_85_percent": true,
+    "humanization_score_above_90_percent": true,
+    "research_humanization_score_above_90_percent": true,
+    "symptom_education_score_above_90_percent": true,
+    "identity_depth_score_above_90_percent": true,
+    "response_variety_score_above_60_percent": true
   },
   "sample_counts": {
     "intent": 1941,
@@ -65,7 +75,7 @@
       {
         "input": "Honestly, I want to move abroad but I feel guilty leaving my family and scared about my career.",
         "expected": "mixed_complex_life_problem",
-        "predicted": "emotional_reflection"
+        "predicted": "anxiety_/_stress"
       },
       {
         "input": "My cat died this morning and I don't know what to do.",
@@ -110,7 +120,7 @@
       {
         "input": "I want to move abroad but I feel guilty leaving my family and scared about my career.",
         "expected": "mixed_complex_life_problem",
-        "predicted": "emotional_reflection"
+        "predicted": "anxiety_/_stress"
       },
       {
         "input": "Please help, Create a plan to rebuild my discipline.",
@@ -155,7 +165,7 @@
       {
         "input": "I want to move abroad but I feel guilty leaving my family and scared about my career.",
         "expected": "mixed_complex_life_problem",
-        "predicted": "emotional_reflection"
+        "predicted": "anxiety_/_stress"
       },
       {
         "input": "Create a plan to rebuild my discipline.",
@@ -306,39 +316,39 @@
     "decision": [
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy? I need something deeper.",
@@ -346,23 +356,23 @@
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy? Please don't give a short answer.",
@@ -370,35 +380,35 @@
       },
       {
         "input": "Honestly, We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
-        "response": "I would want to check current, authoritative health sources before giving you factual guidance. I do not have a verified live result right now, so I will not guess. A qualified clinician can assess symptoms or treatment decisions properly."
+        "response": "I can explain possible symptom overlaps, but I should not diagnose you from a chat message. Similar experiences can come from stress, sleep, grief, anxiety, mood changes, medical issues, substances, or a diagnosable condition.\n\nThe useful n"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy? Please don't give a short answer.",

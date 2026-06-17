@@ -161,9 +161,33 @@ def format_tavily_answer(
             source_lines.append(
                 f"- [{source.title}]({source.url}){detail}"
             )
+        if advice:
+            return (
+                "If this is affecting daily life, it makes sense to want options "
+                "that are more than generic comfort.\n\n"
+                "**Direct answer**\n\n"
+                f"{result.summary}\n\n"
+                "**Evidence-based options to discuss with a qualified professional**\n"
+                "- A therapy or counseling approach matched to the problem, not just the label.\n"
+                "- Skills-based support such as CBT-style work when thoughts, avoidance, or routines are involved.\n"
+                "- ACT-style work when the goal is carrying pain while still acting on values.\n"
+                "- Support groups or guided support when isolation is part of the problem.\n\n"
+                "**Plain-language explanation**\n\n"
+                "The research should support the answer, not replace the human part "
+                "of the answer. The useful question is: which option fits the pattern, "
+                "severity, and daily-life impact you are actually dealing with?\n\n"
+                f"**Research summary**\n\n{result.summary}\n\n"
+                "**Sources**\n"
+                + "\n".join(source_lines)
+                + "\n\nThis is a focused search, not a complete systematic review."
+            )
         return (
-            f"**Research summary**\n\n{result.summary}\n\n"
-            "**Academic sources reviewed**\n"
+            "Here is the plain-language version first, then the research behind it.\n\n"
+            f"**Direct answer**\n\n{result.summary}\n\n"
+            "**Research summary**\n\n"
+            "The sources below were used to ground the answer. Treat this as a "
+            "focused evidence check, not a full systematic review.\n\n"
+            "**Sources**\n"
             + "\n".join(source_lines)
             + "\n\nThis is a focused search, not a complete systematic review."
         )

@@ -166,10 +166,17 @@ def test_research_route_uses_tavily_academic_domains(monkeypatch):
     assert captured["include_domains"] == list(ACADEMIC_DOMAINS)
     assert result.sources[0].excerpt.startswith("A review reports")
     formatted = format_tavily_answer(result, research=True)
+    assert "plain-language version" in formatted
     assert "**Research summary**" in formatted
-    assert "**Academic sources reviewed**" in formatted
+    assert "**Sources**" in formatted
     assert "**Evidence excerpt:**" in formatted
     assert "not a complete systematic review" in formatted
+
+    advice_formatted = format_tavily_answer(result, research=True, advice=True)
+    assert advice_formatted.index("**Direct answer**") < advice_formatted.index(
+        "**Research summary**"
+    )
+    assert "Evidence-based options" in advice_formatted
 
 
 def test_research_route_triggers_tavily():

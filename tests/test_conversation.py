@@ -566,3 +566,52 @@ def test_intervention_request_gives_non_diagnostic_support_options():
     assert "cbt" in lowered
     assert "not a diagnosis" in lowered
     assert "you have" not in lowered
+
+
+def test_humanization_reflects_before_question_for_low_self_worth():
+    reply = continue_conversation("I feel empty, tired, and worthless.")
+    lowered = reply.response.lower()
+
+    assert lowered.startswith("what you described sounds exhausting")
+    assert lowered.index("exhausting") < lowered.index("?")
+    assert "there is no need to turn this into a problem" not in lowered
+    assert reply.possible_explanations
+    assert reply.reasoning_style == "reflective"
+
+
+def test_adhd_question_explains_alternatives_without_diagnosis():
+    reply = continue_conversation("I can't focus. Do I have ADHD?")
+    lowered = reply.response.lower()
+
+    assert reply.route.intent == "health / wellness information"
+    assert "adhd-like attention regulation" in lowered
+    assert "burnout" in lowered
+    assert "anxiety" in lowered
+    assert "depression-related low energy" in lowered
+    assert "poor sleep" in lowered
+    assert "since childhood" in lowered
+    assert "this is not a diagnosis" in lowered
+    assert "you have adhd" not in lowered
+    assert len(reply.possible_explanations) >= 3
+
+
+def test_response_style_rotates_across_turns():
+    state = ConversationState()
+    first = continue_conversation("I feel anxious about tomorrow.", state)
+    second = continue_conversation("How can I stop procrastinating?", first.state)
+    third = continue_conversation("Suggest me some therapies for grief.", second.state)
+
+    assert len(third.state.last_5_styles) >= 3
+    assert len(set(third.state.last_5_styles)) >= 3
+    assert third.state.reasoning_style == third.reasoning_style
+
+
+def test_identity_exploration_goes_deeper_than_surface_question():
+    reply = continue_conversation("I don't know who I am anymore.")
+    lowered = reply.response.lower()
+
+    assert reply.route.intent == "identity_exploration"
+    assert "old identity" in lowered
+    assert "values" in lowered
+    assert "approval" in lowered
+    assert "who am i" in lowered

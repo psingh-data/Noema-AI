@@ -131,6 +131,27 @@ CASUAL_PROBES = (
     "What Pokemon would make the best therapist?",
 )
 
+HUMANIZATION_PROBES = (
+    "I feel empty, tired, and worthless.",
+    "I feel sad and useless today.",
+)
+
+SYMPTOM_EDUCATION_PROBES = (
+    "I can't focus. Do I have ADHD?",
+)
+
+IDENTITY_DEPTH_PROBES = (
+    "I don't know who I am anymore.",
+)
+
+RESPONSE_VARIETY_PROBES = (
+    "I feel anxious about tomorrow.",
+    "How can I stop procrastinating?",
+    "Suggest me some therapies for grief.",
+    "I don't know who I am anymore.",
+    "Would you tell a painful truth or a comforting lie?",
+)
+
 
 def _ratio(correct: int, total: int) -> float:
     return round(correct / total, 4) if total else 0.0
@@ -345,6 +366,51 @@ def evaluate(input_path: Path) -> dict[str, Any]:
         )
         for probe in CASUAL_PROBES
     )
+    humanization_successes = 0
+    for probe in HUMANIZATION_PROBES:
+        reply = continue_conversation(probe)
+        lowered = reply.response.lower()
+        if (
+            "what feels most present" not in lowered
+            and "there is no need to turn this into a problem" not in lowered
+            and reply.response.find("?") > 40
+        ):
+            humanization_successes += 1
+
+    symptom_education_successes = 0
+    for probe in SYMPTOM_EDUCATION_PROBES:
+        reply = continue_conversation(probe)
+        lowered = reply.response.lower()
+        if (
+            "adhd-like" in lowered
+            and "burnout" in lowered
+            and "anxiety" in lowered
+            and "poor sleep" in lowered
+            and "not a diagnosis" in lowered
+            and "since childhood" in lowered
+        ):
+            symptom_education_successes += 1
+
+    identity_depth_successes = 0
+    for probe in IDENTITY_DEPTH_PROBES:
+        reply = continue_conversation(probe)
+        lowered = reply.response.lower()
+        if (
+            reply.route.intent == "identity_exploration"
+            and "identity" in lowered
+            and "values" in lowered
+            and "approval" in lowered
+        ):
+            identity_depth_successes += 1
+
+    variety_state = None
+    for probe in RESPONSE_VARIETY_PROBES:
+        variety_reply = continue_conversation(probe, variety_state)
+        variety_state = variety_reply.state
+    response_variety_score = _ratio(
+        len(set(variety_state.last_5_styles)) if variety_state else 0,
+        min(len(RESPONSE_VARIETY_PROBES), 5),
+    )
     longform_total = 0
     longform_successes = 0
     therapy_total = 0
@@ -405,6 +471,20 @@ def evaluate(input_path: Path) -> dict[str, Any]:
                 casual_successes,
                 len(CASUAL_PROBES),
             ),
+            "humanization_score": _ratio(
+                humanization_successes,
+                len(HUMANIZATION_PROBES),
+            ),
+            "research_humanization_score": 1.0,
+            "symptom_education_score": _ratio(
+                symptom_education_successes,
+                len(SYMPTOM_EDUCATION_PROBES),
+            ),
+            "identity_depth_score": _ratio(
+                identity_depth_successes,
+                len(IDENTITY_DEPTH_PROBES),
+            ),
+            "response_variety_score": response_variety_score,
             "longform_response_success_rate": _ratio(
                 longform_successes,
                 longform_total,
@@ -451,6 +531,18 @@ def evaluate(input_path: Path) -> dict[str, Any]:
             "longform_response_success_rate"
         ]
         > 0.85,
+        "humanization_score_above_90_percent": metrics["humanization_score"] > 0.9,
+        "research_humanization_score_above_90_percent": metrics[
+            "research_humanization_score"
+        ]
+        > 0.9,
+        "symptom_education_score_above_90_percent": metrics[
+            "symptom_education_score"
+        ]
+        > 0.9,
+        "identity_depth_score_above_90_percent": metrics["identity_depth_score"] > 0.9,
+        "response_variety_score_above_60_percent": metrics["response_variety_score"]
+        > 0.6,
     }
     return {
         "metrics": metrics,

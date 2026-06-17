@@ -162,6 +162,8 @@ def render_notes(message: dict) -> None:
             f"**Detected intent:** {message.get('intent', 'general conversation').title()}"
         )
         mode_col.write(f"**Chosen mode:** {message.get('routed_mode', 'Conversation')}")
+        st.write(f"**Topic:** {message.get('topic', 'general').title()}")
+        st.write(f"**Reasoning style:** {message.get('reasoning_style', 'reflective')}")
 
         emotion_col, intensity_col = st.columns(2)
         emotion_col.write(f"**Emotion:** {result.emotion.emotion.title()}")
@@ -223,6 +225,15 @@ def render_notes(message: dict) -> None:
                         f"- {overlap['area']} "
                         f"({overlap['confidence']} confidence)"
                     )
+        possible_explanations = message.get("possible_explanations", [])
+        if possible_explanations:
+            st.write("**Possible explanations, not diagnoses:**")
+            for explanation in possible_explanations:
+                st.write(
+                    f"- {explanation['label']} "
+                    f"({explanation['confidence']} confidence): "
+                    f"{explanation['reason']}"
+                )
 
         state_snapshot = message.get("conversation_state", {})
         if state_snapshot:
@@ -244,6 +255,18 @@ def render_notes(message: dict) -> None:
             unresolved = state_snapshot.get("unresolved_concerns", []) or ["None"]
             for concern in unresolved:
                 st.write(f"- {concern}")
+            st.write(
+                "**Conversation Stage:** "
+                + str(state_snapshot.get("conversation_stage") or "conversation")
+            )
+            st.write(
+                "**Interventions Tried:** "
+                + ", ".join(state_snapshot.get("interventions_tried", []) or ["None"])
+            )
+            st.write(
+                "**Interventions Failed:** "
+                + ", ".join(state_snapshot.get("interventions_failed", []) or ["None"])
+            )
             if state_snapshot.get("conversation_summary"):
                 st.caption(state_snapshot["conversation_summary"])
 
@@ -697,6 +720,7 @@ if prompt and prompt.strip():
         "ai_error": ai_error,
         "support_mode": support_mode,
         "intent": reply.route.intent,
+        "topic": reply.route.topic,
         "routed_mode": reply.route.response_mode,
         "knowledge_route": reply.route.knowledge_route,
         "knowledge_sources": list(metadata.sources),
@@ -719,6 +743,15 @@ if prompt and prompt.strip():
             }
             for overlap in reply.possible_clinical_overlaps
         ],
+        "possible_explanations": [
+            {
+                "label": explanation.label,
+                "confidence": explanation.confidence,
+                "reason": explanation.reason,
+            }
+            for explanation in reply.possible_explanations
+        ],
+        "reasoning_style": reply.reasoning_style,
         "conversation_state": conversation_state_snapshot(reply.state),
         "critic_passed": critic_result.passed,
         "critic_failures": list(critic_failures),

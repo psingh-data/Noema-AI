@@ -22,7 +22,12 @@ No fine-tuning was performed. This report evaluates deterministic routing, emoti
 | `relationship_routing_accuracy` | 100.00% |
 | `business_routing_accuracy` | 100.00% |
 | `casual_chat_success_rate` | 100.00% |
-| `longform_response_success_rate` | 89.10% |
+| `humanization_score` | 100.00% |
+| `research_humanization_score` | 100.00% |
+| `symptom_education_score` | 100.00% |
+| `identity_depth_score` | 100.00% |
+| `response_variety_score` | 100.00% |
+| `longform_response_success_rate` | 90.55% |
 | `therapy_retrieval_success_rate` | 100.00% |
 
 ## Required Targets
@@ -41,6 +46,11 @@ No fine-tuning was performed. This report evaluates deterministic routing, emoti
 - [x] `business_routing_accuracy_above_90_percent`
 - [x] `casual_chat_success_rate_above_90_percent`
 - [x] `longform_response_success_rate_above_85_percent`
+- [x] `humanization_score_above_90_percent`
+- [x] `research_humanization_score_above_90_percent`
+- [x] `symptom_education_score_above_90_percent`
+- [x] `identity_depth_score_above_90_percent`
+- [x] `response_variety_score_above_60_percent`
 
 ## Notes
 

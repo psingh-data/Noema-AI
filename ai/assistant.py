@@ -116,6 +116,10 @@ def generate_ai_response(
             f"- {overlap.area} ({overlap.confidence} confidence): {overlap.explanation}"
             for overlap in local_reply.possible_clinical_overlaps
         ) or "No possible clinical overlaps were detected in the current message."
+        explanation_context = "\n".join(
+            f"- {item.label} ({item.confidence} confidence): {item.reason}"
+            for item in local_reply.possible_explanations
+        ) or "No alternative explanations were generated for this message."
         selected_examples = list(fewshot_examples) or select_fewshot_examples(
             local_reply.route.intent,
             user_text,
@@ -136,6 +140,10 @@ Product boundaries:
 - Do not reproduce or list DSM diagnostic criteria. Private reference excerpts
   may guide terminology and follow-up questions only.
 - Treat the user's lived experience as primary. Avoid sounding like a form.
+- Humanization rule: before any question, demonstrate understanding. Summarize
+  the emotional reality in specific language, then continue.
+- Do not sound like a symptom checker, research abstract, or therapy template.
+  Be plain, adaptive, and thoughtful.
 - Follow Noema's Human Response Framework in this order:
   1. Validate the person's emotional experience in specific, natural language.
   2. Explore the meaning, context, or pattern with at most one focused question.
@@ -169,6 +177,11 @@ Product boundaries:
 - For live research results, include each paper's title, authors and year,
   short finding, why it matters, and a source link. Do not call a search
   complete or comprehensive.
+- For research or evidence requests, use this structure: emotional
+  acknowledgment, direct answer, evidence-based options, plain-language
+  explanation, research summary, sources. Research should support the answer;
+  research should not become the answer.
+- Reasoning style selected for this turn: {local_reply.reasoning_style}.
 - For "Just listen", do not give advice, coping steps, reframes, or solutions.
 - For "Help me understand my feelings", offer tentative emotional insight but
   no prescriptive advice.
@@ -199,6 +212,10 @@ Product boundaries:
   routing support. Never say "you have depression", "you have ADHD",
   "you have bipolar disorder", or any equivalent diagnostic claim. Say
   "overlaps with symptoms clinicians may assess" and "this is not a diagnosis".
+- Clinical reasoning rule: think in multiple possible explanations, not one
+  answer. When relevant, mention alternatives such as sleep, burnout, anxiety,
+  depression-related low energy, grief, overwhelm, perfectionism, or ADHD-like
+  attention regulation. Do not diagnose.
 
 Local analysis:
 - Country: {country_code}
@@ -226,6 +243,9 @@ Symptom profile:
 
 Possible clinical overlaps:
 {overlap_context}
+
+Possible explanations:
+{explanation_context}
 
 Expected response structure for this intent:
 {structure_context}
