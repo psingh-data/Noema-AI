@@ -6,7 +6,7 @@ No fine-tuning was performed. This report evaluates deterministic routing, emoti
 
 | Metric | Result |
 |---|---:|
-| `intent_accuracy` | 77.74% |
+| `intent_accuracy` | 79.96% |
 | `emotion_accuracy` | 0.00% |
 | `internet_routing_accuracy` | 98.30% |
 | `research_routing_accuracy` | 100.00% |
@@ -28,12 +28,17 @@ No fine-tuning was performed. This report evaluates deterministic routing, emoti
 | `identity_depth_score` | 100.00% |
 | `response_variety_score` | 100.00% |
 | `narrative_memory_score` | 100.00% |
+| `conversation_continuity_score` | 100.00% |
+| `relationship_reasoning_score` | 100.00% |
+| `ethical_reasoning_score` | 100.00% |
 | `offline_language_routing_accuracy` | 100.00% |
 | `internet_suppression_accuracy` | 100.00% |
+| `internet_suppression_score` | 100.00% |
 | `casual_rapport_success` | 100.00% |
 | `slang_understanding_success` | 100.00% |
 | `wrong_internet_trigger_rate` | 0.00% |
 | `wrong_safety_trigger_rate` | 0.00% |
+| `repetition_rate` | 0.00% |
 | `hybrid_knowledge_engine_success` | 100.00% |
 | `longform_response_success_rate` | 90.55% |
 | `therapy_retrieval_success_rate` | 100.00% |
@@ -60,12 +65,17 @@ No fine-tuning was performed. This report evaluates deterministic routing, emoti
 - [x] `identity_depth_score_above_90_percent`
 - [x] `response_variety_score_above_60_percent`
 - [x] `narrative_memory_score_above_90_percent`
+- [x] `conversation_continuity_score_above_90_percent`
+- [x] `relationship_reasoning_score_above_90_percent`
+- [x] `ethical_reasoning_score_above_90_percent`
 - [x] `offline_language_routing_accuracy_above_90_percent`
 - [x] `internet_suppression_accuracy_above_95_percent`
+- [x] `internet_suppression_score_above_95_percent`
 - [x] `casual_rapport_success_above_90_percent`
 - [x] `slang_understanding_success_above_85_percent`
 - [x] `wrong_internet_trigger_rate_below_5_percent`
 - [x] `wrong_safety_trigger_rate_below_0_5_percent`
+- [x] `repetition_rate_below_2_percent`
 - [x] `hybrid_knowledge_engine_success_100_percent`
 
 ## Notes

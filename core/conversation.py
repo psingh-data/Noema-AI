@@ -1,7 +1,9 @@
 """Adaptive, psychologically informed multi-turn conversation."""
 
 from __future__ import annotations
+import re
 from dataclasses import dataclass, field
+from difflib import SequenceMatcher
 
 from core.clinical_signals import ClinicalSignal, detect_clinical_signals
 from core.clinical_reasoning import (
@@ -57,6 +59,9 @@ class ConversationState:
     current_intent: str = "open conversation"
     knowledge_route: str = "conversation context"
     last_emotional_category: str | None = None
+    active_thread: str = "general_thread"
+    conversation_stage: str = "initial_disclosure"
+    follow_up_to: str = ""
     active_themes: dict[str, int] = field(default_factory=dict)
     active_emotions: dict[str, int] = field(default_factory=dict)
     active_relationships: set[str] = field(default_factory=set)
@@ -76,6 +81,10 @@ class ConversationState:
     recurring_conflicts: list[str] = field(default_factory=list)
     recurring_values: list[str] = field(default_factory=list)
     major_goals: list[str] = field(default_factory=list)
+    important_relationships: list[str] = field(default_factory=list)
+    recurring_decisions: list[str] = field(default_factory=list)
+    life_map_items_used: list[str] = field(default_factory=list)
+    last_responses: list[str] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -222,6 +231,182 @@ def _remember_once(items: list[str], value: str, limit: int = 6) -> None:
         del items[:-limit]
 
 
+THREAD_BY_TOPIC = {
+    "grief": "grief_thread",
+    "relationship": "relationship_thread",
+    "self_esteem": "identity_thread",
+    "education": "education_thread",
+    "career": "career_thread",
+    "workplace": "career_thread",
+    "business": "career_thread",
+    "health": "health_thread",
+}
+
+THREAD_BY_INTENT = {
+    "identity_exploration": "identity_thread",
+    "achievement_self_worth": "identity_thread",
+    "existential_question": "existential_thread",
+    "ethical_dilemma": "ethical_thread",
+    "structured_problem_solving": "planning_thread",
+    "intervention_request": "intervention_thread",
+}
+
+STAGE_ORDER = (
+    "initial_disclosure",
+    "emotional_expansion",
+    "clarification",
+    "practical_guidance",
+    "decision_support",
+    "intervention_request",
+    "intervention_feedback",
+    "frustration_with_assistant",
+    "repair",
+    "meaning_making",
+    "closure",
+)
+
+
+def _stage_rank(stage: str) -> int:
+    try:
+        return STAGE_ORDER.index(stage)
+    except ValueError:
+        return 0
+
+
+def _looks_like_followup(text: str) -> bool:
+    normalized = " ".join(text.lower().split())
+    return (
+        len(normalized.split()) <= 8
+        or normalized.startswith(("this ", "that ", "it ", "yes", "no"))
+        or any(
+            marker in normalized
+            for marker in (
+                "only started",
+                "started last",
+                "last year",
+                "since then",
+                "after that",
+                "same thing",
+                "that too",
+                "what about",
+            )
+        )
+    )
+
+
+def _thread_for_route(text: str, route: RouteDecision, state: ConversationState) -> str:
+    normalized = " ".join(text.lower().split())
+    if state.active_thread == "adhd_thread" and route.intent == "conversation_continuity":
+        return "adhd_thread"
+    if "adhd" in normalized or "can't focus" in normalized or "cannot focus" in normalized:
+        return "adhd_thread"
+    if route.intent in THREAD_BY_INTENT:
+        return THREAD_BY_INTENT[route.intent]
+    if route.topic in THREAD_BY_TOPIC:
+        return THREAD_BY_TOPIC[route.topic]
+    if route.intent == "grief":
+        return "grief_thread"
+    if route.intent == "casual conversation" and not state.active_thread:
+        return "rapport_thread"
+    if (
+        state.active_thread != "general_thread"
+        and route.intent in {"casual conversation", "general conversation", "general knowledge"}
+        and _looks_like_followup(text)
+    ):
+        return state.active_thread
+    return state.active_thread if state.active_thread != "general_thread" and _looks_like_followup(text) else "general_thread"
+
+
+def _conversation_stage_for(
+    text: str,
+    route: RouteDecision,
+    state: ConversationState,
+) -> str:
+    normalized = " ".join(text.lower().split())
+    if any(marker in normalized for marker in ("thanks", "thank you", "that helped")):
+        stage = "closure"
+    elif route.intent == "user_frustration_repair":
+        stage = "frustration_with_assistant"
+    elif route.intent in {"conversation_continuity", "failed_intervention_repair"}:
+        stage = "repair" if route.intent == "conversation_continuity" else "intervention_feedback"
+    elif route.intent == "intervention_request":
+        stage = "intervention_request"
+    elif route.intent == "decision support":
+        stage = "decision_support"
+    elif route.intent in {"practical advice", "mixed complex life problem", "structured_problem_solving"}:
+        stage = "practical_guidance"
+    elif route.intent in {"existential_question", "narrative_memory"}:
+        stage = "meaning_making"
+    elif state.turn_count <= 1:
+        stage = "initial_disclosure"
+    elif _looks_like_followup(text):
+        stage = "clarification"
+    else:
+        stage = "emotional_expansion"
+
+    if _stage_rank(state.conversation_stage) >= _stage_rank("clarification") and stage == "initial_disclosure":
+        return "clarification"
+    return stage
+
+
+def _life_map_snapshot(state: ConversationState) -> dict[str, list[str]]:
+    return {
+        "major_losses": list(state.major_losses),
+        "major_goals": list(state.major_goals),
+        "major_fears": list(state.recurring_fears),
+        "major_conflicts": list(state.recurring_conflicts),
+        "major_values": list(state.recurring_values),
+        "important_relationships": list(state.important_relationships),
+        "recurring_decisions": list(state.recurring_decisions),
+    }
+
+
+def _life_map_items_for_response(state: ConversationState, route: RouteDecision) -> list[str]:
+    if route.intent != "narrative_memory":
+        return []
+    items: list[str] = []
+    for source in (
+        state.major_losses[:2],
+        state.recurring_fears[:2],
+        state.recurring_conflicts[:2],
+        state.recurring_values[:2],
+        state.major_goals[:2],
+    ):
+        items.extend(source)
+    return list(dict.fromkeys(items))[:8]
+
+
+def _similarity(left: str, right: str) -> float:
+    return SequenceMatcher(None, left.lower(), right.lower()).ratio()
+
+
+def _finalize_response(response: str, state: ConversationState) -> str:
+    if response and any(_similarity(response, prior) > 0.7 for prior in state.last_responses[-3:]):
+        if "enhanced general-answer model is not available" in response:
+            alternatives = (
+                "Let me take this from a different angle instead of repeating myself.\n\n"
+                "I can still help with the reasoning, but I should not pretend this "
+                "small local fallback is enough for a full factual answer. A better "
+                "move is to either ask for a live search or narrow the question so I "
+                "can answer from stable knowledge.",
+                "Different angle: this needs either a verified source or a narrower "
+                "question. I can explain the general principle, but I do not want to "
+                "fill in facts just to sound confident.",
+                "I am going to avoid looping the same fallback. For factual questions, "
+                "the honest path is source-backed retrieval when facts matter, or a "
+                "clearly marked general explanation when they do not.",
+            )
+            response = alternatives[len(state.last_responses) % len(alternatives)]
+        else:
+            response = (
+                "Let me take this from a different angle instead of repeating myself.\n\n"
+                + response
+            )
+    if response:
+        _remember_once(state.last_responses, response, limit=3)
+    return response
+
+
 def _detect_relationships(text: str) -> set[str]:
     normalized = " ".join(text.lower().split())
     relationships = {
@@ -238,7 +423,7 @@ def _detect_relationships(text: str) -> set[str]:
             "partner",
             "friend",
         )
-        if relation in normalized
+        if re.search(rf"\b{re.escape(relation)}\b", normalized)
     }
     if "grandpa" in normalized:
         relationships.add("grandfather")
@@ -315,6 +500,16 @@ def _summarize_state(state: ConversationState) -> str:
 
 
 def _stress_driver_response(state: ConversationState) -> str:
+    state.life_map_items_used = _life_map_items_for_response(
+        state,
+        RouteDecision(
+            "narrative_memory",
+            "Insight",
+            "conversation context",
+            1.0,
+            "Life-map explanation.",
+        ),
+    )
     drivers: list[str] = []
     if state.major_losses:
         drivers.append(
@@ -370,6 +565,86 @@ def _asks_for_stress_driver(text: str) -> bool:
     )
 
 
+def _route_from_active_thread(
+    text: str,
+    route: RouteDecision,
+    state: ConversationState,
+) -> RouteDecision:
+    normalized = " ".join(text.lower().split())
+    if (
+        state.active_thread == "grief_thread"
+        and route.intent
+        in {
+            "casual conversation",
+            "general conversation",
+            "general knowledge",
+            "emotional reflection",
+            "overwhelm",
+        }
+        and (
+            _looks_like_followup(text)
+            or any(marker in normalized for marker in ("unbearable", "too much", "can't take"))
+        )
+    ):
+        return RouteDecision(
+            "emotional reflection",
+            "Help me understand my feelings",
+            "conversation context",
+            0.86,
+            "The message is a follow-up to the active grief thread.",
+            "grief",
+        )
+    if (
+        state.active_thread == "adhd_thread"
+        and route.intent
+        in {
+            "casual conversation",
+            "general conversation",
+            "general knowledge",
+            "emotional reflection",
+        }
+        and (
+            _looks_like_followup(text)
+            or any(marker in normalized for marker in ("started", "childhood", "recent", "last year"))
+        )
+    ):
+        return RouteDecision(
+            "conversation_continuity",
+            "Health Educator",
+            "conversation context",
+            0.88,
+            "The message is a follow-up to the active ADHD/attention discussion.",
+            "health",
+        )
+    if (
+        state.active_thread == "existential_thread"
+        and route.intent in {"general knowledge", "general conversation", "casual conversation"}
+        and _looks_like_followup(text)
+    ):
+        return RouteDecision(
+            "existential_question",
+            "Reflective conversation",
+            "conversation context",
+            0.84,
+            "The message continues the active existential thread.",
+            "general",
+        )
+    if (
+        state.active_thread == "relationship_thread"
+        and route.intent in {"casual conversation", "general conversation", "emotional reflection"}
+        and _looks_like_followup(text)
+    ):
+        return RouteDecision(
+            "emotional reflection",
+            "Help me understand my feelings",
+            "conversation context",
+            0.84,
+            "The message continues the active relationship thread.",
+            "relationship",
+        )
+    return route
+
+
 def conversation_state_snapshot(state: ConversationState) -> dict[str, object]:
     return {
         "active_themes": sorted(
@@ -387,14 +662,12 @@ def conversation_state_snapshot(state: ConversationState) -> dict[str, object]:
         "current_goals": list(state.current_goals),
         "conversation_summary": state.conversation_summary,
         "narrative_progression": list(state.narrative_progression),
+        "active_thread": state.active_thread,
+        "follow_up_to": state.follow_up_to,
         "symptom_profile": dict(state.symptom_profile),
         "possible_clinical_overlaps": list(state.possible_clinical_overlaps),
         "possible_explanations": list(state.possible_explanations),
-        "conversation_stage": (
-            state.narrative_progression[-1]
-            if state.narrative_progression
-            else state.current_intent
-        ),
+        "conversation_stage": state.conversation_stage,
         "reasoning_style": state.reasoning_style,
         "last_5_styles": list(state.last_5_styles),
         "interventions_tried": list(state.interventions_tried),
@@ -404,6 +677,10 @@ def conversation_state_snapshot(state: ConversationState) -> dict[str, object]:
         "recurring_conflicts": list(state.recurring_conflicts),
         "recurring_values": list(state.recurring_values),
         "major_goals": list(state.major_goals),
+        "important_relationships": list(state.important_relationships),
+        "recurring_decisions": list(state.recurring_decisions),
+        "life_map": _life_map_snapshot(state),
+        "life_map_items_used": list(state.life_map_items_used),
     }
 
 
@@ -537,6 +814,24 @@ def _update_narrative_memory(text: str, state: ConversationState) -> None:
         if marker in normalized:
             _remember_once(state.major_goals, label, limit=8)
 
+    for relationship in _detect_relationships(normalized):
+        _remember_once(state.important_relationships, relationship, limit=8)
+
+    decision_patterns = (
+        ("cognitive science", "Cognitive Science versus alternatives"),
+        ("data science", "Data Science versus values fit"),
+        ("psychology", "psychology/people-focused path versus stability"),
+        ("business", "business versus safer path"),
+        ("university", "university or education path decision"),
+        ("should i stay", "stay versus leave decision"),
+        ("should i leave", "stay versus leave decision"),
+        ("move abroad", "move abroad decision"),
+        ("report", "reporting wrongdoing decision"),
+    )
+    for marker, label in decision_patterns:
+        if marker in normalized:
+            _remember_once(state.recurring_decisions, label, limit=8)
+
 
 def _affirmative_risk(text: str) -> bool:
     normalized = " ".join(text.lower().split())
@@ -643,6 +938,17 @@ def _update_state(
         goal = _goal_label(route, text)
         if goal:
             _remember_once(state.current_goals, goal, limit=4)
+        previous_thread = state.active_thread
+        state.active_thread = _thread_for_route(text, route, state)
+        state.follow_up_to = (
+            previous_thread
+            if previous_thread != "general_thread"
+            and previous_thread == state.active_thread
+            and _looks_like_followup(text)
+            else ""
+        )
+        state.conversation_stage = _conversation_stage_for(text, route, state)
+        state.life_map_items_used = _life_map_items_for_response(state, route)
     state.conversation_summary = _summarize_state(state)
 
 
@@ -1147,6 +1453,8 @@ def continue_conversation(
             reason="The user asks for an accumulated-context explanation of their stress pattern.",
             topic="general",
         )
+    else:
+        route = _route_from_active_thread(text, route, state)
     current_explanations = possible_explanations(text, current_symptom_profile)
     current_style = select_response_style(
         intent=route.intent,
@@ -1192,6 +1500,7 @@ def continue_conversation(
             route,
             current_clinical_overlaps,
         )
+        routed_response = _finalize_response(routed_response, state)
         return ConversationReply(
             response=routed_response,
             analysis=analysis,
@@ -1207,8 +1516,9 @@ def continue_conversation(
         )
 
     if route.intent == "narrative_memory":
+        narrative_response = _finalize_response(_stress_driver_response(state), state)
         return ConversationReply(
-            response=_stress_driver_response(state),
+            response=narrative_response,
             analysis=analysis,
             state=state,
             clinical_domains=tuple(signal.domain for signal in signals),
@@ -1240,6 +1550,7 @@ def continue_conversation(
         route,
         current_clinical_overlaps,
     )
+    response = _finalize_response(response, state)
     return ConversationReply(
         response=response,
         analysis=analysis,

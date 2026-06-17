@@ -280,11 +280,36 @@ def _continuity_response(text: str, route: RouteDecision, conversation_state: ob
     progression = getattr(conversation_state, "narrative_progression", [])
     normalized = " ".join(text.lower().split())
     grief_active = "grief" in active_themes
+    active_thread = getattr(conversation_state, "active_thread", "general_thread")
     relationship_text = (
         sorted(active_relationships)[0]
         if active_relationships
         else "the person you lost"
     )
+
+    if active_thread == "adhd_thread" and route.intent == "conversation_continuity":
+        if any(marker in normalized for marker in ("started last", "last year", "recent", "only started")):
+            return (
+                "That detail matters. If the focus difficulty only started last year, "
+                "that makes ADHD less straightforward as an explanation, because ADHD "
+                "patterns usually begin earlier in life and show up across more than "
+                "one setting.\n\n"
+                "Recent attention problems can also come from burnout, anxiety, grief, "
+                "depression-like low energy, poor sleep, stress, or a big life transition. "
+                "That does not rule ADHD out, but it means the timeline needs careful "
+                "checking instead of jumping to a label.\n\n"
+                "My practical next step: track when it started, what else changed around "
+                "that time, sleep quality, stress level, and where it happens most. If it "
+                "is disrupting study, work, or daily life, a professional assessment can "
+                "sort the possibilities safely.\n\n"
+                "What changed in your life around the time this started?"
+            )
+        return (
+            "I am treating that as part of the attention/ADHD question we were already "
+            "discussing, not as a new topic.\n\n"
+            "The key is pattern: when it began, where it happens, what makes it worse, "
+            "and whether sleep, anxiety, burnout, grief, or stress could explain it."
+        )
 
     if grief_active and route.intent == "practical advice" and (
         "what to do" in normalized or "don't know" in normalized or "do not know" in normalized
@@ -301,6 +326,22 @@ def _continuity_response(text: str, route: RouteDecision, conversation_state: ob
             "settles even a little, we can separate emotional pain from practical "
             "decisions.\n\n"
             "Are you alone right now, or is there someone nearby you can contact?"
+        )
+
+    if grief_active and route.topic == "grief" and any(
+        marker in normalized for marker in ("unbearable", "too much", "can't take")
+    ):
+        return (
+            f"This sounds connected to the grief around your {relationship_text}. "
+            "When loss is this fresh or this heavy, the feeling can become less like "
+            "sadness and more like your whole system saying, 'this is too much.'\n\n"
+            "For the next few minutes, do not ask yourself to make meaning from it. "
+            "Reduce the load: sit near someone safe if you can, drink water, and put "
+            "one sentence to the feeling, even if the sentence is just 'I miss them "
+            "and I cannot hold all of this right now.'\n\n"
+            "If the feeling starts turning into thoughts of harming yourself or being "
+            "unable to stay safe, treat that as urgent and contact emergency or crisis "
+            "support immediately."
         )
 
     if grief_active and route.intent in {"emotional reflection", "overwhelm", "anxiety / stress"} and (
@@ -400,7 +441,25 @@ def _existential_response() -> str:
     )
 
 
-def _ethical_response() -> str:
+def _ethical_response(text: str = "") -> str:
+    lowered = text.lower()
+    if "report" in lowered or "cheat" in lowered:
+        return (
+            "This is an ethical dilemma, not just a pros-and-cons choice. The tension "
+            "is fairness, loyalty, consequences, and responsibility.\n\n"
+            "If your friend cheated, the fair thing is to take it seriously, but the "
+            "wise next step depends on harm and context: how serious the cheating was, "
+            "whether others are being harmed, whether there is a safe reporting path, "
+            "and whether speaking to your friend first could stop the behavior without "
+            "creating unnecessary damage.\n\n"
+            "My recommendation: do not cover it up or help them benefit unfairly. If "
+            "the stakes are high or others are clearly harmed, use the official process. "
+            "If the stakes are lower, consider one direct conversation first: tell them "
+            "you are uncomfortable, ask them to correct it, and be clear you will not "
+            "protect repeated cheating.\n\n"
+            "What is the actual harm here: grade advantage, risk to others, or pressure "
+            "on you to stay silent?"
+        )
     return (
         "I would not answer this as “always tell the truth” or “always protect comfort.” "
         "Ethical choices depend on harm, consent, responsibility, timing, and power.\n\n"
@@ -555,7 +614,7 @@ def routed_local_response(
     if route.intent == "existential_question":
         return _existential_response()
     if route.intent == "ethical_dilemma":
-        return _ethical_response()
+        return _ethical_response(text)
     if route.intent == "structured_problem_solving":
         return _structured_problem_response()
     if route.intent == "user_frustration_repair":

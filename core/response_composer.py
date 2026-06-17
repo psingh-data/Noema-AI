@@ -20,16 +20,15 @@ def compose_ontology_response(
         lowered = text.lower()
         if any(word in lowered for word in ("hi", "hello", "hey", "yo", "sup", "wassup")):
             options = (
+                "Hey, glad you're here. How are you arriving today: light, heavy, restless, or just curious?",
                 "Yo, I am here. Want to talk through something, ask a random question, or just hang for a minute?",
                 "Hey, I am with you. We can keep it light, think through something, or just chat.",
-                "Hello. I am here. What kind of conversation do you want right now: chill, useful, or chaotic but harmless?",
             )
             return options[turn_count % len(options)]
         if "bored" in lowered:
             return (
-                "Boredom has entered the chat. We can do this three ways: something "
-                "funny, something thoughtful, or something useful that still does "
-                "not feel like homework."
+                "Bored in the restless way, the tired way, or the just-give-me-something-interesting way?\n\n"
+                "We can keep it light, do a random question, or turn the boredom into a tiny useful plan."
             )
 
     if category == "venting":

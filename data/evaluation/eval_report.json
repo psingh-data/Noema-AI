@@ -1,6 +1,6 @@
 {
   "metrics": {
-    "intent_accuracy": 0.7774,
+    "intent_accuracy": 0.7996,
     "emotion_accuracy": 0.0,
     "internet_routing_accuracy": 0.983,
     "research_routing_accuracy": 1.0,
@@ -22,12 +22,17 @@
     "identity_depth_score": 1.0,
     "response_variety_score": 1.0,
     "narrative_memory_score": 1.0,
+    "conversation_continuity_score": 1.0,
+    "relationship_reasoning_score": 1.0,
+    "ethical_reasoning_score": 1.0,
     "offline_language_routing_accuracy": 1.0,
     "internet_suppression_accuracy": 1.0,
+    "internet_suppression_score": 1.0,
     "casual_rapport_success": 1.0,
     "slang_understanding_success": 1.0,
     "wrong_internet_trigger_rate": 0.0,
     "wrong_safety_trigger_rate": 0.0,
+    "repetition_rate": 0.0,
     "hybrid_knowledge_engine_success": 1.0,
     "longform_response_success_rate": 0.9055,
     "therapy_retrieval_success_rate": 1.0
@@ -53,12 +58,17 @@
     "identity_depth_score_above_90_percent": true,
     "response_variety_score_above_60_percent": true,
     "narrative_memory_score_above_90_percent": true,
+    "conversation_continuity_score_above_90_percent": true,
+    "relationship_reasoning_score_above_90_percent": true,
+    "ethical_reasoning_score_above_90_percent": true,
     "offline_language_routing_accuracy_above_90_percent": true,
     "internet_suppression_accuracy_above_95_percent": true,
+    "internet_suppression_score_above_95_percent": true,
     "casual_rapport_success_above_90_percent": true,
     "slang_understanding_success_above_85_percent": true,
     "wrong_internet_trigger_rate_below_5_percent": true,
     "wrong_safety_trigger_rate_below_0_5_percent": true,
+    "repetition_rate_below_2_percent": true,
     "hybrid_knowledge_engine_success_100_percent": true
   },
   "sample_counts": {
@@ -164,11 +174,6 @@
         "predicted": "decision_support"
       },
       {
-        "input": "My friend cheated in an exam. Should I report him?",
-        "expected": "ethical_dilemma",
-        "predicted": "decision_support"
-      },
-      {
         "input": "Journaling does not work for me. Please don't give a short answer.",
         "expected": "failed_intervention_repair",
         "predicted": "general_conversation"
@@ -196,6 +201,11 @@
       {
         "input": "I love psychology but Data Science pays more. What should I do? Be practical.",
         "expected": "advice",
+        "predicted": "decision_support"
+      },
+      {
+        "input": "I am confused between studies, business, relationship, and family expectations. I feel stuck.",
+        "expected": "mixed_complex_life_problem",
         "predicted": "decision_support"
       }
     ],

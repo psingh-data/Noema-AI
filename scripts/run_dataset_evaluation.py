@@ -171,6 +171,22 @@ NARRATIVE_MEMORY_PROBES = (
     ),
 )
 
+CONVERSATION_CONTINUITY_PROBES = (
+    (
+        ("I can't focus. Do I have ADHD?", "This only started last year."),
+        ("adhd less straightforward", "burnout"),
+    ),
+    (
+        ("My grandfather died yesterday.", "I don't know what to do.", "This feels unbearable."),
+        ("grief", "connected"),
+    ),
+)
+
+ETHICAL_REASONING_PROBES = (
+    "My company is doing something unethical but legal. What should I do?",
+    "My friend cheated in an exam. Should I report him?",
+)
+
 OFFLINE_LANGUAGE_PROBES = (
     ("I'm cooked", "pure_emotional_validation", "emotional reflection"),
     ("let me yap", "venting", "venting"),
@@ -460,6 +476,46 @@ def evaluate(input_path: Path) -> dict[str, Any]:
         ):
             narrative_memory_successes += 1
 
+    continuity_successes = 0
+    for turns, expected_markers in CONVERSATION_CONTINUITY_PROBES:
+        continuity_state = None
+        continuity_reply = None
+        for turn in turns:
+            continuity_reply = continue_conversation(turn, continuity_state)
+            continuity_state = continuity_reply.state
+        lowered = continuity_reply.response.lower() if continuity_reply else ""
+        if continuity_reply and all(marker in lowered for marker in expected_markers):
+            continuity_successes += 1
+
+    ethical_successes = 0
+    for probe in ETHICAL_REASONING_PROBES:
+        reply = continue_conversation(probe)
+        lowered = reply.response.lower()
+        if (
+            reply.route.intent == "ethical_dilemma"
+            and "harm" in lowered
+            and any(marker in lowered for marker in ("fairness", "responsibility", "autonomy"))
+            and "tell me the options" not in lowered
+        ):
+            ethical_successes += 1
+
+    repetition_failures = 0
+    repetition_state = None
+    repeated_responses: list[str] = []
+    for probe in ("Why is grass green?", "Why is grass green?", "Why is grass green?"):
+        reply = continue_conversation(probe, repetition_state)
+        repetition_state = reply.state
+        if any(
+            reply.response == earlier
+            or (
+                len(reply.response) > 40
+                and reply.response[:120] == earlier[:120]
+            )
+            for earlier in repeated_responses[-3:]
+        ):
+            repetition_failures += 1
+        repeated_responses.append(reply.response)
+
     offline_language_successes = 0
     internet_suppression_successes = 0
     wrong_internet_triggers = 0
@@ -588,11 +644,27 @@ def evaluate(input_path: Path) -> dict[str, Any]:
                 narrative_memory_successes,
                 len(NARRATIVE_MEMORY_PROBES),
             ),
+            "conversation_continuity_score": _ratio(
+                continuity_successes,
+                len(CONVERSATION_CONTINUITY_PROBES),
+            ),
+            "relationship_reasoning_score": _ratio(
+                relationship_successes,
+                len(RELATIONSHIP_PROBES),
+            ),
+            "ethical_reasoning_score": _ratio(
+                ethical_successes,
+                len(ETHICAL_REASONING_PROBES),
+            ),
             "offline_language_routing_accuracy": _ratio(
                 offline_language_successes,
                 len(OFFLINE_LANGUAGE_PROBES),
             ),
             "internet_suppression_accuracy": _ratio(
+                internet_suppression_successes,
+                len(INTERNET_SUPPRESSION_PROBES),
+            ),
+            "internet_suppression_score": _ratio(
                 internet_suppression_successes,
                 len(INTERNET_SUPPRESSION_PROBES),
             ),
@@ -612,6 +684,7 @@ def evaluate(input_path: Path) -> dict[str, Any]:
                 wrong_safety_triggers,
                 len(INTERNET_SUPPRESSION_PROBES),
             ),
+            "repetition_rate": _ratio(repetition_failures, 3),
             "hybrid_knowledge_engine_success": _ratio(
                 hybrid_knowledge_successes,
                 len(HYBRID_KNOWLEDGE_PROBES),
@@ -678,12 +751,28 @@ def evaluate(input_path: Path) -> dict[str, Any]:
             "narrative_memory_score"
         ]
         > 0.9,
+        "conversation_continuity_score_above_90_percent": metrics[
+            "conversation_continuity_score"
+        ]
+        > 0.9,
+        "relationship_reasoning_score_above_90_percent": metrics[
+            "relationship_reasoning_score"
+        ]
+        > 0.9,
+        "ethical_reasoning_score_above_90_percent": metrics[
+            "ethical_reasoning_score"
+        ]
+        > 0.9,
         "offline_language_routing_accuracy_above_90_percent": metrics[
             "offline_language_routing_accuracy"
         ]
         > 0.9,
         "internet_suppression_accuracy_above_95_percent": metrics[
             "internet_suppression_accuracy"
+        ]
+        > 0.95,
+        "internet_suppression_score_above_95_percent": metrics[
+            "internet_suppression_score"
         ]
         > 0.95,
         "casual_rapport_success_above_90_percent": metrics[
@@ -702,6 +791,7 @@ def evaluate(input_path: Path) -> dict[str, Any]:
             "wrong_safety_trigger_rate"
         ]
         < 0.005,
+        "repetition_rate_below_2_percent": metrics["repetition_rate"] < 0.02,
         "hybrid_knowledge_engine_success_100_percent": metrics[
             "hybrid_knowledge_engine_success"
         ]

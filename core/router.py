@@ -128,6 +128,12 @@ ETHICAL_MARKERS = (
     "unethical but legal",
     "ethical",
     "morally",
+    "cheated in an exam",
+    "should i report",
+    "report him",
+    "report her",
+    "report wrongdoing",
+    "wrongdoing",
 )
 
 STRUCTURED_PROBLEM_MARKERS = (

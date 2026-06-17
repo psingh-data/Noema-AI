@@ -270,6 +270,15 @@ def render_notes(message: dict) -> None:
             st.divider()
             st.write("**Conversation State**")
             st.write(
+                "**Active Thread:** "
+                + str(state_snapshot.get("active_thread") or "general_thread")
+            )
+            if state_snapshot.get("follow_up_to"):
+                st.write(
+                    "**Follow-Up To:** "
+                    + str(state_snapshot.get("follow_up_to"))
+                )
+            st.write(
                 "**Active Themes:** "
                 + ", ".join(state_snapshot.get("active_themes", []) or ["None"])
             )
@@ -317,6 +326,20 @@ def render_notes(message: dict) -> None:
                 "**Major Goals:** "
                 + ", ".join(state_snapshot.get("major_goals", []) or ["None"])
             )
+            st.write(
+                "**Important Relationships:** "
+                + ", ".join(
+                    state_snapshot.get("important_relationships", []) or ["None"]
+                )
+            )
+            st.write(
+                "**Recurring Decisions:** "
+                + ", ".join(state_snapshot.get("recurring_decisions", []) or ["None"])
+            )
+            if state_snapshot.get("life_map_items_used"):
+                st.write("**Life Map Items Used:**")
+                for item in state_snapshot.get("life_map_items_used", []):
+                    st.write(f"- {item}")
             if state_snapshot.get("conversation_summary"):
                 st.caption(state_snapshot["conversation_summary"])
 

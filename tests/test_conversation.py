@@ -689,3 +689,94 @@ def test_v13_ethical_reasoning_avoids_generic_decision_template():
     assert "harm" in lowered
     assert "responsibility" in lowered or "autonomy" in lowered
     assert "tell me the options" not in lowered
+
+
+def test_v20_tracks_active_thread_and_stage_progression():
+    state = ConversationState()
+    first = continue_conversation("My grandfather died yesterday.", state)
+    first_stage = first.state.conversation_stage
+    first_thread = first.state.active_thread
+    second = continue_conversation("I don't know what to do.", first.state)
+    third = continue_conversation("This feels unbearable.", second.state)
+
+    assert first_thread == "grief_thread"
+    assert first_stage == "initial_disclosure"
+    assert second.state.active_thread == "grief_thread"
+    assert second.state.conversation_stage in {"practical_guidance", "clarification"}
+    assert third.state.active_thread == "grief_thread"
+    assert third.state.conversation_stage != "initial_disclosure"
+
+
+def test_v20_adhd_followup_uses_active_thread_not_fresh_routing():
+    first = continue_conversation("I can't focus. Do I have ADHD?")
+    second = continue_conversation("This only started last year.", first.state)
+    lowered = second.response.lower()
+
+    assert first.state.active_thread == "adhd_thread"
+    assert second.route.intent == "conversation_continuity"
+    assert second.state.active_thread == "adhd_thread"
+    assert second.state.follow_up_to == "adhd_thread"
+    assert "only started last year" in lowered
+    assert "adhd less straightforward" in lowered
+    assert "burnout" in lowered
+
+
+def test_v20_relationship_mixed_feelings_do_not_route_to_depression():
+    reply = continue_conversation("I love her but I'm exhausted.")
+    lowered = reply.response.lower()
+
+    assert reply.route.topic == "relationship"
+    assert reply.state.active_thread == "relationship_thread"
+    assert reply.route.intent in {"emotional reflection", "decision support"}
+    assert "relationship" in lowered
+    assert "draining" in lowered or "exhaustion" in lowered
+
+
+def test_v20_ethical_reporting_uses_values_not_generic_decision_frame():
+    reply = continue_conversation("My friend cheated in an exam. Should I report him?")
+    lowered = reply.response.lower()
+
+    assert reply.route.intent == "ethical_dilemma"
+    assert reply.state.active_thread == "ethical_thread"
+    assert "fairness" in lowered
+    assert "loyalty" in lowered
+    assert "responsibility" in lowered
+    assert "benefit, cost, risk" not in lowered
+
+
+def test_v20_life_map_snapshot_tracks_relationships_and_decisions():
+    state = ConversationState()
+    first = continue_conversation("My grandfather died last year.", state)
+    second = continue_conversation(
+        "I love psychology but Data Science pays more and my family expects stability.",
+        first.state,
+    )
+    final = continue_conversation(
+        "What do you think is actually driving most of my stress?",
+        second.state,
+    )
+
+    snapshot = final.state
+    assert "loss of grandfather" in snapshot.major_losses
+    assert "financial security" in snapshot.recurring_values
+    assert snapshot.recurring_decisions
+    assert snapshot.life_map_items_used
+    assert final.route.intent == "narrative_memory"
+
+
+def test_v20_repetition_guard_changes_angle_for_repeated_local_response():
+    state = ConversationState()
+    state.last_responses.append(
+        "I can help with that, but the enhanced general-answer model is not "
+        "available in this session. I do not want to manufacture an answer from "
+        "a narrow local rule set."
+    )
+    reply = continue_conversation("Why is grass green?", state)
+
+    assert reply.response.startswith(
+        (
+            "Let me take this from a different angle",
+            "Different angle:",
+            "I am going to avoid looping",
+        )
+    )
