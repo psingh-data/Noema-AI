@@ -66,6 +66,11 @@ class ConversationState:
     reasoning_style: str = "reflective"
     interventions_tried: list[str] = field(default_factory=list)
     interventions_failed: list[str] = field(default_factory=list)
+    major_losses: list[str] = field(default_factory=list)
+    recurring_fears: list[str] = field(default_factory=list)
+    recurring_conflicts: list[str] = field(default_factory=list)
+    recurring_values: list[str] = field(default_factory=list)
+    major_goals: list[str] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -301,6 +306,62 @@ def _summarize_state(state: ConversationState) -> str:
     return "Conversation state - " + "; ".join(parts) if parts else ""
 
 
+def _stress_driver_response(state: ConversationState) -> str:
+    drivers: list[str] = []
+    if state.major_losses:
+        drivers.append(
+            "the emotional weight of "
+            + ", ".join(state.major_losses[:2])
+        )
+    if state.recurring_fears:
+        drivers.append(
+            "recurring fear around "
+            + ", ".join(state.recurring_fears[:2])
+        )
+    if state.recurring_conflicts:
+        drivers.append(
+            "conflicts between "
+            + ", ".join(state.recurring_conflicts[:2])
+        )
+    if state.recurring_values and state.major_goals:
+        drivers.append(
+            "the pressure to protect values like "
+            + ", ".join(state.recurring_values[:2])
+            + " while moving toward "
+            + ", ".join(state.major_goals[:2])
+        )
+    if not drivers:
+        return (
+            "From what you have shared so far, I do not have enough repeated context "
+            "to name one main driver confidently. I would look for the pattern that "
+            "keeps returning across different topics: fear, loss, conflict, values, "
+            "or a goal that feels uncertain."
+        )
+    return (
+        "Looking across what you have shared, I do not think your stress is coming "
+        "from one small problem. The strongest pattern seems to be "
+        + "; ".join(drivers[:3])
+        + ".\n\n"
+        "My read: the stress is probably being driven by uncertainty about the "
+        "future while you are also carrying emotional weight from the past. That "
+        "combination can make every practical decision feel bigger than it really is.\n\n"
+        "The next useful move is to separate grief or emotional load from the actual "
+        "decision in front of you, then choose one concrete step that protects the "
+        "future without demanding total certainty today."
+    )
+
+
+def _asks_for_stress_driver(text: str) -> bool:
+    normalized = " ".join(text.lower().split())
+    return (
+        "driving most of my stress" in normalized
+        or "what is driving my stress" in normalized
+        or "why am i so stressed" in normalized
+        or "main reason i am stressed" in normalized
+        or "actually driving" in normalized
+    )
+
+
 def conversation_state_snapshot(state: ConversationState) -> dict[str, object]:
     return {
         "active_themes": sorted(
@@ -330,6 +391,11 @@ def conversation_state_snapshot(state: ConversationState) -> dict[str, object]:
         "last_5_styles": list(state.last_5_styles),
         "interventions_tried": list(state.interventions_tried),
         "interventions_failed": list(state.interventions_failed),
+        "major_losses": list(state.major_losses),
+        "recurring_fears": list(state.recurring_fears),
+        "recurring_conflicts": list(state.recurring_conflicts),
+        "recurring_values": list(state.recurring_values),
+        "major_goals": list(state.major_goals),
     }
 
 
@@ -383,6 +449,85 @@ def _update_intervention_tracking(text: str, state: ConversationState) -> None:
             _remember_once(state.interventions_tried, label, limit=8)
             if failed:
                 _remember_once(state.interventions_failed, label, limit=8)
+
+
+def _update_narrative_memory(text: str, state: ConversationState) -> None:
+    normalized = " ".join(text.lower().split())
+    for loss_marker, label in (
+        ("grandfather", "loss of grandfather"),
+        ("grandmother", "loss of grandmother"),
+        ("cat died", "loss of cat"),
+        ("dog died", "loss of dog"),
+        ("passed away", "bereavement"),
+        ("died", "bereavement"),
+    ):
+        if loss_marker in normalized:
+            _remember_once(state.major_losses, label, limit=6)
+
+    fear_patterns = (
+        ("wrong decision", "making the wrong life decision"),
+        ("feel behind", "falling behind others"),
+        ("behind compared", "falling behind others"),
+        ("future", "uncertainty about the future"),
+        ("admission", "uncertainty about admissions"),
+        ("not smart enough", "not being capable enough"),
+        ("life is ruined", "future being ruined"),
+        ("can't focus", "attention not cooperating"),
+        ("cannot focus", "attention not cooperating"),
+    )
+    for marker, label in fear_patterns:
+        if marker in normalized:
+            _remember_once(state.recurring_fears, label, limit=8)
+
+    conflict_patterns = (
+        ("family pressure", "family expectations"),
+        ("family expects", "family expectations"),
+        ("girlfriend", "relationship strain"),
+        ("boyfriend", "relationship strain"),
+        ("partner", "relationship strain"),
+        ("boss", "workplace unfairness"),
+        ("manager", "workplace unfairness"),
+        ("company", "career/workplace tension"),
+        ("business", "business versus safer path"),
+        ("university", "education or admissions decision"),
+        ("data science", "interest versus employability"),
+        ("psychology", "interest versus employability"),
+    )
+    for marker, label in conflict_patterns:
+        if marker in normalized:
+            _remember_once(state.recurring_conflicts, label, limit=8)
+
+    value_patterns = (
+        ("meaningful", "meaning"),
+        ("psychology", "understanding people"),
+        ("cognitive science", "mind and cognition"),
+        ("business", "independence"),
+        ("income", "financial security"),
+        ("salary", "financial security"),
+        ("pays more", "financial security"),
+        ("pay more", "financial security"),
+        ("family", "family responsibility"),
+        ("truth", "honesty"),
+        ("fairness", "fairness"),
+        ("freedom", "freedom"),
+    )
+    for marker, label in value_patterns:
+        if marker in normalized:
+            _remember_once(state.recurring_values, label, limit=8)
+
+    goal_patterns = (
+        ("germany", "move or study in Germany"),
+        ("admission", "secure admissions"),
+        ("university", "choose an education path"),
+        ("data science", "build a data/career path"),
+        ("business", "test a business path"),
+        ("career", "build a stable career"),
+        ("focus", "regain focus"),
+        ("adhd", "understand attention difficulties"),
+    )
+    for marker, label in goal_patterns:
+        if marker in normalized:
+            _remember_once(state.major_goals, label, limit=8)
 
 
 def _affirmative_risk(text: str) -> bool:
@@ -948,6 +1093,7 @@ def continue_conversation(
     )
     if safety_reply:
         _update_symptom_layer(state, current_symptom_profile, current_clinical_overlaps)
+        _update_narrative_memory(text, state)
         _update_state(text, analysis, signals, state, safety_reply.route)
         state.current_intent = safety_reply.route.intent
         state.knowledge_route = safety_reply.route.knowledge_route
@@ -981,6 +1127,16 @@ def continue_conversation(
             confidence=1.0,
             reason="The user explicitly requested research evidence.",
         )
+    if _asks_for_stress_driver(text):
+        _update_narrative_memory(text, state)
+        route = RouteDecision(
+            intent="narrative_memory",
+            response_mode="Insight",
+            knowledge_route="conversation context",
+            confidence=0.93,
+            reason="The user asks for an accumulated-context explanation of their stress pattern.",
+            topic="general",
+        )
     current_explanations = possible_explanations(text, current_symptom_profile)
     current_style = select_response_style(
         intent=route.intent,
@@ -989,6 +1145,7 @@ def continue_conversation(
     )
     _update_reasoning_layer(state, current_explanations, current_style)
     _update_intervention_tracking(text, state)
+    _update_narrative_memory(text, state)
     state.current_intent = route.intent
     state.knowledge_route = route.knowledge_route
     if (
@@ -1027,6 +1184,20 @@ def continue_conversation(
         )
         return ConversationReply(
             response=routed_response,
+            analysis=analysis,
+            state=state,
+            clinical_domains=tuple(signal.domain for signal in signals),
+            recommendation_type=state.support_urgency,
+            route=route,
+            symptom_profile=current_symptom_profile,
+            possible_clinical_overlaps=current_clinical_overlaps,
+            possible_explanations=current_explanations,
+            reasoning_style=current_style,
+        )
+
+    if route.intent == "narrative_memory":
+        return ConversationReply(
+            response=_stress_driver_response(state),
             analysis=analysis,
             state=state,
             clinical_domains=tuple(signal.domain for signal in signals),

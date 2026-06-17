@@ -27,6 +27,7 @@ No fine-tuning was performed. This report evaluates deterministic routing, emoti
 | `symptom_education_score` | 100.00% |
 | `identity_depth_score` | 100.00% |
 | `response_variety_score` | 100.00% |
+| `narrative_memory_score` | 100.00% |
 | `longform_response_success_rate` | 90.55% |
 | `therapy_retrieval_success_rate` | 100.00% |
 
@@ -51,6 +52,7 @@ No fine-tuning was performed. This report evaluates deterministic routing, emoti
 - [x] `symptom_education_score_above_90_percent`
 - [x] `identity_depth_score_above_90_percent`
 - [x] `response_variety_score_above_60_percent`
+- [x] `narrative_memory_score_above_90_percent`
 
 ## Notes
 

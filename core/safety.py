@@ -66,11 +66,42 @@ CONCERN_PHRASES = (
     "do not want to be here anymore",
 )
 
+INTENT_PHRASES = (
+    "i want to",
+    "i am going to",
+    "i'm going to",
+    "i plan to",
+    "planning to",
+    "i might",
+    "i may",
+    "about to",
+    "ready to",
+    "tonight",
+    "today",
+    "now",
+    "soon",
+)
+
+SELF_HARM_OBJECTS = (
+    "kill myself",
+    "end my life",
+    "take my life",
+    "suicide",
+    "hurt myself",
+    "harm myself",
+    "self harm",
+    "self-harm",
+)
+
 AMBIGUOUS_CONCERN_PHRASES = (
     "can't go on",
     "cannot go on",
     "don't want to be here anymore",
     "do not want to be here anymore",
+    "want to disappear forever",
+    "nobody would care if i disappeared",
+    "feel like dying",
+    "feeling like dying",
 )
 
 ORDINARY_CONTEXT_MARKERS = (
@@ -89,6 +120,31 @@ ORDINARY_CONTEXT_MARKERS = (
     "watching this",
 )
 
+NON_CRISIS_CONTEXT_MARKERS = (
+    "grandfather",
+    "grandmother",
+    "grief",
+    "died",
+    "passed away",
+    "career",
+    "job",
+    "university",
+    "study",
+    "business",
+    "relationship",
+    "girlfriend",
+    "boyfriend",
+    "partner",
+    "who i am",
+    "identity",
+    "adhd",
+    "focus",
+    "free will",
+    "point of life",
+    "meaning of life",
+    "existential",
+)
+
 NEGATED_PHRASES = (
     "not suicidal",
     "not going to kill myself",
@@ -103,6 +159,12 @@ NEGATED_PHRASES = (
 )
 
 
+def _has_actual_self_harm_intent(text: str) -> bool:
+    return any(marker in text for marker in SELF_HARM_OBJECTS) and any(
+        marker in text for marker in INTENT_PHRASES
+    )
+
+
 def assess_safety(text: str) -> SafetyResult:
     """Return a conservative safety classification for user-provided text."""
     normalized = " ".join(text.lower().split())
@@ -111,6 +173,7 @@ def assess_safety(text: str) -> SafetyResult:
         screened = screened.replace(phrase, " ")
     screened = " ".join(screened.split())
     ordinary_context = any(marker in screened for marker in ORDINARY_CONTEXT_MARKERS)
+    non_crisis_context = any(marker in screened for marker in NON_CRISIS_CONTEXT_MARKERS)
 
     immediate = tuple(phrase for phrase in IMMEDIATE_PHRASES if phrase in screened)
     if immediate:
@@ -120,7 +183,11 @@ def assess_safety(text: str) -> SafetyResult:
         phrase
         for phrase in CONCERN_PHRASES
         if phrase in screened
-        and not (ordinary_context and phrase in AMBIGUOUS_CONCERN_PHRASES)
+        and not (
+            phrase in AMBIGUOUS_CONCERN_PHRASES
+            and (ordinary_context or non_crisis_context)
+            and not _has_actual_self_harm_intent(screened)
+        )
     )
     if concern:
         return SafetyResult(level="concern", matched_phrases=concern)

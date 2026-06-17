@@ -267,6 +267,26 @@ def render_notes(message: dict) -> None:
                 "**Interventions Failed:** "
                 + ", ".join(state_snapshot.get("interventions_failed", []) or ["None"])
             )
+            st.write(
+                "**Major Losses:** "
+                + ", ".join(state_snapshot.get("major_losses", []) or ["None"])
+            )
+            st.write(
+                "**Recurring Fears:** "
+                + ", ".join(state_snapshot.get("recurring_fears", []) or ["None"])
+            )
+            st.write(
+                "**Recurring Conflicts:** "
+                + ", ".join(state_snapshot.get("recurring_conflicts", []) or ["None"])
+            )
+            st.write(
+                "**Recurring Values:** "
+                + ", ".join(state_snapshot.get("recurring_values", []) or ["None"])
+            )
+            st.write(
+                "**Major Goals:** "
+                + ", ".join(state_snapshot.get("major_goals", []) or ["None"])
+            )
             if state_snapshot.get("conversation_summary"):
                 st.caption(state_snapshot["conversation_summary"])
 

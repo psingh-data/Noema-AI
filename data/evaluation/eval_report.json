@@ -21,6 +21,7 @@
     "symptom_education_score": 1.0,
     "identity_depth_score": 1.0,
     "response_variety_score": 1.0,
+    "narrative_memory_score": 1.0,
     "longform_response_success_rate": 0.9055,
     "therapy_retrieval_success_rate": 1.0
   },
@@ -43,7 +44,8 @@
     "research_humanization_score_above_90_percent": true,
     "symptom_education_score_above_90_percent": true,
     "identity_depth_score_above_90_percent": true,
-    "response_variety_score_above_60_percent": true
+    "response_variety_score_above_60_percent": true,
+    "narrative_memory_score_above_90_percent": true
   },
   "sample_counts": {
     "intent": 1941,

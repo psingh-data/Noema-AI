@@ -91,8 +91,12 @@ FAILED_INTERVENTION_MARKERS = (
 IDENTITY_EXPLORATION_MARKERS = (
     "someone i don't recognize",
     "someone i do not recognize",
+    "don't recognize myself",
+    "do not recognize myself",
     "who i am anymore",
+    "who am i anymore",
     "parts of me are real",
+    "my real self",
     "not myself anymore",
     "became someone",
     "identity",

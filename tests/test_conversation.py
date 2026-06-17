@@ -615,3 +615,77 @@ def test_identity_exploration_goes_deeper_than_surface_question():
     assert "values" in lowered
     assert "approval" in lowered
     assert "who am i" in lowered
+
+
+def test_v13_safety_precision_does_not_trigger_for_non_crisis_contexts():
+    examples = (
+        "My grandfather died yesterday and I feel like disappearing.",
+        "I don't want to be here anymore in this relationship.",
+        "I can't go on with this career uncertainty.",
+        "I don't know who I am anymore.",
+        "I can't focus. Do I have ADHD?",
+        "What is the point of life if everyone dies eventually?",
+    )
+    for text in examples:
+        reply = continue_conversation(text)
+        assert reply.route.intent != "crisis / safety", text
+
+
+def test_v13_safety_still_triggers_for_actual_self_harm_intent():
+    examples = (
+        "I am going to kill myself tonight.",
+        "I have a suicide plan.",
+        "I want to end my life.",
+        "I might hurt myself now.",
+    )
+    for text in examples:
+        reply = continue_conversation(text)
+        assert reply.route.intent == "crisis / safety", text
+
+
+def test_v13_identity_variants_route_to_identity_exploration():
+    examples = (
+        "I don't recognize myself anymore.",
+        "Who am I anymore?",
+        "I don't know what my real self is.",
+    )
+    for text in examples:
+        reply = continue_conversation(text)
+        assert reply.route.intent == "identity_exploration", text
+
+
+def test_v13_narrative_memory_answers_stress_driver_question():
+    state = ConversationState()
+    first = continue_conversation("My grandfather died last year.", state)
+    second = continue_conversation(
+        "I am waiting for Germany admissions and I feel behind compared to friends.",
+        first.state,
+    )
+    third = continue_conversation(
+        "I love psychology but Data Science pays more and my family expects stability.",
+        second.state,
+    )
+    final = continue_conversation(
+        "What do you think is actually driving most of my stress?",
+        third.state,
+    )
+    lowered = final.response.lower()
+
+    assert final.route.intent == "narrative_memory"
+    assert "loss of grandfather" in final.state.major_losses
+    assert "falling behind others" in final.state.recurring_fears
+    assert "financial security" in final.state.recurring_values
+    assert "uncertainty about the future" in lowered or "future" in lowered
+    assert "emotional weight" in lowered
+
+
+def test_v13_ethical_reasoning_avoids_generic_decision_template():
+    reply = continue_conversation(
+        "My company is doing something unethical but legal. What should I do?"
+    )
+    lowered = reply.response.lower()
+
+    assert reply.route.intent == "ethical_dilemma"
+    assert "harm" in lowered
+    assert "responsibility" in lowered or "autonomy" in lowered
+    assert "tell me the options" not in lowered
