@@ -1,0 +1,343 @@
+{
+  "pure_emotional_validation": {
+    "emotions": [
+      "sadness",
+      "emptiness",
+      "numbness",
+      "shame",
+      "guilt",
+      "hopelessness",
+      "confusion",
+      "overwhelm"
+    ],
+    "topics": [
+      "general emotional pain",
+      "self-worth",
+      "stress",
+      "inner heaviness"
+    ],
+    "phrases": [
+      "I feel sad",
+      "I feel empty",
+      "I feel numb",
+      "I feel lost",
+      "I feel broken",
+      "I feel heavy",
+      "I feel like crying",
+      "I don't know what I feel",
+      "I feel weird",
+      "I feel off",
+      "I feel hollow",
+      "I feel dead inside",
+      "I feel low",
+      "I feel worthless",
+      "I feel like I am not enough",
+      "I feel tired of everything",
+      "I am not okay",
+      "I feel emotionally drained",
+      "I just feel bad and I don't know why",
+      "I feel like something is missing"
+    ],
+    "gen_z_slang": [
+      "I'm cooked",
+      "I'm so done",
+      "I'm fried",
+      "I'm not vibing with life rn",
+      "I'm lowkey broken",
+      "I'm feeling mad empty",
+      "I'm just existing",
+      "I'm in my feels",
+      "I'm mentally checked out",
+      "I'm down bad emotionally",
+      "I'm crashing out but quietly",
+      "Life feels mid",
+      "I'm on autopilot",
+      "I'm an NPC today"
+    ],
+    "response_strategy": "Validate first, name possible feeling gently, avoid fixing too fast, offer one small grounding or reflective step."
+  },
+  "grief_disclosure": {
+    "emotions": [
+      "grief",
+      "sadness",
+      "shock",
+      "longing",
+      "guilt",
+      "numbness"
+    ],
+    "topics": [
+      "loss",
+      "bereavement",
+      "death",
+      "pet loss",
+      "family loss"
+    ],
+    "phrases": [
+      "My grandfather died",
+      "My grandmother passed away",
+      "My father died",
+      "My mother passed away",
+      "My dog died",
+      "My cat died",
+      "I lost someone",
+      "I miss him",
+      "I miss her",
+      "I can't believe they are gone",
+      "I still cry about them",
+      "It feels unreal",
+      "I feel guilty for laughing",
+      "I don't know how to grieve",
+      "I want them back",
+      "I keep remembering them",
+      "Their death still hurts",
+      "I feel alone after losing them",
+      "The house feels empty without them",
+      "I don't know what to do after the funeral"
+    ],
+    "gen_z_slang": [
+      "I lost my person",
+      "I'm not processing this",
+      "This doesn't feel real",
+      "I'm cooked after this loss",
+      "I can't function after losing them",
+      "I'm broken after this",
+      "I miss them so bad",
+      "Grief is hitting different today",
+      "I can't lie this loss destroyed me"
+    ],
+    "response_strategy": "Detect timing. For acute loss use shock/numbness language. For ongoing loss use grief-waves language. Never repeat same grief template across turns."
+  },
+  "venting": {
+    "emotions": [
+      "anger",
+      "frustration",
+      "irritation",
+      "exhaustion"
+    ],
+    "topics": [
+      "complaint",
+      "release",
+      "unfairness",
+      "stress"
+    ],
+    "phrases": [
+      "I just need to vent",
+      "I don't want advice",
+      "Let me complain",
+      "This is so unfair",
+      "I am sick of this",
+      "I can't take this anymore",
+      "Everything is annoying me",
+      "People are exhausting",
+      "I am tired of everyone",
+      "I just want to say this",
+      "Don't analyze me",
+      "Just listen",
+      "I hate this situation",
+      "I am fed up",
+      "I need to get this out",
+      "This whole thing is bullshit",
+      "I am so irritated"
+    ],
+    "gen_z_slang": [
+      "I need to rant",
+      "This is so annoying fr",
+      "I'm done fr",
+      "I'm crashing out",
+      "This is actual bs",
+      "I'm losing it",
+      "I'm so over it",
+      "I'm heated",
+      "Let me yap",
+      "I just wanna yap",
+      "No advice pls",
+      "This is giving me the ick"
+    ],
+    "response_strategy": "Listen without advice unless asked. Reflect emotion and invite them to continue in their own words."
+  },
+  "loneliness": {
+    "emotions": [
+      "loneliness",
+      "disconnection",
+      "rejection",
+      "invisibility"
+    ],
+    "topics": [
+      "social isolation",
+      "belonging",
+      "friendship",
+      "connection"
+    ],
+    "phrases": [
+      "I feel lonely",
+      "Nobody understands me",
+      "Nobody checks on me",
+      "I have no one",
+      "I feel invisible",
+      "Everyone has someone except me",
+      "I feel disconnected from people",
+      "I am alone even around people",
+      "I don't know who to talk to",
+      "I feel forgotten",
+      "People only remember me when they need something",
+      "I feel left out",
+      "I feel unwanted",
+      "I don't belong anywhere",
+      "I feel like a burden"
+    ],
+    "gen_z_slang": [
+      "I'm lonely af",
+      "No one got me fr",
+      "I'm ghosted by everyone",
+      "I'm just background character",
+      "I'm NPC in everyone's life",
+      "Nobody texts first",
+      "I'm lowkey invisible",
+      "I'm third-wheeling life",
+      "I'm not anyone's priority",
+      "I feel mad alone"
+    ],
+    "response_strategy": "Validate isolation, distinguish wanting connection vs fearing burden, suggest low-pressure connection without forcing socializing."
+  },
+  "casual_conversation": {
+    "emotions": [
+      "neutral",
+      "playful",
+      "boredom",
+      "curiosity"
+    ],
+    "topics": [
+      "small talk",
+      "humor",
+      "casual",
+      "boredom"
+    ],
+    "phrases": [
+      "Hi",
+      "Hello",
+      "Hey",
+      "What's up",
+      "How are you",
+      "I am bored",
+      "Tell me a joke",
+      "Roast me lightly",
+      "Talk to me",
+      "Say something random",
+      "I am the king",
+      "What are we doing today",
+      "Entertain me",
+      "I don't know what to ask",
+      "Tell me something interesting",
+      "Give me a random thought"
+    ],
+    "gen_z_slang": [
+      "yo",
+      "sup",
+      "wassup",
+      "wyd",
+      "I'm bored fr",
+      "say something wild",
+      "cook something",
+      "roast me but don't violate me",
+      "I'm him",
+      "main character moment",
+      "vibe check",
+      "give me lore",
+      "drop wisdom",
+      "make it funny"
+    ],
+    "response_strategy": "Warm, playful, no therapy mode unless user turns serious. Ask light preference or respond casually."
+  },
+  "identity_reflection": {
+    "emotions": [
+      "confusion",
+      "emptiness",
+      "self-doubt",
+      "identity diffusion"
+    ],
+    "topics": [
+      "identity",
+      "values",
+      "authenticity",
+      "self-concept"
+    ],
+    "phrases": [
+      "I don't know who I am",
+      "I lost myself",
+      "I don't know what I want",
+      "I feel fake",
+      "I feel like I am performing",
+      "I don't recognize myself",
+      "Who am I without success",
+      "I only live for others",
+      "I don't know my real personality",
+      "I feel like I change around everyone",
+      "I don't know what is actually mine",
+      "My personality is built around achievement",
+      "I don't know my values",
+      "I feel like I became what people wanted",
+      "I don't know what makes me me"
+    ],
+    "gen_z_slang": [
+      "I lost my plot",
+      "I don't know my lore anymore",
+      "I'm not the main character in my own life",
+      "I'm just performing",
+      "I'm in identity crisis fr",
+      "I feel fake af",
+      "I built my whole personality on validation",
+      "Who even am I rn",
+      "I'm having a character arc but bad"
+    ],
+    "response_strategy": "Explore roles, values, approval, achievement identity, and authenticity. Do not default to generic reflection."
+  },
+  "relationship_feelings": {
+    "emotions": [
+      "love",
+      "confusion",
+      "hurt",
+      "insecurity",
+      "guilt",
+      "attachment anxiety"
+    ],
+    "topics": [
+      "relationship",
+      "partner",
+      "breakup",
+      "attachment",
+      "conflict"
+    ],
+    "phrases": [
+      "I love her but I am tired",
+      "I don't think I love him anymore",
+      "My girlfriend is distant",
+      "My boyfriend doesn't understand me",
+      "We keep fighting",
+      "I miss my ex",
+      "I feel insecure in my relationship",
+      "I am scared they will leave",
+      "I want to leave but I feel guilty",
+      "They love me but I don't feel the same",
+      "Should I stay or leave",
+      "I feel emotionally drained",
+      "I feel attached but unhappy",
+      "I don't know if this relationship is healthy",
+      "I feel relieved when I imagine leaving"
+    ],
+    "gen_z_slang": [
+      "I'm down bad",
+      "She gives me mixed signals",
+      "He left me on read",
+      "I'm getting ghosted",
+      "This relationship is draining fr",
+      "I caught the ick",
+      "I love them but I'm tired",
+      "It's giving toxic",
+      "I'm attached but not happy",
+      "I miss my ex bad",
+      "We're in a situationship",
+      "I feel like a backup option"
+    ],
+    "response_strategy": "Validate mixed feelings, look for patterns, communication, boundaries, repair attempts, safety, and clarity. Avoid forcing decision."
+  }
+}

@@ -76,6 +76,12 @@ INTENT_ALIASES = {
     "cognitive_distortion_long": "cognitive_challenge",
     "casual_long_but_natural": "casual",
     "therapy_recommendation": "intervention_request",
+    "pure_emotional_validation": "emotional_reflection",
+    "grief_disclosure": "grief",
+    "casual_conversation": "casual",
+    "identity_reflection": "identity_exploration",
+    "relationship_feelings": "emotional_reflection",
+    "loneliness": "emotional_reflection",
 }
 
 MODE_BY_INTENT = {

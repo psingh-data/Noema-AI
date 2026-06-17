@@ -19,6 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from core.conversation import continue_conversation
 from core.emotion_detector import detect_emotion
 from core.fewshot import canonical_runtime_intent
+from core.language_ontology import match_language_ontology
 
 
 EVALUATED_INTENTS = {
@@ -168,6 +169,23 @@ NARRATIVE_MEMORY_PROBES = (
         ),
         ("emotional weight", "future"),
     ),
+)
+
+OFFLINE_LANGUAGE_PROBES = (
+    ("I'm cooked", "pure_emotional_validation", "emotional reflection"),
+    ("let me yap", "venting", "venting"),
+    ("no one got me fr", "loneliness", "emotional reflection"),
+    ("I lost my plot", "identity_reflection", "identity_exploration"),
+    ("this relationship is draining fr", "relationship_feelings", "emotional reflection"),
+    ("yo", "casual_conversation", "casual conversation"),
+    ("my grandfather died yesterday", "grief_disclosure", "grief"),
+)
+
+INTERNET_SUPPRESSION_PROBES = tuple(probe[0] for probe in OFFLINE_LANGUAGE_PROBES)
+SLANG_UNDERSTANDING_PROBES = OFFLINE_LANGUAGE_PROBES[:5]
+CASUAL_RAPPORT_PROBES = ("yo", "hi", "wassup", "I'm bored")
+HYBRID_KNOWLEDGE_PROBES = (
+    "suggest evidence-based therapies for grief",
 )
 
 
@@ -441,6 +459,57 @@ def evaluate(input_path: Path) -> dict[str, Any]:
             marker in lowered for marker in expected_markers
         ):
             narrative_memory_successes += 1
+
+    offline_language_successes = 0
+    internet_suppression_successes = 0
+    wrong_internet_triggers = 0
+    wrong_safety_triggers = 0
+    for probe, expected_category, expected_intent in OFFLINE_LANGUAGE_PROBES:
+        reply = continue_conversation(probe)
+        ontology_match = match_language_ontology(probe)
+        predicted_intent = reply.route.intent
+        internet_triggered = reply.route.knowledge_route in {"internet", "research papers"}
+        if (
+            ontology_match.category == expected_category
+            and predicted_intent == expected_intent
+            and not internet_triggered
+        ):
+            offline_language_successes += 1
+        if not internet_triggered:
+            internet_suppression_successes += 1
+        else:
+            wrong_internet_triggers += 1
+        if reply.route.intent == "crisis / safety":
+            wrong_safety_triggers += 1
+
+    casual_rapport_successes = 0
+    for probe in CASUAL_RAPPORT_PROBES:
+        reply = continue_conversation(probe)
+        lowered = reply.response.lower()
+        if (
+            reply.route.intent == "casual conversation"
+            and reply.route.knowledge_route == "conversation context"
+            and "what feels most present" not in lowered
+            and "daily life" not in lowered
+        ):
+            casual_rapport_successes += 1
+
+    slang_understanding_successes = 0
+    for probe, expected_category, expected_intent in SLANG_UNDERSTANDING_PROBES:
+        reply = continue_conversation(probe)
+        ontology_match = match_language_ontology(probe)
+        if (
+            ontology_match.category == expected_category
+            and reply.route.intent == expected_intent
+            and reply.route.knowledge_route == "conversation context"
+        ):
+            slang_understanding_successes += 1
+
+    hybrid_knowledge_successes = 0
+    for probe in HYBRID_KNOWLEDGE_PROBES:
+        reply = continue_conversation(probe)
+        if reply.route.knowledge_route in {"internet", "research papers"}:
+            hybrid_knowledge_successes += 1
     longform_total = 0
     longform_successes = 0
     therapy_total = 0
@@ -519,6 +588,34 @@ def evaluate(input_path: Path) -> dict[str, Any]:
                 narrative_memory_successes,
                 len(NARRATIVE_MEMORY_PROBES),
             ),
+            "offline_language_routing_accuracy": _ratio(
+                offline_language_successes,
+                len(OFFLINE_LANGUAGE_PROBES),
+            ),
+            "internet_suppression_accuracy": _ratio(
+                internet_suppression_successes,
+                len(INTERNET_SUPPRESSION_PROBES),
+            ),
+            "casual_rapport_success": _ratio(
+                casual_rapport_successes,
+                len(CASUAL_RAPPORT_PROBES),
+            ),
+            "slang_understanding_success": _ratio(
+                slang_understanding_successes,
+                len(SLANG_UNDERSTANDING_PROBES),
+            ),
+            "wrong_internet_trigger_rate": _ratio(
+                wrong_internet_triggers,
+                len(INTERNET_SUPPRESSION_PROBES),
+            ),
+            "wrong_safety_trigger_rate": _ratio(
+                wrong_safety_triggers,
+                len(INTERNET_SUPPRESSION_PROBES),
+            ),
+            "hybrid_knowledge_engine_success": _ratio(
+                hybrid_knowledge_successes,
+                len(HYBRID_KNOWLEDGE_PROBES),
+            ),
             "longform_response_success_rate": _ratio(
                 longform_successes,
                 longform_total,
@@ -581,6 +678,34 @@ def evaluate(input_path: Path) -> dict[str, Any]:
             "narrative_memory_score"
         ]
         > 0.9,
+        "offline_language_routing_accuracy_above_90_percent": metrics[
+            "offline_language_routing_accuracy"
+        ]
+        > 0.9,
+        "internet_suppression_accuracy_above_95_percent": metrics[
+            "internet_suppression_accuracy"
+        ]
+        > 0.95,
+        "casual_rapport_success_above_90_percent": metrics[
+            "casual_rapport_success"
+        ]
+        > 0.9,
+        "slang_understanding_success_above_85_percent": metrics[
+            "slang_understanding_success"
+        ]
+        > 0.85,
+        "wrong_internet_trigger_rate_below_5_percent": metrics[
+            "wrong_internet_trigger_rate"
+        ]
+        < 0.05,
+        "wrong_safety_trigger_rate_below_0_5_percent": metrics[
+            "wrong_safety_trigger_rate"
+        ]
+        < 0.005,
+        "hybrid_knowledge_engine_success_100_percent": metrics[
+            "hybrid_knowledge_engine_success"
+        ]
+        == 1.0,
     }
     return {
         "metrics": metrics,

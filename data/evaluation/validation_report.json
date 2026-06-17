@@ -1,33 +1,38 @@
 {
   "valid": true,
-  "total_records": 2443,
+  "total_records": 70000,
   "error_count": 0,
   "warning_count": 0,
   "errors": [],
   "warnings": [],
   "records_by_source": {
-    "noema_longform_synthetic_v1": 2443
+    "noema_psych_language_ontology_v1": 50000,
+    "noema_longform_synthetic_v1": 20000
   },
   "records_by_split": {
-    "train": 2443
+    "train": 56000,
+    "validation": 7000,
+    "test": 7000
   },
   "records_by_intent": {
-    "grief": 227,
-    "intervention_request": 245,
-    "failed_intervention_repair": 122,
-    "identity_exploration": 122,
-    "achievement_self_worth": 122,
-    "advice": 216,
-    "decision_support": 382,
-    "cognitive_challenge": 114,
-    "existential_question": 122,
-    "ethical_dilemma": 122,
-    "structured_problem_solving": 122,
-    "casual": 122,
-    "user_frustration_repair": 122,
-    "conversation_continuity": 122,
-    "mixed_complex_life_problem": 76,
-    "workplace_discrimination": 85
+    "identity_exploration": 7043,
+    "emotional_reflection": 21783,
+    "venting": 7271,
+    "grief": 9256,
+    "casual": 8559,
+    "intervention_request": 2000,
+    "failed_intervention_repair": 1000,
+    "achievement_self_worth": 1000,
+    "advice": 1590,
+    "decision_support": 3286,
+    "cognitive_challenge": 941,
+    "existential_question": 1000,
+    "ethical_dilemma": 1000,
+    "structured_problem_solving": 1000,
+    "user_frustration_repair": 1000,
+    "conversation_continuity": 1000,
+    "mixed_complex_life_problem": 635,
+    "workplace_discrimination": 636
   },
   "checks": {
     "required_schema": true,

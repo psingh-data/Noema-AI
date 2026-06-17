@@ -11,6 +11,11 @@ from core.clinical_reasoning import (
     select_response_style,
     update_style_history,
 )
+from core.language_ontology import (
+    LanguageOntologyMatch,
+    empty_language_ontology_match,
+    match_language_ontology,
+)
 from core.pipeline import ReflectionResult, process_reflection
 from core.routed_responses import routed_local_response
 from core.router import RouteDecision, route_message
@@ -85,6 +90,9 @@ class ConversationReply:
     possible_clinical_overlaps: tuple[ClinicalOverlap, ...] = ()
     possible_explanations: tuple[PossibleExplanation, ...] = ()
     reasoning_style: str = "reflective"
+    language_ontology_match: LanguageOntologyMatch = field(
+        default_factory=empty_language_ontology_match
+    )
 
 
 DOMAIN_QUESTIONS = {
@@ -1079,6 +1087,7 @@ def continue_conversation(
         support_mode if support_mode in SUPPORT_MODES else "Just listen"
     )
     analysis = process_reflection(text)
+    language_match = match_language_ontology(text)
     signals = detect_clinical_signals(text)
     current_symptom_profile = build_symptom_profile(text)
     current_clinical_overlaps = possible_clinical_overlaps(current_symptom_profile)
@@ -1109,6 +1118,7 @@ def continue_conversation(
         prior_intent=state.current_intent,
         has_active_context=bool(
             state.accumulated_domains or state.pending_domain
+            or state.active_themes or state.narrative_progression
         ),
     )
     if knowledge_override == "internet":
@@ -1193,6 +1203,7 @@ def continue_conversation(
             possible_clinical_overlaps=current_clinical_overlaps,
             possible_explanations=current_explanations,
             reasoning_style=current_style,
+            language_ontology_match=language_match,
         )
 
     if route.intent == "narrative_memory":
@@ -1207,6 +1218,7 @@ def continue_conversation(
             possible_clinical_overlaps=current_clinical_overlaps,
             possible_explanations=current_explanations,
             reasoning_style=current_style,
+            language_ontology_match=language_match,
         )
 
     question_domain, question = _choose_question(signals, state)
@@ -1245,4 +1257,5 @@ def continue_conversation(
         possible_clinical_overlaps=current_clinical_overlaps,
         possible_explanations=current_explanations,
         reasoning_style=current_style,
+        language_ontology_match=language_match,
     )

@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
+from core.language_ontology import match_language_ontology, route_for_language_category
+
 
 @dataclass(frozen=True)
 class RouteDecision:
@@ -650,6 +652,7 @@ def route_message(
 ) -> RouteDecision:
     normalized = " ".join(text.lower().split())
     topic = detect_problem_topic(normalized)
+    language_match = match_language_ontology(text)
     emotional_statement = _is_emotional_statement(
         normalized,
         category=category,
@@ -699,6 +702,36 @@ def route_message(
             0.92,
             "The user asks for therapy, intervention, or evidence-informed support options.",
             topic,
+        )
+
+    language_route = (
+        route_for_language_category(language_match.category)
+        if (
+            language_match.matched
+            and not language_match.internet_needed
+            and not explicit_advice_requested(normalized)
+            and not explicit_decision_requested(normalized)
+            and preferred_mode
+            not in {
+                "Give me advice",
+                "Help me make a decision",
+                "Challenge my thinking",
+            }
+        )
+        else None
+    )
+    if language_route is not None:
+        intent, response_mode, language_topic = language_route
+        return RouteDecision(
+            intent,
+            response_mode,
+            "conversation context",
+            max(0.82, min(language_match.confidence, 0.99)),
+            (
+                "The offline Noema language ontology matched "
+                f"{language_match.category} without needing internet."
+            ),
+            topic if topic != "general" else language_topic,
         )
 
     if _has_any(normalized, USER_FRUSTRATION_MARKERS):

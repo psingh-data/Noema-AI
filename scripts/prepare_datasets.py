@@ -67,6 +67,21 @@ DEFAULT_SOURCES = {
     "noema_longform_test": Path(
         r"C:\Users\prabh\Downloads\noema_longform_dataset_20000\noema_longform_dataset\noema_longform_test.jsonl"
     ),
+    "noema_language_ontology": Path(
+        r"C:\Users\prabh\Downloads\noema_psych_language_ontology_50000\noema_language_ontology_dataset\noema_psych_language_ontology_50000.jsonl"
+    ),
+    "noema_language_train": Path(
+        r"C:\Users\prabh\Downloads\noema_psych_language_ontology_50000\noema_language_ontology_dataset\noema_language_train.jsonl"
+    ),
+    "noema_language_validation": Path(
+        r"C:\Users\prabh\Downloads\noema_psych_language_ontology_50000\noema_language_ontology_dataset\noema_language_validation.jsonl"
+    ),
+    "noema_language_test": Path(
+        r"C:\Users\prabh\Downloads\noema_psych_language_ontology_50000\noema_language_ontology_dataset\noema_language_test.jsonl"
+    ),
+    "noema_language_lexicon": Path(
+        r"C:\Users\prabh\Downloads\noema_psych_language_ontology_50000\noema_language_ontology_dataset\noema_language_lexicon.json"
+    ),
 }
 
 GOEMOTION_COLUMNS = (
@@ -111,6 +126,25 @@ LONGFORM_PRESERVED_INTENTS = {
     "user_frustration_repair",
     "conversation_continuity",
 }
+
+LANGUAGE_CATEGORY_TO_INTENT = {
+    "pure_emotional_validation": "emotional_reflection",
+    "grief_disclosure": "grief",
+    "venting": "venting",
+    "loneliness": "emotional_reflection",
+    "casual_conversation": "casual",
+    "identity_reflection": "identity_exploration",
+    "relationship_feelings": "emotional_reflection",
+}
+
+
+def _split_topics(value: Any) -> list[str]:
+    text = clean_text(value)
+    if not text:
+        return []
+    if "|" in text:
+        return [clean_text(item) for item in text.split("|") if clean_text(item)]
+    return as_list(value)
 
 
 def normalize_noema(path: Path, source: str) -> Iterable[dict[str, Any]]:
@@ -193,6 +227,57 @@ def normalize_longform(path: Path, source: str) -> Iterable[dict[str, Any]]:
                 ),
                 "source_row": index,
                 "input_hash": clean_text(row.get("input_hash")),
+            },
+        )
+
+
+def normalize_language_ontology(path: Path, source: str) -> Iterable[dict[str, Any]]:
+    for index, row in enumerate(iter_jsonl(path), start=1):
+        user_input = clean_text(row.get("text") or row.get("user_input"))
+        if not user_input:
+            continue
+        category = clean_text(row.get("category"))
+        intent = LANGUAGE_CATEGORY_TO_INTENT.get(category, "emotional_reflection")
+        canonical_emotion = clean_text(row.get("canonical_emotion")) or "neutral"
+        response_strategy = clean_text(row.get("response_strategy"))
+        routing_notes = clean_text(row.get("routing_notes"))
+        safety_note = clean_text(row.get("safety_note"))
+        topics = _split_topics(row.get("possible_topics"))
+        internet_needed = as_bool(row.get("internet_needed"))
+        yield normalized_record(
+            record_id=clean_text(row.get("id")) or stable_id(source, user_input),
+            dataset_source="noema_psych_language_ontology_v1",
+            user_input=user_input,
+            target_intent=intent,
+            target_emotion=map_emotion(canonical_emotion),
+            emotion_intensity=row.get("emotion_intensity") or "",
+            should_use_internet=internet_needed,
+            should_use_research=False,
+            should_use_safety=False,
+            response_requirements=(
+                "Use as offline language-routing and internal retrieval support.",
+                "Do not fine-tune automatically from this ontology.",
+                response_strategy,
+                routing_notes,
+                safety_note,
+            ),
+            details_panel_expected={
+                "language_ontology_match": True,
+                "matched_category": category,
+                "canonical_emotion": canonical_emotion,
+                "register": clean_text(row.get("register")) or "plain",
+                "internet_needed": internet_needed,
+                "response_strategy": response_strategy,
+            },
+            split=row.get("split") or deterministic_split(user_input),
+            priority_weight=1.2,
+            training_eligible=False,
+            metadata={
+                "original_category": category,
+                "possible_topics": topics,
+                "register": clean_text(row.get("register")) or "plain",
+                "input_hash": clean_text(row.get("input_hash")),
+                "source_row": index,
             },
         )
 
@@ -341,6 +426,25 @@ def all_records(sources: dict[str, Path]) -> Iterable[dict[str, Any]]:
         yield from normalize_noema(sources["noema_10k"], "noema_10k")
     if "noema_seed" in sources:
         yield from normalize_noema(sources["noema_seed"], "noema_seed")
+    if "noema_language_ontology" in sources:
+        yield from normalize_language_ontology(
+            sources["noema_language_ontology"], "noema_language_ontology"
+        )
+    elif any(
+        name in sources
+        for name in (
+            "noema_language_train",
+            "noema_language_validation",
+            "noema_language_test",
+        )
+    ):
+        for name in (
+            "noema_language_train",
+            "noema_language_validation",
+            "noema_language_test",
+        ):
+            if name in sources:
+                yield from normalize_language_ontology(sources[name], name)
     if "noema_longform" in sources:
         yield from normalize_longform(sources["noema_longform"], "noema_longform")
 
@@ -387,6 +491,7 @@ def prepare(output_root: Path) -> dict[str, Any]:
             "HH-RLHF rows retain chosen and rejected responses as preference pairs.",
             "Explicit advice and named-decision wording overrides reflection labels.",
             "Noema longform synthetic v1 is used for few-shot style, critic checks, and evaluation only.",
+            "Noema psych language ontology v1 is used for offline routing, semantic matching, and internet suppression only.",
             "Mental-health classifier and AnnoMI files are not mixed into generation until label mapping is reviewed.",
         ],
     }
@@ -396,6 +501,11 @@ def prepare(output_root: Path) -> dict[str, Any]:
     )
 
     output = output_root / "processed" / "noema_unified_dataset.jsonl"
+    if "noema_language_lexicon" in sources:
+        (output_root / "processed" / "noema_language_lexicon.json").write_text(
+            sources["noema_language_lexicon"].read_text(encoding="utf-8-sig"),
+            encoding="utf-8",
+        )
     counts: Counter[str] = Counter()
     splits: Counter[str] = Counter()
     total = 0

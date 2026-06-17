@@ -6,6 +6,8 @@ import re
 
 from core.pipeline import ReflectionResult
 from core.foundational_research import foundational_response
+from core.language_ontology import match_language_ontology
+from core.response_composer import compose_ontology_response
 from core.response_strategy import strategy_response
 from core.router import RouteDecision
 
@@ -508,6 +510,22 @@ def routed_local_response(
             "\n\n**Context you asked me to remember:** "
             + " | ".join(approved_memory[-2:])
         )
+    if (
+        route.knowledge_route == "conversation context"
+        and route.response_mode
+        not in {
+            "Give me advice",
+            "Help me make a decision",
+            "Challenge my thinking",
+        }
+    ):
+        ontology_response = compose_ontology_response(
+            text,
+            match_language_ontology(text),
+            turn_count=turn_count,
+        )
+        if ontology_response is not None:
+            return ontology_response + memory_note
     strategic = strategy_response(text=text, route=route, analysis=analysis)
     if strategic is not None:
         return strategic + memory_note

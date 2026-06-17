@@ -1,6 +1,6 @@
 {
   "metrics": {
-    "intent_accuracy": 0.7779,
+    "intent_accuracy": 0.7774,
     "emotion_accuracy": 0.0,
     "internet_routing_accuracy": 0.983,
     "research_routing_accuracy": 1.0,
@@ -22,6 +22,13 @@
     "identity_depth_score": 1.0,
     "response_variety_score": 1.0,
     "narrative_memory_score": 1.0,
+    "offline_language_routing_accuracy": 1.0,
+    "internet_suppression_accuracy": 1.0,
+    "casual_rapport_success": 1.0,
+    "slang_understanding_success": 1.0,
+    "wrong_internet_trigger_rate": 0.0,
+    "wrong_safety_trigger_rate": 0.0,
+    "hybrid_knowledge_engine_success": 1.0,
     "longform_response_success_rate": 0.9055,
     "therapy_retrieval_success_rate": 1.0
   },
@@ -45,7 +52,14 @@
     "symptom_education_score_above_90_percent": true,
     "identity_depth_score_above_90_percent": true,
     "response_variety_score_above_60_percent": true,
-    "narrative_memory_score_above_90_percent": true
+    "narrative_memory_score_above_90_percent": true,
+    "offline_language_routing_accuracy_above_90_percent": true,
+    "internet_suppression_accuracy_above_95_percent": true,
+    "casual_rapport_success_above_90_percent": true,
+    "slang_understanding_success_above_85_percent": true,
+    "wrong_internet_trigger_rate_below_5_percent": true,
+    "wrong_safety_trigger_rate_below_0_5_percent": true,
+    "hybrid_knowledge_engine_success_100_percent": true
   },
   "sample_counts": {
     "intent": 1941,
@@ -60,8 +74,8 @@
   "failure_examples": {
     "intent": [
       {
-        "input": "Honestly, I lost someone today and everything feels unreal.",
-        "expected": "grief",
+        "input": "If I fail, I feel worthless.",
+        "expected": "achievement_self_worth",
         "predicted": "emotional_reflection"
       },
       {
@@ -93,6 +107,11 @@
         "input": "Please help, I am confused between studies, business, relationship, and family expectations. I feel stuck.",
         "expected": "mixed_complex_life_problem",
         "predicted": "decision_support"
+      },
+      {
+        "input": "If I fail, I feel worthless.",
+        "expected": "achievement_self_worth",
+        "predicted": "emotional_reflection"
       },
       {
         "input": "We keep breaking up and coming back. Is this healthy?",
@@ -135,11 +154,6 @@
         "predicted": "overwhelm"
       },
       {
-        "input": "I lost someone today and everything feels unreal.",
-        "expected": "grief",
-        "predicted": "emotional_reflection"
-      },
-      {
         "input": "We keep breaking up and coming back. Is this healthy?",
         "expected": "decision_support",
         "predicted": "health_/_wellness_information"
@@ -153,11 +167,6 @@
         "input": "My friend cheated in an exam. Should I report him?",
         "expected": "ethical_dilemma",
         "predicted": "decision_support"
-      },
-      {
-        "input": "I lost someone today and everything feels unreal.",
-        "expected": "grief",
-        "predicted": "emotional_reflection"
       },
       {
         "input": "Journaling does not work for me. Please don't give a short answer.",
@@ -183,6 +192,11 @@
         "input": "Journaling does not work for me.",
         "expected": "failed_intervention_repair",
         "predicted": "casual"
+      },
+      {
+        "input": "I love psychology but Data Science pays more. What should I do? Be practical.",
+        "expected": "advice",
+        "predicted": "decision_support"
       }
     ],
     "emotion": [],

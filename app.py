@@ -7,13 +7,16 @@ import os
 
 import streamlit as st
 
+import core.language_ontology as _language_ontology_module
 import core.router as _router_module
 
+importlib.reload(_language_ontology_module)
 importlib.reload(_router_module)
 
 import core.bias_detector as _bias_detector_module
 import core.classifier as _classifier_module
 import core.conversation as _conversation_module
+import core.response_composer as _response_composer_module
 import core.emotion_detector as _emotion_detector_module
 import core.pipeline as _pipeline_module
 import core.response_strategy as _response_strategy_module
@@ -28,6 +31,8 @@ ROUTING_BUILD_VERSION = "topic-aware-critic-2026-06-16-2"
 def reload_local_routing_modules() -> None:
     """Keep Streamlit hot reload from using stale routing modules."""
     for module in (
+        _language_ontology_module,
+        _response_composer_module,
         _router_module,
         _bias_detector_module,
         _classifier_module,
@@ -164,6 +169,24 @@ def render_notes(message: dict) -> None:
         mode_col.write(f"**Chosen mode:** {message.get('routed_mode', 'Conversation')}")
         st.write(f"**Topic:** {message.get('topic', 'general').title()}")
         st.write(f"**Reasoning style:** {message.get('reasoning_style', 'reflective')}")
+        ontology = message.get("language_ontology_match", {}) or {}
+        if ontology.get("matched"):
+            st.write("**Language ontology match:** Yes")
+            st.write(f"**Matched category:** {ontology.get('category', 'unknown')}")
+            st.write(
+                f"**Canonical emotion:** {ontology.get('canonical_emotion', 'unknown')}"
+            )
+            st.write(f"**Register:** {ontology.get('register', 'plain')}")
+            st.write(
+                f"**Ontology internet needed:** "
+                f"{'Yes' if ontology.get('internet_needed') else 'No'}"
+            )
+            st.write(
+                f"**Response strategy selected:** "
+                f"{ontology.get('response_strategy') or message.get('routed_mode', 'Conversation')}"
+            )
+        else:
+            st.write("**Language ontology match:** No")
 
         emotion_col, intensity_col = st.columns(2)
         emotion_col.write(f"**Emotion:** {result.emotion.emotion.title()}")
@@ -198,6 +221,13 @@ def render_notes(message: dict) -> None:
         st.write(
             f"**Reviewed response examples used:** "
             f"{message.get('fewshot_example_count', 0)}"
+        )
+        st.write(
+            f"**Internal examples used:** {message.get('fewshot_example_count', 0)}"
+        )
+        st.write(
+            "**Critic result:** "
+            + ("Passed" if message.get("critic_passed") else "Repaired/Needs review")
         )
 
         if result.biases:
@@ -743,7 +773,18 @@ if prompt and prompt.strip():
         "topic": reply.route.topic,
         "routed_mode": reply.route.response_mode,
         "knowledge_route": reply.route.knowledge_route,
-        "knowledge_sources": list(metadata.sources),
+        "knowledge_sources": list(
+            dict.fromkeys(
+                (
+                    *metadata.sources,
+                    *(
+                        ("Noema Language Ontology",)
+                        if reply.language_ontology_match.matched
+                        else ()
+                    ),
+                )
+            )
+        ),
         "internet_used": metadata.internet_used,
         "research_used": metadata.research_used,
         "confidence_level": metadata.confidence_level,
@@ -753,6 +794,7 @@ if prompt and prompt.strip():
         "retrieval_provider": retrieval_provider,
         "memory_candidate": clean_prompt,
         "fewshot_example_count": len(fewshot_examples),
+        "language_ontology_match": reply.language_ontology_match.to_dict(),
         "symptom_profile": reply.symptom_profile,
         "possible_clinical_overlaps": [
             {

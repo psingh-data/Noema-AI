@@ -1,13 +1,14 @@
 {
   "output": "data\\processed\\noema_unified_dataset.jsonl",
-  "total_records": 20000,
+  "total_records": 70000,
   "records_by_source": {
+    "noema_psych_language_ontology_v1": 50000,
     "noema_longform_synthetic_v1": 20000
   },
   "records_by_split": {
-    "train": 16000,
-    "validation": 2000,
-    "test": 2000
+    "train": 56000,
+    "validation": 7000,
+    "test": 7000
   },
   "fine_tuning_performed": false
 }
