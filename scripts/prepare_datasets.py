@@ -14,6 +14,7 @@ from dataset_common import (
     as_bool,
     as_dict,
     as_list,
+    canonical_intent,
     clean_text,
     deterministic_split,
     iter_jsonl,
@@ -54,6 +55,18 @@ DEFAULT_SOURCES = {
     "hh_harmless_test": Path(
         r"C:\Users\prabh\Downloads\archive (4)\harmless_test.jsonl"
     ),
+    "noema_longform": Path(
+        r"C:\Users\prabh\Downloads\noema_longform_dataset_20000\noema_longform_dataset\noema_longform_20000.jsonl"
+    ),
+    "noema_longform_train": Path(
+        r"C:\Users\prabh\Downloads\noema_longform_dataset_20000\noema_longform_dataset\noema_longform_train.jsonl"
+    ),
+    "noema_longform_validation": Path(
+        r"C:\Users\prabh\Downloads\noema_longform_dataset_20000\noema_longform_dataset\noema_longform_validation.jsonl"
+    ),
+    "noema_longform_test": Path(
+        r"C:\Users\prabh\Downloads\noema_longform_dataset_20000\noema_longform_dataset\noema_longform_test.jsonl"
+    ),
 }
 
 GOEMOTION_COLUMNS = (
@@ -87,6 +100,18 @@ GOEMOTION_COLUMNS = (
     "neutral",
 )
 
+LONGFORM_PRESERVED_INTENTS = {
+    "identity_exploration",
+    "achievement_self_worth",
+    "existential_question",
+    "ethical_dilemma",
+    "structured_problem_solving",
+    "intervention_request",
+    "failed_intervention_repair",
+    "user_frustration_repair",
+    "conversation_continuity",
+}
+
 
 def normalize_noema(path: Path, source: str) -> Iterable[dict[str, Any]]:
     for index, row in enumerate(iter_jsonl(path), start=1):
@@ -119,6 +144,55 @@ def normalize_noema(path: Path, source: str) -> Iterable[dict[str, Any]]:
                 "priority_override": intent
                 != clean_text(original_intent).lower().replace(" ", "_"),
                 "source_row": index,
+            },
+        )
+
+
+def normalize_longform(path: Path, source: str) -> Iterable[dict[str, Any]]:
+    for index, row in enumerate(iter_jsonl(path), start=1):
+        user_input = clean_text(row.get("user_input"))
+        ideal = clean_text(row.get("ideal_response"))
+        if not user_input or not ideal:
+            continue
+        original_intent = clean_text(row.get("target_intent")) or "emotional_reflection"
+        canonical_original = canonical_intent(original_intent)
+        if canonical_original in LONGFORM_PRESERVED_INTENTS:
+            intent, weight = canonical_original, 2.0
+        else:
+            intent, weight = priority_intent(user_input, original_intent)
+        critic_checks = [
+            item
+            for item in clean_text(row.get("critic_checks")).split("|")
+            if clean_text(item)
+        ]
+        response_depth = clean_text(row.get("response_length_target"))
+        requirements = [
+            "Use as longform response-style guidance; do not fine-tune automatically.",
+            f"Response depth target: {response_depth or 'medium'}",
+            *critic_checks,
+        ]
+        yield normalized_record(
+            record_id=clean_text(row.get("id")) or stable_id(source, user_input),
+            dataset_source="noema_longform_synthetic_v1",
+            user_input=user_input,
+            target_intent=intent,
+            should_use_internet=as_bool(row.get("should_use_internet")),
+            should_use_research=as_bool(row.get("should_use_research")),
+            bad_response_trap=row.get("bad_response_trap") or "",
+            ideal_response=ideal,
+            response_requirements=requirements,
+            split=row.get("split") or deterministic_split(user_input),
+            priority_weight=max(weight, 1.75),
+            training_eligible=True,
+            metadata={
+                "original_intent": original_intent,
+                "response_length_target": response_depth,
+                "should_preserve_context": as_bool(row.get("should_preserve_context")),
+                "must_not_repeat_previous_intervention": as_bool(
+                    row.get("must_not_repeat_previous_intervention")
+                ),
+                "source_row": index,
+                "input_hash": clean_text(row.get("input_hash")),
             },
         )
 
@@ -267,6 +341,8 @@ def all_records(sources: dict[str, Path]) -> Iterable[dict[str, Any]]:
         yield from normalize_noema(sources["noema_10k"], "noema_10k")
     if "noema_seed" in sources:
         yield from normalize_noema(sources["noema_seed"], "noema_seed")
+    if "noema_longform" in sources:
+        yield from normalize_longform(sources["noema_longform"], "noema_longform")
 
     go_paths = [
         sources[name]
@@ -310,6 +386,8 @@ def prepare(output_root: Path) -> dict[str, Any]:
             "CounselChat has low priority weight to avoid therapist-style dominance.",
             "HH-RLHF rows retain chosen and rejected responses as preference pairs.",
             "Explicit advice and named-decision wording overrides reflection labels.",
+            "Noema longform synthetic v1 is used for few-shot style, critic checks, and evaluation only.",
+            "Mental-health classifier and AnnoMI files are not mixed into generation until label mapping is reviewed.",
         ],
     }
     (output_root / "raw" / "source_manifest.json").write_text(

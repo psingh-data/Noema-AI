@@ -33,6 +33,15 @@ EVALUATED_INTENTS = {
     "casual",
     "cognitive_challenge",
     "mixed_complex_life_problem",
+    "identity_exploration",
+    "achievement_self_worth",
+    "existential_question",
+    "ethical_dilemma",
+    "structured_problem_solving",
+    "intervention_request",
+    "failed_intervention_repair",
+    "user_frustration_repair",
+    "conversation_continuity",
 }
 
 SUPPORTED_EMOTIONS = {
@@ -166,7 +175,7 @@ def evaluate(input_path: Path) -> dict[str, Any]:
                 )
             continue
 
-        if source not in {"noema_10k", "noema_seed"}:
+        if source not in {"noema_10k", "noema_seed", "noema_longform_synthetic_v1"}:
             continue
 
         reply = continue_conversation(user_input)
@@ -336,6 +345,35 @@ def evaluate(input_path: Path) -> dict[str, Any]:
         )
         for probe in CASUAL_PROBES
     )
+    longform_total = 0
+    longform_successes = 0
+    therapy_total = 0
+    therapy_successes = 0
+    for row in iter_jsonl(input_path):
+        if (
+            row.get("split") != "test"
+            or row.get("dataset_source") != "noema_longform_synthetic_v1"
+        ):
+            continue
+        target_intent = str(row.get("target_intent", ""))
+        user_input = str(row.get("user_input", ""))
+        if not user_input:
+            continue
+        reply = continue_conversation(user_input)
+        lowered = reply.response.lower()
+        longform_total += 1
+        if len(reply.response.split()) >= 45 and not any(
+            phrase in lowered for phrase in BAD_PHRASES
+        ):
+            longform_successes += 1
+        if target_intent == "intervention_request":
+            therapy_total += 1
+            if (
+                reply.route.knowledge_route in {"internet", "research papers", "conversation context"}
+                and any(marker in lowered for marker in ("therapy", "intervention", "support", "cbt", "act"))
+                and "you have " not in lowered
+            ):
+                therapy_successes += 1
 
     metrics.update(
         {
@@ -366,6 +404,14 @@ def evaluate(input_path: Path) -> dict[str, Any]:
             "casual_chat_success_rate": _ratio(
                 casual_successes,
                 len(CASUAL_PROBES),
+            ),
+            "longform_response_success_rate": _ratio(
+                longform_successes,
+                longform_total,
+            ),
+            "therapy_retrieval_success_rate": _ratio(
+                therapy_successes,
+                therapy_total,
             ),
         }
     )
@@ -401,6 +447,10 @@ def evaluate(input_path: Path) -> dict[str, Any]:
             "casual_chat_success_rate"
         ]
         > 0.9,
+        "longform_response_success_rate_above_85_percent": metrics[
+            "longform_response_success_rate"
+        ]
+        > 0.85,
     }
     return {
         "metrics": metrics,

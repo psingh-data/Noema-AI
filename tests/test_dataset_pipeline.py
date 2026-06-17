@@ -8,6 +8,7 @@ if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
 from dataset_common import normalized_record, priority_intent
+from prepare_datasets import normalize_longform
 from validate_datasets import validate
 
 
@@ -56,3 +57,30 @@ def test_validator_rejects_response_text_in_emotion_only_source(tmp_path):
     report = validate(path)
     assert not report["valid"]
     assert any("emotion-only source" in error for error in report["errors"])
+
+
+def test_longform_dataset_normalizes_style_metadata(tmp_path):
+    path = tmp_path / "longform.jsonl"
+    row = {
+        "id": "noema_long_test",
+        "dataset_source": "noema_longform_synthetic_v1",
+        "user_input": "Suggest me some therapies for grief.",
+        "target_intent": "therapy_recommendation",
+        "response_length_target": "long",
+        "should_use_internet": True,
+        "should_use_research": True,
+        "should_preserve_context": True,
+        "must_not_repeat_previous_intervention": False,
+        "bad_response_trap": "Just try breathing.",
+        "ideal_response": "Here are several support options...",
+        "critic_checks": "response_is_not_too_short|uses_topic_specific_guidance",
+        "split": "train",
+    }
+    path.write_text(json.dumps(row) + "\n", encoding="utf-8")
+    [record] = list(normalize_longform(path, "noema_longform"))
+    assert record["dataset_source"] == "noema_longform_synthetic_v1"
+    assert record["target_intent"] == "intervention_request"
+    assert record["should_use_internet"]
+    assert record["should_use_research"]
+    assert record["metadata"]["response_length_target"] == "long"
+    assert "response_is_not_too_short" in record["response_requirements"]

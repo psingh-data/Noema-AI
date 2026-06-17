@@ -107,6 +107,15 @@ def generate_ai_response(
             if local_reply.state.current_goals
             else "No current goal has been inferred yet."
         )
+        symptom_context = "\n".join(
+            f"- {key}: {value}"
+            for key, value in local_reply.symptom_profile.items()
+            if value
+        ) or "No symptom-overlap scores were elevated in the current message."
+        overlap_context = "\n".join(
+            f"- {overlap.area} ({overlap.confidence} confidence): {overlap.explanation}"
+            for overlap in local_reply.possible_clinical_overlaps
+        ) or "No possible clinical overlaps were detected in the current message."
         selected_examples = list(fewshot_examples) or select_fewshot_examples(
             local_reply.route.intent,
             user_text,
@@ -186,6 +195,10 @@ Product boundaries:
   reference the relevant prior context naturally instead of restarting.
 - Avoid generic follow-ups like "what happened?" when the state already shows
   the active topic or unresolved concern.
+- DSM reference layer rule: use symptom overlaps only for psychoeducation and
+  routing support. Never say "you have depression", "you have ADHD",
+  "you have bipolar disorder", or any equivalent diagnostic claim. Say
+  "overlaps with symptoms clinicians may assess" and "this is not a diagnosis".
 
 Local analysis:
 - Country: {country_code}
@@ -207,6 +220,12 @@ Unresolved concerns:
 
 Current goals:
 {goals_context}
+
+Symptom profile:
+{symptom_context}
+
+Possible clinical overlaps:
+{overlap_context}
 
 Expected response structure for this intent:
 {structure_context}

@@ -189,6 +189,46 @@ def _advice_response(text: str, analysis: ReflectionResult) -> str:
     )
 
 
+def _intervention_response(text: str) -> str:
+    normalized = text.lower()
+    if "grief" in normalized or "loss" in normalized or "grandfather" in normalized:
+        focus = "grief"
+        options = (
+            "grief counseling or bereavement-focused therapy",
+            "support groups with other people who have experienced loss",
+            "CBT-style work for guilt, avoidance, sleep disruption, or stuck routines",
+            "ACT or meaning-focused work for carrying love and loss without forcing closure",
+            "gentle journaling or memory rituals when the grief feels hard to name",
+        )
+    else:
+        focus = "this"
+        options = (
+            "CBT-style skills for thoughts, habits, and avoidance loops",
+            "ACT-style work for values, acceptance, and action during emotional pain",
+            "problem-solving therapy for turning vague overwhelm into next steps",
+            "supportive counseling when you mainly need a steady person to process with",
+            "professional assessment if symptoms are intense, persistent, or disrupting daily life",
+        )
+
+    return (
+        "I would prefer to verify live research before calling anything the strongest "
+        "evidence, so treat this as stable general guidance rather than a paper-level "
+        "review.\n\n"
+        f"For {focus}, common support options people discuss with clinicians include:\n"
+        f"1. {options[0]}.\n"
+        f"2. {options[1]}.\n"
+        f"3. {options[2]}.\n"
+        f"4. {options[3]}.\n"
+        f"5. {options[4]}.\n\n"
+        "This is not a diagnosis or a treatment plan. My practical recommendation is "
+        "to choose the lowest-pressure first step: one consultation with a qualified "
+        "mental health professional, or one structured support option, then judge "
+        "whether it feels useful.\n\n"
+        "What kind of support feels most realistic right now: private therapy, a "
+        "support group, or self-guided practice?"
+    )
+
+
 def _continuity_response(text: str, route: RouteDecision, conversation_state: object | None) -> str | None:
     if conversation_state is None:
         return None
@@ -252,6 +292,127 @@ def _challenge_response(analysis: ReflectionResult) -> str:
     return (
         "I can challenge the thought without dismissing the feeling underneath it. "
         "What is the exact belief you want us to examine?"
+    )
+
+
+def _failed_intervention_response() -> str:
+    return (
+        "Thank you for saying that directly. If breathing or grounding did not help, "
+        "repeating the same tool harder would probably feel frustrating, so let us "
+        "switch layers.\n\n"
+        "Sometimes the emotion is not mainly a breathing problem; it needs expression, "
+        "support, movement, or meaning. Try one different route: say the feeling out "
+        "loud without fixing it, write one uncensored paragraph, take a walk or shower "
+        "to release body tension, or ask someone for quiet company instead of advice.\n\n"
+        "My recommendation: stop forcing the tool that failed. Pick one different "
+        "category of support for the next 10 minutes, then judge whether your body "
+        "softens even slightly.\n\n"
+        "Which route feels least annoying right now: expression, movement, or company?"
+    )
+
+
+def _identity_exploration_response() -> str:
+    return (
+        "That can feel frightening, like you are watching yourself from the outside. "
+        "But it can also mean an old identity is no longer fitting the life you are "
+        "actually living.\n\n"
+        "Instead of trying to answer “Who am I?” as one giant question, break it into "
+        "smaller pieces: what still feels genuinely yours, what you do mainly for "
+        "approval, what values keep returning even when goals change, and what kind "
+        "of person you respect even before they succeed.\n\n"
+        "My recommendation: do not force a complete identity today. Start by naming "
+        "what feels false, what still feels alive, and one behavior that would make "
+        "you feel more like yourself this week.\n\n"
+        "What part of your current life feels most unlike you?"
+    )
+
+
+def _achievement_self_worth_response() -> str:
+    return (
+        "If your worth is tied to achievement, every setback can feel like a threat "
+        "to your whole self. That is exhausting because performance starts acting "
+        "like proof of whether you deserve peace.\n\n"
+        "Achievement is not the enemy. The problem is when it becomes the only place "
+        "you are allowed to feel valuable. A healthier structure separates three "
+        "things: worth, growth, and results. Worth is not earned daily. Growth is "
+        "your responsibility. Results are influenced by effort, timing, opportunity, "
+        "luck, and environment.\n\n"
+        "Try this today: write one sentence for each: I am proud of achieving __. I "
+        "am still worthy when __ fails. I want to become someone who values __ too."
+    )
+
+
+def _existential_response() -> str:
+    return (
+        "That question is heavy because it is not only philosophical; it touches "
+        "fear, meaning, mortality, and the strange fact that we have to live without "
+        "perfect certainty.\n\n"
+        "One answer is that life does not need to last forever to matter. A song ends, "
+        "a conversation ends, and people we love are not here forever, but temporary "
+        "things can still be meaningful. Sometimes impermanence is what makes "
+        "attention, love, and choice matter more.\n\n"
+        "A practical way to hold this is: if life is temporary, what deserves more "
+        "of your attention while you are here? You do not need a complete philosophy "
+        "today. You need one honest direction that makes being alive feel less empty."
+    )
+
+
+def _ethical_response() -> str:
+    return (
+        "I would not answer this as “always tell the truth” or “always protect comfort.” "
+        "Ethical choices depend on harm, consent, responsibility, timing, and power.\n\n"
+        "A painful truth may be necessary when someone has a right to know, when hiding "
+        "it would manipulate them, or when the truth helps them make an informed choice. "
+        "A comforting lie may reduce pain briefly, but it can damage trust if it is "
+        "discovered or if it protects the wrong thing.\n\n"
+        "My practical rule: tell the truth when it protects autonomy or prevents harm, "
+        "but deliver it with care. Avoid lying mainly to avoid your own discomfort. If "
+        "work, legal, or safety risk is involved, document facts and get qualified advice."
+    )
+
+
+def _structured_problem_response() -> str:
+    return (
+        "Let us build a system, not a motivational speech.\n\n"
+        "Use three layers: capture, prioritize, and start. Capture means one trusted "
+        "place where every task goes. Prioritize means choosing only three meaningful "
+        "tasks per day. Start means a 10-minute launch rule so the first step is too "
+        "small to argue with.\n\n"
+        "If attention regulation is part of this, reduce reliance on memory and "
+        "willpower. Use visible cues, timers, body doubling, checklists, and friction "
+        "removal. Your daily structure can be: morning top three, one focus block, one "
+        "reset, and evening review.\n\n"
+        "My recommendation: create the capture list today, then choose tomorrow's top "
+        "three before you sleep."
+    )
+
+
+def _user_frustration_response() -> str:
+    return (
+        "You are right to call that out. If the response pattern is not helping, I "
+        "should adapt instead of repeating the same kind of support in nicer words.\n\n"
+        "Let me reset the approach. I will not keep pushing the previous suggestion. "
+        "We can switch to one of five modes: comfort, practical steps, explanation, "
+        "decision support, or just presence. If even choosing a mode feels annoying, "
+        "we can keep it very simple and focus only on what would make the next few "
+        "minutes less heavy.\n\n"
+        "My recommendation: tell me the kind of help you wanted but did not get, and "
+        "I will respond in that lane."
+    )
+
+
+def _continuity_repair_response() -> str:
+    return (
+        "I am treating that as connected to what came before, not as a random new "
+        "message. If the previous suggestion did not help, the useful move is to "
+        "change strategy instead of repeating it.\n\n"
+        "If a body-based tool failed, the next layer may be expression or support: "
+        "say the feeling plainly, write one uncensored paragraph, ask for silent "
+        "company, change rooms, or do one practical stabilizing action like food, "
+        "water, or a shower. The goal is not analysis right now. It is finding one "
+        "form of relief that does not make you feel more trapped.\n\n"
+        "What did the previous suggestion miss: your body, your thoughts, or the "
+        "actual situation?"
     )
 
 
@@ -326,6 +487,22 @@ def routed_local_response(
             "and I will not turn it into advice.\n\n"
             "What is the part you most need to get off your chest?"
         )
+    if route.intent == "failed_intervention_repair":
+        return _failed_intervention_response()
+    if route.intent == "identity_exploration":
+        return _identity_exploration_response()
+    if route.intent == "achievement_self_worth":
+        return _achievement_self_worth_response()
+    if route.intent == "existential_question":
+        return _existential_response()
+    if route.intent == "ethical_dilemma":
+        return _ethical_response()
+    if route.intent == "structured_problem_solving":
+        return _structured_problem_response()
+    if route.intent == "user_frustration_repair":
+        return _user_frustration_response()
+    if route.intent == "conversation_continuity":
+        return _continuity_repair_response()
     if route.intent == "cognitive challenge":
         return _challenge_response(analysis)
     if route.intent == "current factual search":
@@ -358,6 +535,8 @@ def routed_local_response(
             "I can still help define the question and explain what kinds of studies or "
             "evidence would be most useful to look for."
         )
+    if route.intent == "intervention_request":
+        return _intervention_response(text)
     if route.intent == "career / education":
         return (
             "I couldn't verify current career or education information from live "

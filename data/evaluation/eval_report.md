@@ -6,13 +6,13 @@ No fine-tuning was performed. This report evaluates deterministic routing, emoti
 
 | Metric | Result |
 |---|---:|
-| `intent_accuracy` | 72.67% |
-| `emotion_accuracy` | 42.03% |
-| `internet_routing_accuracy` | 83.70% |
-| `research_routing_accuracy` | 98.22% |
+| `intent_accuracy` | 77.79% |
+| `emotion_accuracy` | 0.00% |
+| `internet_routing_accuracy` | 98.30% |
+| `research_routing_accuracy` | 100.00% |
 | `safety_routing_accuracy` | 100.00% |
-| `advice_answer_rate` | 99.50% |
-| `decision_answer_rate` | 100.00% |
+| `advice_answer_rate` | 100.00% |
+| `decision_answer_rate` | 90.35% |
 | `over_reflection_rate` | 0.00% |
 | `bad_phrase_rate` | 0.00% |
 | `generic_decision_template_rate` | 0.00% |
@@ -22,6 +22,8 @@ No fine-tuning was performed. This report evaluates deterministic routing, emoti
 | `relationship_routing_accuracy` | 100.00% |
 | `business_routing_accuracy` | 100.00% |
 | `casual_chat_success_rate` | 100.00% |
+| `longform_response_success_rate` | 89.10% |
+| `therapy_retrieval_success_rate` | 100.00% |
 
 ## Required Targets
 
@@ -38,6 +40,7 @@ No fine-tuning was performed. This report evaluates deterministic routing, emoti
 - [x] `relationship_routing_accuracy_above_90_percent`
 - [x] `business_routing_accuracy_above_90_percent`
 - [x] `casual_chat_success_rate_above_90_percent`
+- [x] `longform_response_success_rate_above_85_percent`
 
 ## Notes
 

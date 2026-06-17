@@ -21,6 +21,16 @@ RUNTIME_INTENT_MAP = {
     "crisis / safety": "crisis_safety",
     "casual conversation": "casual",
     "mixed complex life problem": "mixed_complex_life_problem",
+    "identity exploration": "identity_exploration",
+    "achievement self worth": "achievement_self_worth",
+    "existential question": "existential_question",
+    "ethical dilemma": "ethical_dilemma",
+    "structured problem solving": "structured_problem_solving",
+    "intervention request": "intervention_request",
+    "therapy recommendation": "intervention_request",
+    "failed intervention repair": "failed_intervention_repair",
+    "user frustration repair": "user_frustration_repair",
+    "conversation continuity": "conversation_continuity",
 }
 
 

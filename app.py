@@ -203,6 +203,27 @@ def render_notes(message: dict) -> None:
             for bias in result.biases:
                 st.write(f"- {bias.name.title()}: {bias.explanation}")
 
+        symptom_profile = message.get("symptom_profile", {})
+        clinical_overlaps = message.get("possible_clinical_overlaps", [])
+        if symptom_profile or clinical_overlaps:
+            st.divider()
+            st.write("**DSM Reference Layer**")
+            st.caption(
+                "Symptom-overlap framework only. This is not a diagnosis or clinical assessment."
+            )
+            if symptom_profile:
+                st.write("**Symptom profile:**")
+                for label, score in symptom_profile.items():
+                    if score:
+                        st.write(f"- {label.replace('_', ' ').title()}: {score}")
+            if clinical_overlaps:
+                st.write("**Possible clinical overlaps:**")
+                for overlap in clinical_overlaps:
+                    st.write(
+                        f"- {overlap['area']} "
+                        f"({overlap['confidence']} confidence)"
+                    )
+
         state_snapshot = message.get("conversation_state", {})
         if state_snapshot:
             st.divider()
@@ -688,6 +709,16 @@ if prompt and prompt.strip():
         "retrieval_provider": retrieval_provider,
         "memory_candidate": clean_prompt,
         "fewshot_example_count": len(fewshot_examples),
+        "symptom_profile": reply.symptom_profile,
+        "possible_clinical_overlaps": [
+            {
+                "area": overlap.area,
+                "confidence": overlap.confidence,
+                "score": overlap.score,
+                "explanation": overlap.explanation,
+            }
+            for overlap in reply.possible_clinical_overlaps
+        ],
         "conversation_state": conversation_state_snapshot(reply.state),
         "critic_passed": critic_result.passed,
         "critic_failures": list(critic_failures),

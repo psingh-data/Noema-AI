@@ -496,6 +496,31 @@ def test_casual_chat_works_without_psychology_mode():
         assert "daily life" not in lowered
 
 
+def test_clinical_overlap_note_is_non_diagnostic():
+    reply = continue_conversation(
+        "I feel hopeless, lost interest in everything, cannot focus, and cannot get out of bed."
+    )
+    lowered = reply.response.lower()
+    assert "overlap" in lowered
+    assert "clinician" in lowered
+    assert "not mean any condition is present" in lowered
+    assert "you have depression" not in lowered
+    assert "you have adhd" not in lowered
+    assert "you have bipolar" not in lowered
+    assert reply.symptom_profile["depressive_symptoms"] >= 3
+    assert reply.possible_clinical_overlaps
+
+
+def test_symptom_profile_accumulates_across_turns_without_diagnosis():
+    state = ConversationState()
+    first = continue_conversation("I feel worried and on edge.", state)
+    second = continue_conversation("I also cannot sleep and cannot focus.", first.state)
+    assert second.state.symptom_profile["anxiety_symptoms"] >= 2
+    assert second.state.symptom_profile["attention_regulation_symptoms"] >= 1
+    assert second.state.possible_clinical_overlaps
+    assert "you have" not in second.response.lower()
+
+
 def test_conversation_state_tracks_grief_confusion_overwhelm_progression():
     state = ConversationState()
     first = continue_conversation("My grandfather died and I am sad.", state)
@@ -528,3 +553,16 @@ def test_followup_response_uses_prior_grief_context_instead_of_restarting():
     assert "thread" in lowered or "connected" in lowered
     assert "what happened" not in lowered
     assert "what came next" not in lowered
+
+
+def test_intervention_request_gives_non_diagnostic_support_options():
+    reply = continue_conversation("Suggest me some therapies for grief.")
+    lowered = reply.response.lower()
+
+    assert reply.route.intent == "intervention_request"
+    assert reply.route.topic == "grief"
+    assert "grief counseling" in lowered
+    assert "support groups" in lowered
+    assert "cbt" in lowered
+    assert "not a diagnosis" in lowered
+    assert "you have" not in lowered

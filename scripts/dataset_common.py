@@ -66,6 +66,16 @@ INTENT_ALIASES = {
     "general knowledge": "current_facts",
     "career / education": "current_facts",
     "health / wellness information": "current_facts",
+    "acute_grief_long_support": "grief",
+    "ongoing_grief_long_support": "grief",
+    "business_decision_long": "decision_support",
+    "career_decision_long": "decision_support",
+    "education_decision_long": "decision_support",
+    "relationship_decision_long": "decision_support",
+    "workplace_discrimination_long": "workplace_discrimination",
+    "cognitive_distortion_long": "cognitive_challenge",
+    "casual_long_but_natural": "casual",
+    "therapy_recommendation": "intervention_request",
 }
 
 MODE_BY_INTENT = {
@@ -82,6 +92,15 @@ MODE_BY_INTENT = {
     "workplace_discrimination": "Give me advice",
     "response_quality": "Response quality",
     "emotion_detection": "Emotion classification",
+    "identity_exploration": "Help me understand my feelings",
+    "achievement_self_worth": "Challenge my thinking",
+    "existential_question": "Reflective conversation",
+    "ethical_dilemma": "Structured reflection",
+    "structured_problem_solving": "Give me advice",
+    "intervention_request": "Research Assistant",
+    "failed_intervention_repair": "Give me advice",
+    "user_frustration_repair": "Repair conversation",
+    "conversation_continuity": "Conversation continuity",
 }
 
 GOEMOTIONS_MAP = {

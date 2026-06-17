@@ -52,6 +52,103 @@ RESEARCH_MARKERS = (
     "arxiv",
 )
 
+INTERVENTION_MARKERS = (
+    "suggest therapies",
+    "suggest me therapies",
+    "what therapy helps",
+    "what therapies help",
+    "what kind of therapy",
+    "therapy helps",
+    "therapy for",
+    "therapies for",
+    "interventions",
+    "evidence-based techniques",
+    "evidence based techniques",
+    "coping methods",
+    "coping strategies for",
+    "what can help with",
+    "what can i do when grief",
+    "how to go through these emotions",
+    "go through these emotions",
+    "coping methods for",
+    "coping methods",
+    "treatment options",
+    "research-backed support",
+    "research backed support",
+)
+
+FAILED_INTERVENTION_MARKERS = (
+    "tried breathing",
+    "tried grounding",
+    "breathing but it did not help",
+    "breathing but it didn't help",
+    "grounding exercise but it had no effect",
+    "did not help",
+    "didn't help",
+    "had no effect",
+)
+
+IDENTITY_EXPLORATION_MARKERS = (
+    "someone i don't recognize",
+    "someone i do not recognize",
+    "who i am anymore",
+    "parts of me are real",
+    "not myself anymore",
+    "became someone",
+    "identity",
+)
+
+ACHIEVEMENT_SELF_WORTH_MARKERS = (
+    "built around achievement",
+    "only feel valuable",
+    "productive",
+    "if i fail",
+    "performance as proof",
+    "worth depends",
+)
+
+EXISTENTIAL_MARKERS = (
+    "free will",
+    "point of life",
+    "everything ends",
+    "everyone dies",
+    "why should i try",
+    "meaning of life",
+)
+
+ETHICAL_MARKERS = (
+    "painful truth",
+    "comforting lie",
+    "unethical but legal",
+    "ethical",
+    "morally",
+)
+
+STRUCTURED_PROBLEM_MARKERS = (
+    "organize my life",
+    "everything feels scattered",
+    "productivity system",
+    "adhd-like symptoms",
+    "adhd like symptoms",
+    "design a productivity",
+    "build a system",
+)
+
+USER_FRUSTRATION_MARKERS = (
+    "this is not helping",
+    "not helping",
+    "same thing again",
+    "already said that",
+    "repeating",
+)
+
+CONTINUITY_REPAIR_MARKERS = (
+    "i tried that",
+    "that did not help",
+    "that didn't help",
+    "previous suggestion",
+)
+
 FACTUAL_MARKERS = (
     "visa requirement",
     "visa rules",
@@ -313,6 +410,7 @@ TOPIC_MARKERS = {
     "grief": GRIEF_LIKE_MARKERS + (
         "grandfather",
         "grandmother",
+        "grief",
         "died",
         "death",
         "passed away",
@@ -360,7 +458,15 @@ TOPIC_MARKERS = {
     "health": ("health", "therapist", "therapy", "doctor", "sleep", "symptom"),
     "finance": ("money", "finance", "financial", "debt", "rent", "budget"),
     "family": ("family", "parents", "sister", "brother", "mother", "father"),
-    "relationship": ("relationship", "girlfriend", "boyfriend", "partner", "breakup"),
+    "relationship": (
+        "relationship",
+        "girlfriend",
+        "boyfriend",
+        "partner",
+        "breakup",
+        "breaking up",
+        "coming back",
+    ),
     "self_esteem": (
         "failure",
         "failed",
@@ -391,8 +497,17 @@ SUGGESTIONS = {
     "cognitive challenge": ("Challenge this thought", "Listen more"),
     "current factual search": ("Search current facts",),
     "research paper question": ("Find research evidence",),
+    "intervention_request": ("Find research evidence", "Give advice"),
     "general knowledge": ("Give advice", "Search current facts"),
     "mixed complex life problem": ("Give advice", "Help me decide"),
+    "identity_exploration": ("Listen more", "Challenge this thought"),
+    "achievement_self_worth": ("Challenge this thought", "Give advice"),
+    "existential_question": ("Listen more", "Give advice"),
+    "ethical_dilemma": ("Give advice", "Challenge this thought"),
+    "structured_problem_solving": ("Give advice",),
+    "failed_intervention_repair": ("Give advice", "Listen more"),
+    "user_frustration_repair": ("Listen more", "Give advice"),
+    "conversation_continuity": ("Listen more", "Give advice"),
 }
 
 
@@ -572,6 +687,96 @@ def route_message(
             topic,
         )
 
+    if _has_any(normalized, INTERVENTION_MARKERS):
+        return RouteDecision(
+            "intervention_request",
+            "Research Assistant",
+            "research papers",
+            0.92,
+            "The user asks for therapy, intervention, or evidence-informed support options.",
+            topic,
+        )
+
+    if _has_any(normalized, USER_FRUSTRATION_MARKERS):
+        return RouteDecision(
+            "user_frustration_repair",
+            "Repair conversation",
+            "conversation context",
+            0.9,
+            "The user is saying the response pattern is not helping.",
+            topic,
+        )
+
+    if _has_any(normalized, CONTINUITY_REPAIR_MARKERS):
+        return RouteDecision(
+            "conversation_continuity",
+            "Conversation continuity",
+            "conversation context",
+            0.88,
+            "The user refers to a prior suggestion or earlier thread.",
+            topic,
+        )
+
+    if _has_any(normalized, FAILED_INTERVENTION_MARKERS):
+        return RouteDecision(
+            "failed_intervention_repair",
+            "Give me advice",
+            "conversation context",
+            0.9,
+            "The user says a coping intervention did not work and needs a different approach.",
+            topic,
+        )
+
+    if _has_any(normalized, IDENTITY_EXPLORATION_MARKERS):
+        return RouteDecision(
+            "identity_exploration",
+            "Help me understand my feelings",
+            "conversation context",
+            0.87,
+            "The user is exploring identity or loss of self-continuity.",
+            topic,
+        )
+
+    if _has_any(normalized, ACHIEVEMENT_SELF_WORTH_MARKERS):
+        return RouteDecision(
+            "achievement_self_worth",
+            "Challenge my thinking",
+            "conversation context",
+            0.88,
+            "The message links worth or identity to achievement and performance.",
+            topic if topic != "general" else "self_esteem",
+        )
+
+    if _has_any(normalized, EXISTENTIAL_MARKERS):
+        return RouteDecision(
+            "existential_question",
+            "Reflective conversation",
+            "conversation context",
+            0.86,
+            "The message asks a philosophical or existential question with emotional weight.",
+            topic,
+        )
+
+    if _has_any(normalized, ETHICAL_MARKERS):
+        return RouteDecision(
+            "ethical_dilemma",
+            "Structured reflection",
+            "conversation context",
+            0.86,
+            "The message asks for practical reasoning about an ethical dilemma.",
+            topic,
+        )
+
+    if _has_any(normalized, STRUCTURED_PROBLEM_MARKERS):
+        return RouteDecision(
+            "structured_problem_solving",
+            "Give me advice",
+            "conversation context",
+            0.89,
+            "The user asks for an organized system or practical problem-solving structure.",
+            topic,
+        )
+
     if _has_any(normalized, CASUAL_MARKERS):
         return RouteDecision(
             "casual conversation",
@@ -619,6 +824,29 @@ def route_message(
             0.9,
             "The user describes a workplace concern that benefits from practical guidance.",
             topic,
+        )
+
+    if topic == "relationship" and _looks_like_question(normalized) and _has_any(
+        normalized,
+        ("healthy", "stay", "leave", "break up", "breaking up", "coming back"),
+    ):
+        return RouteDecision(
+            "decision support",
+            "Help me make a decision",
+            "conversation context",
+            0.9,
+            "The user asks whether a relationship pattern is healthy or worth continuing.",
+            "relationship",
+        )
+
+    if _has_any(normalized, ("two job offers", "one pays more", "one feels meaningful")):
+        return RouteDecision(
+            "decision support",
+            "Help me make a decision",
+            "conversation context",
+            0.88,
+            "The user is weighing career options with different values and practical tradeoffs.",
+            "career",
         )
 
     if topic == "business" and _has_any(

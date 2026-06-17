@@ -1,21 +1,13 @@
 {
   "output": "data\\processed\\noema_unified_dataset.jsonl",
-  "total_records": 225215,
+  "total_records": 20000,
   "records_by_source": {
-    "noema_10k": 10000,
-    "noema_seed": 180,
-    "goemotions": 57932,
-    "emotion_69k": 64636,
-    "counselchat": 1480,
-    "hh_helpful_train": 43834,
-    "hh_helpful_test": 2354,
-    "hh_harmless_train": 42491,
-    "hh_harmless_test": 2308
+    "noema_longform_synthetic_v1": 20000
   },
   "records_by_split": {
-    "train": 193865,
-    "validation": 13492,
-    "test": 17858
+    "train": 16000,
+    "validation": 2000,
+    "test": 2000
   },
   "fine_tuning_performed": false
 }

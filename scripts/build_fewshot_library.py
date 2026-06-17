@@ -25,6 +25,15 @@ TARGET_INTENTS = (
     "research",
     "crisis_safety",
     "mixed_complex_life_problem",
+    "identity_exploration",
+    "achievement_self_worth",
+    "existential_question",
+    "ethical_dilemma",
+    "structured_problem_solving",
+    "intervention_request",
+    "failed_intervention_repair",
+    "user_frustration_repair",
+    "conversation_continuity",
 )
 
 EXPECTED_STRUCTURES = {
@@ -93,6 +102,61 @@ EXPECTED_STRUCTURES = {
         "Give a recommendation.",
         "Ask at most one question.",
     ],
+    "identity_exploration": [
+        "Validate the disorientation without rushing to advice.",
+        "Reflect possible identity themes tentatively.",
+        "Offer one grounded exploration step.",
+        "Ask one focused question about values, roles, or self-concept.",
+    ],
+    "achievement_self_worth": [
+        "Validate the pressure around performance.",
+        "Name the possible worth-performance link tentatively.",
+        "Offer a balanced alternative belief.",
+        "Suggest one practical experiment that separates worth from achievement.",
+    ],
+    "existential_question": [
+        "Treat the question as meaningful, not pathological.",
+        "Reflect the tension or grief underneath it.",
+        "Offer a grounded philosophical or values-based frame.",
+        "Ask at most one question about what still feels worth protecting.",
+    ],
+    "ethical_dilemma": [
+        "Name the competing values.",
+        "Avoid moral certainty when facts are incomplete.",
+        "Offer a structured way to compare harms, duties, and integrity.",
+        "Ask one clarifying question if needed.",
+    ],
+    "structured_problem_solving": [
+        "Define the problem concretely.",
+        "Break it into steps or system components.",
+        "Include safeguards and iteration.",
+        "Avoid asking for context before giving a useful first structure.",
+    ],
+    "intervention_request": [
+        "Validate briefly.",
+        "List several intervention options.",
+        "Explain what each option is useful for.",
+        "Mark self-help versus therapist-guided or professional support.",
+        "Mention uncertainty and avoid promising outcomes.",
+    ],
+    "failed_intervention_repair": [
+        "Acknowledge that the previous intervention did not help.",
+        "Do not repeat the failed intervention.",
+        "Switch to a different intervention category.",
+        "Ask one simple preference or offer a new direction.",
+    ],
+    "user_frustration_repair": [
+        "Acknowledge Noema's miss directly.",
+        "Stop the repeated pattern.",
+        "Change strategy.",
+        "Offer one simple choice for how to continue.",
+    ],
+    "conversation_continuity": [
+        "Reference the prior theme naturally.",
+        "Describe the narrative progression.",
+        "Avoid restarting with generic exploration.",
+        "Ask a follow-up based on the existing thread.",
+    ],
 }
 
 FALLBACK_TRAPS = {
@@ -115,6 +179,15 @@ FALLBACK_TRAPS = {
     "research": ["Research proves this works for everyone."],
     "crisis_safety": ["Try journaling and see whether the feeling passes."],
     "mixed_complex_life_problem": ["What feels most present for you?"],
+    "identity_exploration": ["Tell me more about that."],
+    "achievement_self_worth": ["Just work harder and your confidence will improve."],
+    "existential_question": ["You should not think about that."],
+    "ethical_dilemma": ["The answer is obvious."],
+    "structured_problem_solving": ["Give me more context before I can help."],
+    "intervention_request": ["Just try breathing."],
+    "failed_intervention_repair": ["Try the same thing again."],
+    "user_frustration_repair": ["I am sorry you feel that way. What happened?"],
+    "conversation_continuity": ["Interesting. What made that come to mind?"],
 }
 
 STOPWORDS = {
@@ -258,19 +331,20 @@ def build(input_path: Path, output_path: Path) -> dict[str, Any]:
             }
             for score, token, count, precision in sorted(ranked, reverse=True)[:150]
         ]
-    lexicon_path.write_text(
-        json.dumps(
-            {
-                "version": 1,
-                "source": "training-split emotion classification rows",
-                "response_generation_allowed": False,
-                "emotions": lexicon,
-            },
-            indent=2,
-            ensure_ascii=True,
-        ),
-        encoding="utf-8",
-    )
+    if lexicon or not lexicon_path.exists():
+        lexicon_path.write_text(
+            json.dumps(
+                {
+                    "version": 1,
+                    "source": "training-split emotion classification rows",
+                    "response_generation_allowed": False,
+                    "emotions": lexicon,
+                },
+                indent=2,
+                ensure_ascii=True,
+            ),
+            encoding="utf-8",
+        )
     return {
         "output": str(output_path),
         "emotion_lexicon": str(lexicon_path),

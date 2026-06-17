@@ -163,3 +163,26 @@ def test_critic_passes_workplace_decision_response():
         route=topic_route("decision support", "workplace"),
     )
     assert result.passed
+
+
+def test_critic_rejects_diagnostic_claims():
+    result = critique_response(
+        user_input="I feel hopeless and cannot get out of bed.",
+        response="You have depression. You should seek help.",
+        route=topic_route("emotional reflection", "health"),
+    )
+    assert not result.passed
+    assert any("diagnostic claim" in failure for failure in result.failures)
+
+
+def test_repair_rewrites_diagnostic_claims_as_overlap_language():
+    repaired = repair_response(
+        user_input="I feel hopeless and cannot get out of bed.",
+        response="You have depression. You should seek help.",
+        route=topic_route("emotional reflection", "health"),
+        failures=("response made a diagnostic claim instead of a possible overlap",),
+    )
+    lowered = repaired.lower()
+    assert "you have depression" not in lowered
+    assert "overlaps with depressive symptoms" in lowered
+    assert "not a diagnosis" in lowered

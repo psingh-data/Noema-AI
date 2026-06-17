@@ -228,6 +228,25 @@ DISTORTION_MARKERS = (
     "i always",
 )
 
+DIAGNOSTIC_CLAIM_PATTERNS = (
+    r"\byou have (?:major )?depression\b",
+    r"\byou have depressive disorder\b",
+    r"\byou have adhd\b",
+    r"\byou have attention[- ]deficit",
+    r"\byou have bipolar\b",
+    r"\byou have bipolar disorder\b",
+    r"\byou have ptsd\b",
+    r"\byou have ocd\b",
+    r"\byou have panic disorder\b",
+    r"\byou have generalized anxiety disorder\b",
+    r"\byou are depressed\b",
+    r"\byou are bipolar\b",
+    r"\byou are adhd\b",
+    r"\bthis means you have\b",
+    r"\bthat means you have\b",
+    r"\bdiagnosed with\b",
+)
+
 TOPIC_MARKERS = {
     "grief": ("miss my", "grandfather", "passed away", "died", "grief"),
     "education": ("cognitive science", "data science", "university", "study"),
@@ -272,6 +291,11 @@ def _topic(route: RouteDecision) -> str:
 
 def _has_recommendation_or_next_step(text: str) -> bool:
     return _has_any(text, GENERIC_NEXT_STEP_MARKERS)
+
+
+def _contains_diagnostic_claim(text: str) -> bool:
+    lowered = text.lower()
+    return any(re.search(pattern, lowered) for pattern in DIAGNOSTIC_CLAIM_PATTERNS)
 
 
 def _named_options(user_input: str) -> tuple[str, str] | None:
@@ -443,6 +467,8 @@ def critique_response(
     ]
     if found_banned:
         failures.append("overused therapy language: " + ", ".join(found_banned))
+    if _contains_diagnostic_claim(response):
+        failures.append("response made a diagnostic claim instead of a possible overlap")
 
     retrieval_uncertain = any(marker in lowered for marker in UNCERTAINTY_MARKERS)
     if route.knowledge_route == "internet" and not internet_used and not retrieval_uncertain:
@@ -506,6 +532,62 @@ def _limit_questions(response: str) -> str:
     return " ".join(kept).strip()
 
 
+def _remove_diagnostic_claims(response: str) -> str:
+    repaired = response
+    replacements = {
+        r"\b[Yy]ou have (?:major )?depression\b": (
+            "Some of this overlaps with depressive symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou have depressive disorder\b": (
+            "Some of this overlaps with depressive symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou have ADHD\b": (
+            "Some of this overlaps with attention-regulation symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou have attention[- ]deficit[^.]*": (
+            "Some of this overlaps with attention-regulation symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou have bipolar disorder\b": (
+            "Some of this overlaps with mood symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou have bipolar\b": (
+            "Some of this overlaps with mood symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou have PTSD\b": (
+            "Some of this overlaps with trauma-related symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou have OCD\b": (
+            "Some of this overlaps with obsessive or compulsive symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou have panic disorder\b": (
+            "Some of this overlaps with panic symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou have generalized anxiety disorder\b": (
+            "Some of this overlaps with anxiety symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou are depressed\b": (
+            "Some of this overlaps with depressive symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou are bipolar\b": (
+            "Some of this overlaps with mood symptoms clinicians may assess"
+        ),
+        r"\b[Yy]ou are ADHD\b": (
+            "Some of this overlaps with attention-regulation symptoms clinicians may assess"
+        ),
+        r"\b[Tt]his means you have\b": "This may overlap with",
+        r"\b[Tt]hat means you have\b": "That may overlap with",
+        r"\bdiagnosed with\b": "worth discussing with a clinician for assessment of",
+    }
+    for pattern, replacement in replacements.items():
+        repaired = re.sub(pattern, replacement, repaired)
+    if repaired != response and "not a diagnosis" not in repaired.lower():
+        repaired += (
+            "\n\nThis is a symptom-overlap note only, not a diagnosis or a replacement "
+            "for clinical assessment."
+        )
+    return repaired
+
+
 def repair_response(
     *,
     user_input: str,
@@ -516,6 +598,7 @@ def repair_response(
     """Repair once with a strict deterministic structure."""
     lowered_failures = " ".join(failures)
     topic = _topic(route)
+    response = _remove_diagnostic_claims(response)
     if route.intent == "mixed complex life problem" or topic in {
         "grief",
         "workplace",
@@ -531,7 +614,8 @@ def repair_response(
         if repaired.strip():
             return repaired
     if "practical advice" in lowered_failures:
-        return (
+        return _remove_diagnostic_claims(
+            (
             "It makes sense that you want a concrete way forward.\n\n"
             "**Start here:** write the problem in one sentence, choose the smallest "
             "reversible action available today, and set a short time to test it. If "
@@ -540,14 +624,17 @@ def repair_response(
             "**Why:** a reversible step lowers pressure while giving you real "
             "information for the next decision.\n\n"
             "What constraint matters most right now?"
+            )
         )
     if "compare options" in lowered_failures:
-        return (
+        return _remove_diagnostic_claims(
+            (
             "Compare the options on the same five points: "
             "benefits, costs, risks, fit with your values, and how reversible each "
             "path is. Prefer the option that fits your priorities and has acceptable "
             "downsides, not simply the one that removes anxiety fastest.\n\n"
             "Which tradeoff matters most to you?"
+            )
         )
 
     repaired = response
@@ -563,4 +650,4 @@ def repair_response(
         repaired = repaired.replace(phrase, replacement)
     if "more than one question" in lowered_failures:
         repaired = _limit_questions(repaired)
-    return repaired
+    return _remove_diagnostic_claims(repaired)

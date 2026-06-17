@@ -8,6 +8,15 @@ from core.pipeline import ReflectionResult, process_reflection
 from core.routed_responses import routed_local_response
 from core.router import RouteDecision, route_message
 from core.safety import assess_safety, generate_crisis_response
+from core.symptom_profile import (
+    ClinicalOverlap,
+    build_symptom_profile,
+    empty_symptom_profile,
+    merge_symptom_profiles,
+    overlap_dicts,
+    overlap_summary,
+    possible_clinical_overlaps,
+)
 
 
 SUPPORT_MODES = (
@@ -43,6 +52,8 @@ class ConversationState:
     current_goals: list[str] = field(default_factory=list)
     conversation_summary: str = ""
     narrative_progression: list[str] = field(default_factory=list)
+    symptom_profile: dict[str, int] = field(default_factory=empty_symptom_profile)
+    possible_clinical_overlaps: list[dict[str, str | int]] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -53,6 +64,8 @@ class ConversationReply:
     clinical_domains: tuple[str, ...]
     recommendation_type: str
     route: RouteDecision
+    symptom_profile: dict[str, int] = field(default_factory=empty_symptom_profile)
+    possible_clinical_overlaps: tuple[ClinicalOverlap, ...] = ()
 
 
 DOMAIN_QUESTIONS = {
@@ -291,7 +304,24 @@ def conversation_state_snapshot(state: ConversationState) -> dict[str, object]:
         "current_goals": list(state.current_goals),
         "conversation_summary": state.conversation_summary,
         "narrative_progression": list(state.narrative_progression),
+        "symptom_profile": dict(state.symptom_profile),
+        "possible_clinical_overlaps": list(state.possible_clinical_overlaps),
     }
+
+
+def _update_symptom_layer(
+    state: ConversationState,
+    current_profile: dict[str, int],
+    current_overlaps: tuple[ClinicalOverlap, ...],
+) -> None:
+    state.symptom_profile = merge_symptom_profiles(
+        state.symptom_profile,
+        current_profile,
+    )
+    state.possible_clinical_overlaps = overlap_dicts(
+        possible_clinical_overlaps(state.symptom_profile)
+        or current_overlaps
+    )
 
 
 def _affirmative_risk(text: str) -> bool:
@@ -520,6 +550,27 @@ def _professional_guidance(state: ConversationState) -> str:
     )
 
 
+def _with_clinical_overlap_note(
+    response: str,
+    route: RouteDecision,
+    overlaps: tuple[ClinicalOverlap, ...],
+) -> str:
+    if not overlaps or route.intent in {
+        "crisis / safety",
+        "casual conversation",
+        "current factual search",
+        "research paper question",
+        "general knowledge",
+    }:
+        return response
+    if max(overlap.score for overlap in overlaps) < 2:
+        return response
+    note = overlap_summary(overlaps)
+    if not note or note.lower() in response.lower():
+        return response
+    return f"{response}\n\n{note}"
+
+
 def _mode_question(
     mode: str,
     clinical_question: str,
@@ -706,6 +757,8 @@ def _safety_reply(
     analysis: ReflectionResult,
     state: ConversationState,
     country_code: str,
+    symptom_profile: dict[str, int],
+    clinical_overlaps: tuple[ClinicalOverlap, ...],
 ) -> ConversationReply | None:
     safety_route = RouteDecision(
         intent="crisis / safety",
@@ -727,6 +780,8 @@ def _safety_reply(
             clinical_domains=("suicidal thoughts or self-harm",),
             recommendation_type="urgent safety support",
             route=safety_route,
+            symptom_profile=symptom_profile,
+            possible_clinical_overlaps=clinical_overlaps,
         )
 
     if state.safety_followup:
@@ -743,6 +798,8 @@ def _safety_reply(
                 clinical_domains=("uncertain immediate safety",),
                 recommendation_type="urgent safety support",
                 route=safety_route,
+                symptom_profile=symptom_profile,
+                possible_clinical_overlaps=clinical_overlaps,
             )
         if _affirmative_risk(text):
             state.support_urgency = "emergency"
@@ -758,6 +815,8 @@ def _safety_reply(
                 clinical_domains=("immediate safety concern",),
                 recommendation_type="emergency help now",
                 route=safety_route,
+                symptom_profile=symptom_profile,
+                possible_clinical_overlaps=clinical_overlaps,
             )
         if _contains_any(text, NO_TERMS):
             state.safety_followup = False
@@ -777,6 +836,8 @@ def _safety_reply(
                 clinical_domains=("suicidal thoughts or self-harm",),
                 recommendation_type="urgent professional support",
                 route=safety_route,
+                symptom_profile=symptom_profile,
+                possible_clinical_overlaps=clinical_overlaps,
             )
 
     return None
@@ -796,9 +857,19 @@ def continue_conversation(
     )
     analysis = process_reflection(text)
     signals = detect_clinical_signals(text)
+    current_symptom_profile = build_symptom_profile(text)
+    current_clinical_overlaps = possible_clinical_overlaps(current_symptom_profile)
 
-    safety_reply = _safety_reply(text, analysis, state, country_code)
+    safety_reply = _safety_reply(
+        text,
+        analysis,
+        state,
+        country_code,
+        current_symptom_profile,
+        current_clinical_overlaps,
+    )
     if safety_reply:
+        _update_symptom_layer(state, current_symptom_profile, current_clinical_overlaps)
         _update_state(text, analysis, signals, state, safety_reply.route)
         state.current_intent = safety_reply.route.intent
         state.knowledge_route = safety_reply.route.knowledge_route
@@ -851,6 +922,7 @@ def continue_conversation(
         state.functioning_known = True
 
     turn_index = state.turn_count
+    _update_symptom_layer(state, current_symptom_profile, current_clinical_overlaps)
     _update_state(text, analysis, signals, state, route)
 
     routed_response = routed_local_response(
@@ -862,6 +934,11 @@ def continue_conversation(
         conversation_state=state,
     )
     if routed_response is not None:
+        routed_response = _with_clinical_overlap_note(
+            routed_response,
+            route,
+            current_clinical_overlaps,
+        )
         return ConversationReply(
             response=routed_response,
             analysis=analysis,
@@ -869,6 +946,8 @@ def continue_conversation(
             clinical_domains=tuple(signal.domain for signal in signals),
             recommendation_type=state.support_urgency,
             route=route,
+            symptom_profile=current_symptom_profile,
+            possible_clinical_overlaps=current_clinical_overlaps,
         )
 
     question_domain, question = _choose_question(signals, state)
@@ -884,6 +963,11 @@ def continue_conversation(
         state=state,
         question=_mode_question(state.support_mode, question, analysis, state),
     )
+    response = _with_clinical_overlap_note(
+        response,
+        route,
+        current_clinical_overlaps,
+    )
     return ConversationReply(
         response=response,
         analysis=analysis,
@@ -897,4 +981,6 @@ def continue_conversation(
         ),
         recommendation_type=state.support_urgency,
         route=route,
+        symptom_profile=current_symptom_profile,
+        possible_clinical_overlaps=current_clinical_overlaps,
     )

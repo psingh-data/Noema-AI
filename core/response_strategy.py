@@ -196,6 +196,21 @@ def _relationship_decision(text: str) -> str:
 
 def _career_decision(text: str) -> str:
     options = _decision_options(text)
+    if _contains(text, "two job offers", "one pays more", "one feels meaningful"):
+        return (
+            "This is a real career decision because the two offers are rewarding "
+            "different parts of you: security and meaning.\n\n"
+            "Compare them through the same lenses: salary, learning, growth, values, "
+            "energy cost, manager quality, stability, and how reversible the choice "
+            "is. The higher-paying offer may reduce pressure and create options. The "
+            "meaningful offer may protect motivation and identity, but only if it also "
+            "has enough stability and growth.\n\n"
+            "My recommendation: do not choose meaning in a way that creates constant "
+            "financial stress, and do not choose money if the daily work will drain "
+            "you quickly. Prefer the offer that gives enough stability plus room to "
+            "grow into the person you want to become.\n\n"
+            "Which offer has the better manager and learning curve?"
+        )
     if options:
         left, right = options
         return (

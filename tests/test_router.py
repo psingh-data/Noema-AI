@@ -265,3 +265,10 @@ def test_playful_questions_route_to_casual_chat():
     for text in ("Tell me a terrible joke.", "What Pokemon would make the best therapist?"):
         decision = route(text)
         assert decision.intent == "casual conversation"
+
+
+def test_therapy_intervention_request_routes_to_research_layer():
+    decision = route("Suggest me some therapies for grief.")
+    assert decision.intent == "intervention_request"
+    assert decision.knowledge_route == "research papers"
+    assert decision.topic == "grief"
