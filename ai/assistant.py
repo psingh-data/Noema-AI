@@ -93,6 +93,20 @@ def generate_ai_response(
             if approved_memory
             else "No user-approved memory is available."
         )
+        conversation_state_context = (
+            local_reply.state.conversation_summary
+            or "No conversation state has accumulated yet."
+        )
+        unresolved_context = (
+            "\n".join(f"- {item}" for item in local_reply.state.unresolved_concerns[-5:])
+            if local_reply.state.unresolved_concerns
+            else "No unresolved concerns are tracked yet."
+        )
+        goals_context = (
+            "\n".join(f"- {item}" for item in local_reply.state.current_goals[-4:])
+            if local_reply.state.current_goals
+            else "No current goal has been inferred yet."
+        )
         selected_examples = list(fewshot_examples) or select_fewshot_examples(
             local_reply.route.intent,
             user_text,
@@ -167,6 +181,11 @@ Product boundaries:
   contradict its recommendation.
 - Do not claim to have searched the internet or research literature. External
   retrieval is handled separately before this optional enhancement is called.
+- Use conversation state. If the current message is a continuation of an
+  earlier grief, decision, overwhelm, relationship, or workplace thread,
+  reference the relevant prior context naturally instead of restarting.
+- Avoid generic follow-ups like "what happened?" when the state already shows
+  the active topic or unresolved concern.
 
 Local analysis:
 - Country: {country_code}
@@ -179,6 +198,15 @@ Private reference context:
 
 User-approved memory for personalization:
 {memory_context}
+
+Conversation state:
+{conversation_state_context}
+
+Unresolved concerns:
+{unresolved_context}
+
+Current goals:
+{goals_context}
 
 Expected response structure for this intent:
 {structure_context}

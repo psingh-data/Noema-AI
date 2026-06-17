@@ -1,7 +1,6 @@
 """Adaptive, psychologically informed multi-turn conversation."""
 
 from __future__ import annotations
-
 from dataclasses import dataclass, field
 
 from core.clinical_signals import ClinicalSignal, detect_clinical_signals
@@ -37,6 +36,13 @@ class ConversationState:
     current_intent: str = "open conversation"
     knowledge_route: str = "conversation context"
     last_emotional_category: str | None = None
+    active_themes: dict[str, int] = field(default_factory=dict)
+    active_emotions: dict[str, int] = field(default_factory=dict)
+    active_relationships: set[str] = field(default_factory=set)
+    unresolved_concerns: list[str] = field(default_factory=list)
+    current_goals: list[str] = field(default_factory=list)
+    conversation_summary: str = ""
+    narrative_progression: list[str] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -163,6 +169,131 @@ def _contains_any(text: str, terms: tuple[str, ...]) -> bool:
     return any(term in normalized for term in terms)
 
 
+def _remember_count(container: dict[str, int], value: str) -> None:
+    if not value or value == "general":
+        return
+    container[value] = container.get(value, 0) + 1
+
+
+def _remember_once(items: list[str], value: str, limit: int = 6) -> None:
+    if value and value not in items:
+        items.append(value)
+    if len(items) > limit:
+        del items[:-limit]
+
+
+def _detect_relationships(text: str) -> set[str]:
+    normalized = " ".join(text.lower().split())
+    relationships = {
+        relation
+        for relation in (
+            "grandfather",
+            "grandmother",
+            "mother",
+            "father",
+            "sister",
+            "brother",
+            "girlfriend",
+            "boyfriend",
+            "partner",
+            "friend",
+        )
+        if relation in normalized
+    }
+    if "grandpa" in normalized:
+        relationships.add("grandfather")
+    if "grandma" in normalized:
+        relationships.add("grandmother")
+    return relationships
+
+
+def _emotion_label(text: str, analysis: ReflectionResult) -> str | None:
+    normalized = " ".join(text.lower().split())
+    if "suffocat" in normalized or "can't breathe" in normalized:
+        return "overwhelm"
+    if "don't know" in normalized or "do not know" in normalized or "confused" in normalized:
+        return "confusion"
+    if analysis.emotion.emotion not in {"neutral", "distress"}:
+        return analysis.emotion.emotion
+    return None
+
+
+def _theme_label(text: str, analysis: ReflectionResult, route: RouteDecision | None) -> str | None:
+    normalized = " ".join(text.lower().split())
+    if route and route.topic != "general":
+        return route.topic
+    if analysis.category.category not in {"general reflection", "decision making"}:
+        return analysis.category.category
+    if "grandfather" in normalized or "passed away" in normalized or "died" in normalized:
+        return "grief"
+    if "what to do" in normalized or "next" in normalized:
+        return "next step"
+    return None
+
+
+def _concern_label(text: str, emotion: str | None, theme: str | None) -> str | None:
+    normalized = " ".join(text.lower().split())
+    relationships = _detect_relationships(normalized)
+    if theme == "grief" and relationships:
+        return f"grief connected to {sorted(relationships)[0]}"
+    if "what to do" in normalized or "don't know" in normalized or "do not know" in normalized:
+        return "uncertainty about what to do next"
+    if "suffocat" in normalized or "can't breathe" in normalized:
+        return "feeling suffocated or overwhelmed"
+    if emotion in {"anxiety", "overwhelm", "sadness", "grief", "confusion"}:
+        return f"{emotion} needs support"
+    return None
+
+
+def _goal_label(route: RouteDecision, text: str) -> str | None:
+    normalized = " ".join(text.lower().split())
+    if route.intent == "practical advice" or "what to do" in normalized:
+        return "find a practical next step"
+    if route.intent == "decision support":
+        return "make a decision"
+    if route.intent in {"grief", "emotional reflection", "overwhelm", "anxiety / stress"}:
+        return "understand and steady the feeling"
+    if route.intent == "venting":
+        return "be heard without advice"
+    return None
+
+
+def _summarize_state(state: ConversationState) -> str:
+    themes = sorted(state.active_themes, key=state.active_themes.get, reverse=True)[:3]
+    emotions = state.narrative_progression[-4:] or list(state.active_emotions)[:3]
+    relationships = sorted(state.active_relationships)[:3]
+    parts: list[str] = []
+    if themes:
+        parts.append("themes: " + ", ".join(themes))
+    if emotions:
+        parts.append("emotional progression: " + " -> ".join(emotions))
+    if relationships:
+        parts.append("relationships: " + ", ".join(relationships))
+    if state.unresolved_concerns:
+        parts.append("open concern: " + state.unresolved_concerns[-1])
+    return "Conversation state - " + "; ".join(parts) if parts else ""
+
+
+def conversation_state_snapshot(state: ConversationState) -> dict[str, object]:
+    return {
+        "active_themes": sorted(
+            state.active_themes,
+            key=state.active_themes.get,
+            reverse=True,
+        ),
+        "active_emotions": sorted(
+            state.active_emotions,
+            key=state.active_emotions.get,
+            reverse=True,
+        ),
+        "active_relationships": sorted(state.active_relationships),
+        "unresolved_concerns": list(state.unresolved_concerns),
+        "current_goals": list(state.current_goals),
+        "conversation_summary": state.conversation_summary,
+        "narrative_progression": list(state.narrative_progression),
+    }
+
+
 def _affirmative_risk(text: str) -> bool:
     normalized = " ".join(text.lower().split())
     for phrase in NEGATED_RISK_TERMS:
@@ -221,6 +352,7 @@ def _update_state(
     analysis: ReflectionResult,
     signals: list[ClinicalSignal],
     state: ConversationState,
+    route: RouteDecision | None = None,
 ) -> None:
     state.turn_count += 1
     if state.pending_domain:
@@ -246,6 +378,28 @@ def _update_state(
         state.support_urgency = "professional"
     if _urgent_domain(signals):
         state.support_urgency = "urgent"
+
+    theme = _theme_label(text, analysis, route)
+    emotion = _emotion_label(text, analysis)
+    if theme:
+        _remember_count(state.active_themes, theme)
+    if emotion:
+        _remember_count(state.active_emotions, emotion)
+        if not state.narrative_progression or state.narrative_progression[-1] != emotion:
+            state.narrative_progression.append(emotion)
+            if len(state.narrative_progression) > 8:
+                del state.narrative_progression[:-8]
+    for relationship in _detect_relationships(text):
+        state.active_relationships.add(relationship)
+
+    concern = _concern_label(text, emotion, theme)
+    if concern:
+        _remember_once(state.unresolved_concerns, concern)
+    if route:
+        goal = _goal_label(route, text)
+        if goal:
+            _remember_once(state.current_goals, goal, limit=4)
+    state.conversation_summary = _summarize_state(state)
 
 
 def _choose_question(
@@ -284,6 +438,8 @@ def _validation(
     state: ConversationState,
 ) -> str:
     emotion = analysis.emotion.emotion
+    active_grief = "grief" in state.active_themes
+    progression = state.narrative_progression[-4:]
     category = (
         state.last_emotional_category
         if analysis.category.category == "general reflection"
@@ -291,6 +447,17 @@ def _validation(
         else analysis.category.category
     )
 
+    if active_grief and "overwhelm" in progression:
+        return (
+            "This seems connected to the grief you started with. The thread has "
+            "moved from loss into uncertainty, and now into a suffocating kind of "
+            "overwhelm."
+        )
+    if active_grief and "confusion" in progression and category != "grief":
+        return (
+            "I am keeping the earlier grief context in view here. Not knowing what "
+            "to do can be part of how loss unsettles the next step."
+        )
     if category == "grief":
         return (
             "It makes sense that this loss can still hurt.\n\n"
@@ -367,6 +534,16 @@ def _mode_question(
     )
     if mode == "Just listen":
         if category == "grief":
+            if "feeling suffocated or overwhelmed" in state.unresolved_concerns:
+                return (
+                    "When you say suffocated, is it mostly in your body, your "
+                    "thoughts, or the feeling of being trapped by the loss?"
+                )
+            if "grief connected to grandfather" in state.unresolved_concerns and state.turn_count > 1:
+                return (
+                    "Right now, does the grief feel more like missing him, feeling "
+                    "lost about what comes next, or pressure building in your body?"
+                )
             return (
                 "What do you miss most right now: the person, the time you had "
                 "together, a particular memory, or something else?"
@@ -622,7 +799,7 @@ def continue_conversation(
 
     safety_reply = _safety_reply(text, analysis, state, country_code)
     if safety_reply:
-        state.turn_count += 1
+        _update_state(text, analysis, signals, state, safety_reply.route)
         state.current_intent = safety_reply.route.intent
         state.knowledge_route = safety_reply.route.knowledge_route
         return safety_reply
@@ -664,27 +841,6 @@ def continue_conversation(
     ):
         state.last_emotional_category = analysis.category.category
 
-    routed_response = routed_local_response(
-        text=text,
-        route=route,
-        analysis=analysis,
-        turn_count=state.turn_count,
-        approved_memory=approved_memory,
-    )
-    if routed_response is not None:
-        if signals:
-            _update_state(text, analysis, signals, state)
-        else:
-            state.turn_count += 1
-        return ConversationReply(
-            response=routed_response,
-            analysis=analysis,
-            state=state,
-            clinical_domains=tuple(signal.domain for signal in signals),
-            recommendation_type=state.support_urgency,
-            route=route,
-        )
-
     if state.pending_domain == "supports":
         state.support_known = True
     if state.pending_domain == "goal":
@@ -694,7 +850,26 @@ def continue_conversation(
     if state.pending_domain == "functioning":
         state.functioning_known = True
 
-    _update_state(text, analysis, signals, state)
+    turn_index = state.turn_count
+    _update_state(text, analysis, signals, state, route)
+
+    routed_response = routed_local_response(
+        text=text,
+        route=route,
+        analysis=analysis,
+        turn_count=turn_index,
+        approved_memory=approved_memory,
+        conversation_state=state,
+    )
+    if routed_response is not None:
+        return ConversationReply(
+            response=routed_response,
+            analysis=analysis,
+            state=state,
+            clinical_domains=tuple(signal.domain for signal in signals),
+            recommendation_type=state.support_urgency,
+            route=route,
+        )
 
     question_domain, question = _choose_question(signals, state)
     state.pending_domain = question_domain

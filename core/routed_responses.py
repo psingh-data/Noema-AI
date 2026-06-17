@@ -189,6 +189,55 @@ def _advice_response(text: str, analysis: ReflectionResult) -> str:
     )
 
 
+def _continuity_response(text: str, route: RouteDecision, conversation_state: object | None) -> str | None:
+    if conversation_state is None:
+        return None
+    active_themes = getattr(conversation_state, "active_themes", {})
+    active_relationships = getattr(conversation_state, "active_relationships", set())
+    progression = getattr(conversation_state, "narrative_progression", [])
+    normalized = " ".join(text.lower().split())
+    grief_active = "grief" in active_themes
+    relationship_text = (
+        sorted(active_relationships)[0]
+        if active_relationships
+        else "the person you lost"
+    )
+
+    if grief_active and route.intent == "practical advice" and (
+        "what to do" in normalized or "don't know" in normalized or "do not know" in normalized
+    ):
+        return (
+            f"Given what you shared about your {relationship_text}, this does not "
+            "sound like a random lack of direction. It sounds like grief has moved "
+            "into confusion, and your mind is asking for something steady to hold.\n\n"
+            "**For the next few hours, keep it small:** drink water, sit somewhere "
+            "quiet, message one person you trust, and do one grounding action such "
+            "as naming five things you can see. Do not try to solve your whole life "
+            "while grief is this close to the surface.\n\n"
+            "My recommendation: choose support before strategy today. Once your body "
+            "settles even a little, we can separate emotional pain from practical "
+            "decisions.\n\n"
+            "Are you alone right now, or is there someone nearby you can contact?"
+        )
+
+    if grief_active and route.intent in {"emotional reflection", "overwhelm", "anxiety / stress"} and (
+        "suffocat" in normalized or "can't breathe" in normalized or "overwhelm" in progression
+    ):
+        return (
+            f"This feels connected to what you said about your {relationship_text}. "
+            "The thread seems to be grief, then not knowing what to do, and now a "
+            "suffocating kind of overwhelm.\n\n"
+            "For this moment, the goal is not to analyze everything. Try to lower "
+            "the pressure in your body first: sit upright, loosen your shoulders, "
+            "take a slower breath out than in, and name one thing in the room that "
+            "feels solid.\n\n"
+            "The next useful question is more specific now: is this suffocation "
+            "mostly in your body, your thoughts, or the feeling of being trapped "
+            "by the loss?"
+        )
+    return None
+
+
 def _challenge_response(analysis: ReflectionResult) -> str:
     if analysis.biases:
         bias = analysis.biases[0]
@@ -244,6 +293,7 @@ def routed_local_response(
     analysis: ReflectionResult,
     turn_count: int,
     approved_memory: tuple[str, ...] = (),
+    conversation_state: object | None = None,
 ) -> str | None:
     memory_note = ""
     if approved_memory and route.intent in {
@@ -259,6 +309,9 @@ def routed_local_response(
     strategic = strategy_response(text=text, route=route, analysis=analysis)
     if strategic is not None:
         return strategic + memory_note
+    continuity = _continuity_response(text, route, conversation_state)
+    if continuity is not None:
+        return continuity + memory_note
     if route.intent == "casual conversation":
         return _casual_response(text, turn_count)
     if route.intent == "decision support":

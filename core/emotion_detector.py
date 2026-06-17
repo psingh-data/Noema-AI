@@ -31,6 +31,8 @@ EMOTION_KEYWORDS = {
     "anxiety": ("anxious", "worried", "nervous", "panic", "afraid", "uncertain"),
     "overwhelm": (
         "overwhelmed",
+        "suffocated",
+        "suffocating",
         "too much",
         "can't cope",
         "cannot cope",

@@ -24,7 +24,7 @@ CATEGORY_KEYWORDS = {
         "broke down",
     ),
     "anxiety": ("anxiety", "anxious", "panic", "worried"),
-    "overwhelm": ("overwhelmed", "too much", "can't cope", "burnout"),
+    "overwhelm": ("overwhelmed", "suffocated", "suffocating", "too much", "can't cope", "burnout"),
     "career": ("job", "career", "interview", "work", "boss", "promotion"),
     "study": ("exam", "college", "university", "assignment", "study", "grades"),
     "relationship": (

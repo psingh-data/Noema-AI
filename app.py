@@ -46,7 +46,11 @@ reload_local_routing_modules()
 from ai.assistant import generate_ai_response
 from ai.tavily import format_tavily_answer, search_tavily, should_use_tavily
 from critic import critique_response, repair_response
-from core.conversation import ConversationState, continue_conversation
+from core.conversation import (
+    ConversationState,
+    continue_conversation,
+    conversation_state_snapshot,
+)
 from core.fewshot import select_fewshot_examples
 from core.foundational_research import foundational_references
 from core.pipeline import ReflectionResult
@@ -198,6 +202,29 @@ def render_notes(message: dict) -> None:
             st.write("**Possible thinking patterns:**")
             for bias in result.biases:
                 st.write(f"- {bias.name.title()}: {bias.explanation}")
+
+        state_snapshot = message.get("conversation_state", {})
+        if state_snapshot:
+            st.divider()
+            st.write("**Conversation State**")
+            st.write(
+                "**Active Themes:** "
+                + ", ".join(state_snapshot.get("active_themes", []) or ["None"])
+            )
+            st.write(
+                "**Active Emotions:** "
+                + ", ".join(state_snapshot.get("active_emotions", []) or ["None"])
+            )
+            st.write(
+                "**Current Goals:** "
+                + ", ".join(state_snapshot.get("current_goals", []) or ["None"])
+            )
+            st.write("**Unresolved Questions:**")
+            unresolved = state_snapshot.get("unresolved_concerns", []) or ["None"]
+            for concern in unresolved:
+                st.write(f"- {concern}")
+            if state_snapshot.get("conversation_summary"):
+                st.caption(state_snapshot["conversation_summary"])
 
         reference_pages = message.get("reference_pages", [])
         if reference_pages:
@@ -661,6 +688,7 @@ if prompt and prompt.strip():
         "retrieval_provider": retrieval_provider,
         "memory_candidate": clean_prompt,
         "fewshot_example_count": len(fewshot_examples),
+        "conversation_state": conversation_state_snapshot(reply.state),
         "critic_passed": critic_result.passed,
         "critic_failures": list(critic_failures),
         "critic_repaired": critic_repaired,

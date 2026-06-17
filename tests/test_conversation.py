@@ -494,3 +494,37 @@ def test_casual_chat_works_without_psychology_mode():
         assert reply.route.intent == "casual conversation"
         assert "what feels most present" not in lowered
         assert "daily life" not in lowered
+
+
+def test_conversation_state_tracks_grief_confusion_overwhelm_progression():
+    state = ConversationState()
+    first = continue_conversation("My grandfather died and I am sad.", state)
+    second = continue_conversation("I don't know what to do.", first.state)
+    third = continue_conversation("I feel suffocated.", second.state)
+
+    assert "grief" in third.state.active_themes
+    assert "grandfather" in third.state.active_relationships
+    assert "grief" in third.state.active_emotions
+    assert "confusion" in third.state.active_emotions
+    assert "overwhelm" in third.state.active_emotions
+    assert third.state.narrative_progression[-3:] == [
+        "grief",
+        "confusion",
+        "overwhelm",
+    ]
+    assert "grief" in third.state.conversation_summary
+    assert "uncertainty about what to do next" in third.state.unresolved_concerns
+    assert "feeling suffocated or overwhelmed" in third.state.unresolved_concerns
+
+
+def test_followup_response_uses_prior_grief_context_instead_of_restarting():
+    state = ConversationState()
+    first = continue_conversation("My grandfather died and I am sad.", state)
+    second = continue_conversation("I don't know what to do.", first.state)
+    third = continue_conversation("I feel suffocated.", second.state)
+    lowered = third.response.lower()
+
+    assert "grandfather" in lowered or "grief" in lowered
+    assert "thread" in lowered or "connected" in lowered
+    assert "what happened" not in lowered
+    assert "what came next" not in lowered
