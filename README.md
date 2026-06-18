@@ -20,6 +20,8 @@ Noema is not a therapist, psychologist, doctor, lawyer, or emergency service.
 - Internet Search
 - Safety Support
 - Mixed Life Problem Analysis
+- Consent-Based Feedback Collection
+- Password-Protected Admin Analytics
 
 ## Architecture
 
@@ -97,11 +99,48 @@ TAVILY_API_KEY = "your-key"
 OPENAI_API_KEY = "your-key"
 OPENAI_MODEL = "gpt-5.5"
 ENABLE_WEB_SEARCH = true
+ADMIN_PASSWORD = "change-this-password"
 ```
 
 Tavily enables live factual search and academic research retrieval. OpenAI is
 optional; when it is unavailable, Noema keeps local emotional support, decision
 support, memory, internet search, and Tavily-based research retrieval working.
+
+## Feedback Collection And Privacy
+
+Noema can store consent-based interaction data in a local SQLite database:
+
+```text
+data/noema_feedback.db
+```
+
+Feedback storage is off until the user consents in the app. When consent is on,
+Noema stores session records, user/assistant messages, response metadata,
+feedback ratings, and failure-pattern labels for evaluation and improvement.
+The app asks users not to enter names, emails, or phone numbers, and applies
+basic redaction for email addresses and phone-like strings before saving text.
+
+Users can delete their saved session data from the sidebar with **Delete my
+session data**.
+
+Admin analytics are hidden behind `?admin=true` and require:
+
+```toml
+ADMIN_PASSWORD = "your-private-password"
+```
+
+Never commit a real admin password. Add it only to `.streamlit/secrets.toml`
+locally or to Streamlit Cloud secrets.
+
+Admin exports write to:
+
+```text
+data/exports/noema_feedback_export.csv
+data/exports/noema_feedback_export.jsonl
+```
+
+These exports are intended for evaluation, failure analysis, and possible
+future fine-tuning preparation. No fine-tuning is performed by this repository.
 
 ## Deployment
 
@@ -137,9 +176,9 @@ fine-tuning.
 
 ## Privacy Notes
 
-Noema stores anonymous labels and feedback for local analytics. It does not
-store raw chat transcripts in the analytics database. Session memory is opt-in
-and can be cleared from the sidebar.
+Noema has two local storage layers. The older anonymous analytics table stores
+classification labels only. The feedback database stores messages only after
+explicit consent and can be deleted by the user during the session.
 
 If OpenAI is configured, recent conversation context may be sent to OpenAI for
 enhanced response generation. Tavily receives the query only when the route

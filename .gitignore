@@ -14,6 +14,8 @@ __pycache__/
 data/raw/
 data/private/
 data/reference_index.sqlite3
+data/exports/*.csv
+data/exports/*.jsonl
 data/processed/noema_unified_dataset.jsonl
 uploads/
 cache/

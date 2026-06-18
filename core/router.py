@@ -102,6 +102,9 @@ IDENTITY_EXPLORATION_MARKERS = (
     "not myself anymore",
     "became someone",
     "identity",
+    "wasting my life",
+    "waste my life",
+    "wasted my life",
 )
 
 ACHIEVEMENT_SELF_WORTH_MARKERS = (
@@ -116,6 +119,9 @@ ACHIEVEMENT_SELF_WORTH_MARKERS = (
 EXISTENTIAL_MARKERS = (
     "free will",
     "point of life",
+    "why does anything matter",
+    "does anything matter",
+    "why care about",
     "everything ends",
     "everyone dies",
     "why should i try",

@@ -27,8 +27,10 @@ def compose_ontology_response(
             return options[turn_count % len(options)]
         if "bored" in lowered:
             return (
-                "Bored in the restless way, the tired way, or the just-give-me-something-interesting way?\n\n"
-                "We can keep it light, do a random question, or turn the boredom into a tiny useful plan."
+                "Bored can mean a few different things: under-stimulated, tired, avoiding "
+                "something, or quietly worried that life feels too small right now.\n\n"
+                "We can keep it light if you want, but if the boredom has that heavier "
+                "edge, I am here for that too."
             )
 
     if category == "venting":

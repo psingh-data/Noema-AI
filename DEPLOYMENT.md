@@ -40,6 +40,7 @@ TAVILY_API_KEY = "your-key"
 OPENAI_API_KEY = "your-key"
 OPENAI_MODEL = "gpt-5.5"
 ENABLE_WEB_SEARCH = true
+ADMIN_PASSWORD = "your-private-admin-password"
 ```
 
 7. Deploy the app.
@@ -73,6 +74,7 @@ TAVILY_API_KEY
 OPENAI_API_KEY
 OPENAI_MODEL
 ENABLE_WEB_SEARCH
+ADMIN_PASSWORD
 ```
 
 7. Restart the Space.
@@ -105,6 +107,7 @@ TAVILY_API_KEY
 OPENAI_API_KEY
 OPENAI_MODEL
 ENABLE_WEB_SEARCH
+ADMIN_PASSWORD
 ```
 
 8. Deploy and test the public URL.
@@ -114,6 +117,8 @@ ENABLE_WEB_SEARCH
 - Noema should launch with `streamlit run app.py`.
 - Keep `.streamlit/secrets.toml` private.
 - Do not commit local SQLite databases, uploads, cache files, or raw private data.
+- Set `ADMIN_PASSWORD` before using `?admin=true`; never commit the real password.
+- Admin analytics, exports, and raw feedback logs must remain password-protected.
 - Tavily is required for live internet and academic retrieval.
 - OpenAI is optional for enhanced language generation.
 - Noema is not a replacement for professional mental health care or emergency services.

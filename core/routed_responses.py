@@ -278,6 +278,7 @@ def _continuity_response(text: str, route: RouteDecision, conversation_state: ob
     active_themes = getattr(conversation_state, "active_themes", {})
     active_relationships = getattr(conversation_state, "active_relationships", set())
     relationship_signals = getattr(conversation_state, "relationship_signals", [])
+    attention_signals = getattr(conversation_state, "attention_signals", [])
     progression = getattr(conversation_state, "narrative_progression", [])
     normalized = " ".join(text.lower().split())
     grief_active = "grief" in active_themes
@@ -288,6 +289,34 @@ def _continuity_response(text: str, route: RouteDecision, conversation_state: ob
         else "the person you lost"
     )
 
+    if route.topic == "grief" and any(
+        marker in normalized
+        for marker in (
+            "guilty for laughing",
+            "guilt for laughing",
+            "don't want to talk to anyone",
+            "do not want to talk to anyone",
+            "get through this",
+        )
+    ):
+        return (
+            "I am sorry this is happening so freshly. And I want to hold all the "
+            "parts you said, not just the first sentence.\n\n"
+            "Not wanting to talk to anyone can be a grief response. Your system may "
+            "be overloaded and trying to reduce contact because even simple conversation "
+            "feels like too much.\n\n"
+            "Feeling guilty for laughing today does not mean you loved him less. Grief "
+            "does not stay in one emotional lane. A laugh can happen because your body "
+            "needed one second of release, not because the loss stopped mattering.\n\n"
+            "For getting through today: keep the goal very small. Eat something light, "
+            "drink water, let one safe person know you do not want to talk but should "
+            "not be completely alone, and give yourself permission to move between "
+            "crying, numbness, distraction, and even brief laughter without judging it.\n\n"
+            "If the grief starts turning into thoughts of harming yourself or being "
+            "unable to stay safe, please contact emergency support or a crisis line "
+            "right away."
+        )
+
     relationship_active = active_thread == "relationship_thread" or route.topic == "relationship"
     if relationship_active:
         if (
@@ -296,6 +325,20 @@ def _continuity_response(text: str, route: RouteDecision, conversation_state: ob
             and not any(marker in normalized for marker in ("relief", "relieved", "guilt", "guilty", "what does that say"))
         ):
             return None
+        if any(marker in normalized for marker in ("two feelings", "feelings mean", "mean together", "together")) and any(
+            signal in relationship_signals for signal in ("relief when imagining leaving", "guilt about hurting partner")
+        ):
+            return (
+                "Those two feelings together suggest the conflict is not simply "
+                "'stay or leave.' It is honesty versus protection.\n\n"
+                "Relief suggests part of you wants freedom, space, or an end to "
+                "performing certainty you do not feel. Guilt suggests part of you "
+                "cares about her wellbeing and does not want to cause pain carelessly.\n\n"
+                "Together, they do not prove the relationship should end. But they do "
+                "show that staying only to protect her from pain may become unfair to "
+                "both of you. The question becomes: can you stay from love and honest "
+                "willingness, or are you staying from guilt?"
+            )
         if (
             "what does that say" in normalized
             or "decision" in normalized
@@ -386,6 +429,52 @@ def _continuity_response(text: str, route: RouteDecision, conversation_state: ob
             )
 
     if active_thread == "adhd_thread" and route.intent == "conversation_continuity":
+        if any(marker in normalized for marker in ("most likely", "explanation", "what is most likely")):
+            if {
+                "recent onset",
+                "attention changed after bereavement",
+                "sleep disruption",
+            }.issubset(set(attention_signals)):
+                return (
+                    "Based on the timeline you gave, grief plus disrupted sleep and "
+                    "stress currently look more likely than classic ADHD as the main "
+                    "explanation.\n\n"
+                    "The reason is timing. ADHD usually shows a long-running pattern "
+                    "that starts earlier in life and appears across more than one setting. "
+                    "Your focus difficulty sounds like it began recently, after your "
+                    "grandfather died, and now your sleep is terrible. Poor sleep alone "
+                    "can seriously damage attention, memory, motivation, and emotional "
+                    "control.\n\n"
+                    "That does not rule ADHD out. It means ADHD should not be the first "
+                    "certainty. My practical read is: stabilize and track sleep, grief "
+                    "load, stress, and focus for a few weeks; if attention problems "
+                    "remain strong after sleep and grief are better supported, then an "
+                    "ADHD assessment becomes more useful."
+                )
+            return (
+                "The most likely explanation depends on the timeline. If this began "
+                "recently, stress, grief, sleep disruption, anxiety, or burnout become "
+                "more likely than classic ADHD. If it has been present since childhood "
+                "and across settings, ADHD becomes more plausible."
+            )
+        if any(marker in normalized for marker in ("after grandfather died", "after my grandfather died", "after he died")):
+            return (
+                "That timing matters a lot. If the focus problems started after your "
+                "grandfather died, grief and stress move much higher on the explanation "
+                "list.\n\n"
+                "Loss can affect concentration because your mind keeps processing the "
+                "absence in the background. That can look like distraction, low energy, "
+                "forgetfulness, or feeling mentally unavailable. It does not mean ADHD "
+                "is impossible, but it makes the recent grief timeline important."
+            )
+        if any(marker in normalized for marker in ("sleep is terrible", "terrible sleep", "can't sleep", "cannot sleep", "not sleeping")):
+            return (
+                "Sleep is a major piece of this. Terrible sleep can create ADHD-like "
+                "attention problems even in someone who does not have ADHD: poor focus, "
+                "low motivation, forgetfulness, irritability, and slower thinking.\n\n"
+                "So right now, sleep is not a side detail; it is one of the main things "
+                "I would check before drawing conclusions about ADHD."
+            )
         if any(marker in normalized for marker in ("started last", "last year", "recent", "only started")):
             return (
                 "That detail matters. If the focus difficulty only started last year, "
@@ -493,7 +582,19 @@ def _failed_intervention_response() -> str:
     )
 
 
-def _identity_exploration_response() -> str:
+def _identity_exploration_response(text: str = "") -> str:
+    if "wasting my life" in text.lower() or "waste my life" in text.lower():
+        return (
+            "That sounds like boredom has opened into something deeper: not just "
+            "'I need entertainment,' but 'what if my time is passing and I am not "
+            "becoming who I am supposed to become?'\n\n"
+            "That fear usually carries comparison, pressure, and a sense that your "
+            "life should already look more defined. I would not answer it with a "
+            "productivity tip first. The real question is whether you are lacking "
+            "stimulation today, direction this season, or trust in your own timeline.\n\n"
+            "A useful next move is to choose one small action that makes today feel "
+            "less wasted without pretending it solves your whole life."
+        )
     return (
         "That can feel frightening, like you are watching yourself from the outside. "
         "But it can also mean an old identity is no longer fitting the life you are "
@@ -524,7 +625,35 @@ def _achievement_self_worth_response() -> str:
     )
 
 
-def _existential_response() -> str:
+def _existential_response(text: str = "") -> str:
+    lowered = text.lower()
+    if "career" in lowered:
+        return (
+            "If we are still inside the question of why anything matters, then career "
+            "does not matter because society says it should. It matters only if it "
+            "serves something human: agency, contribution, learning, stability, or "
+            "the kind of life you want to be able to choose.\n\n"
+            "So the better question is not 'why care about career?' It is 'what would "
+            "a career need to protect or express for it to be worth my energy?'"
+        )
+    if "money" in lowered:
+        return (
+            "Money does not give life meaning by itself. But it can matter because it "
+            "affects freedom, safety, options, dignity, and the ability to care for "
+            "yourself or other people.\n\n"
+            "The trap is treating money as proof of worth. The healthier frame is: "
+            "money is a tool that can reduce helplessness and expand choices, but it "
+            "should not become the whole definition of a meaningful life."
+        )
+    if "success" in lowered:
+        return (
+            "Success matters only if it is connected to values you actually respect. "
+            "Otherwise it becomes a scoreboard you keep feeding while still feeling "
+            "empty.\n\n"
+            "A more honest version is: success can be useful when it represents growth, "
+            "craft, contribution, courage, or freedom. It becomes harmful when it is "
+            "only a way to prove you are finally enough."
+        )
     return (
         "That question is heavy because it is not only philosophical; it touches "
         "fear, meaning, mortality, and the strange fact that we have to live without "
@@ -638,6 +767,13 @@ def _casual_response(text: str, turn_count: int) -> str:
             "All right, Your Majesty. Is this confidence, roleplay, or are you testing me?",
         )
         return options[turn_count % len(options)]
+    if "bored" in normalized:
+        return (
+            "Bored can mean under-stimulated, tired, avoiding something, or quietly "
+            "worried that life feels too small right now.\n\n"
+            "We can keep it light if you want, but if the boredom has that heavier "
+            "edge, I am here for that too."
+        )
     options = (
         "Okay, what happened?",
         "I get what you mean. What came next?",
@@ -667,6 +803,9 @@ def routed_local_response(
             "\n\n**Context you asked me to remember:** "
             + " | ".join(approved_memory[-2:])
         )
+    continuity = _continuity_response(text, route, conversation_state)
+    if continuity is not None:
+        return continuity + memory_note
     if (
         route.knowledge_route == "conversation context"
         and route.response_mode
@@ -683,9 +822,6 @@ def routed_local_response(
         )
         if ontology_response is not None:
             return ontology_response + memory_note
-    continuity = _continuity_response(text, route, conversation_state)
-    if continuity is not None:
-        return continuity + memory_note
     strategic = strategy_response(text=text, route=route, analysis=analysis)
     if strategic is not None:
         return strategic + memory_note
@@ -706,11 +842,11 @@ def routed_local_response(
     if route.intent == "failed_intervention_repair":
         return _failed_intervention_response()
     if route.intent == "identity_exploration":
-        return _identity_exploration_response()
+        return _identity_exploration_response(text)
     if route.intent == "achievement_self_worth":
         return _achievement_self_worth_response()
     if route.intent == "existential_question":
-        return _existential_response()
+        return _existential_response(text)
     if route.intent == "ethical_dilemma":
         return _ethical_response(text)
     if route.intent == "structured_problem_solving":

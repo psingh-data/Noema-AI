@@ -85,6 +85,7 @@ class ConversationState:
     important_relationships: list[str] = field(default_factory=list)
     recurring_decisions: list[str] = field(default_factory=list)
     relationship_signals: list[str] = field(default_factory=list)
+    attention_signals: list[str] = field(default_factory=list)
     life_map_items_used: list[str] = field(default_factory=list)
     last_responses: list[str] = field(default_factory=list)
 
@@ -301,7 +302,11 @@ def _looks_like_followup(text: str) -> bool:
 
 def _thread_for_route(text: str, route: RouteDecision, state: ConversationState) -> str:
     normalized = " ".join(text.lower().split())
-    if state.active_thread == "adhd_thread" and route.intent == "conversation_continuity":
+    if state.active_thread == "adhd_thread" and (
+        route.intent == "conversation_continuity"
+        or _attention_signal_labels(normalized)
+        or _asks_for_likely_explanation(normalized)
+    ):
         return "adhd_thread"
     if "adhd" in normalized or "can't focus" in normalized or "cannot focus" in normalized:
         return "adhd_thread"
@@ -366,6 +371,7 @@ def _life_map_snapshot(state: ConversationState) -> dict[str, list[str]]:
         "important_relationships": list(state.important_relationships),
         "recurring_decisions": list(state.recurring_decisions),
         "relationship_signals": list(state.relationship_signals),
+        "attention_signals": list(state.attention_signals),
     }
 
 
@@ -381,6 +387,7 @@ def _life_map_items_for_response(state: ConversationState, route: RouteDecision)
         state.major_goals[:2],
         state.recurring_decisions[:2],
         state.relationship_signals[:2],
+        state.attention_signals[:2],
     ):
         items.extend(source)
     return list(dict.fromkeys(items))[:8]
@@ -457,7 +464,17 @@ def _relationship_signal_labels(text: str) -> list[str]:
             "relief when imagining leaving",
         ),
         (
-            ("feel guilty", "feels guilty", "guilty", "hurting her", "hurting him", "hurt her", "hurt him"),
+            (
+                "hurting her",
+                "hurting him",
+                "hurt her",
+                "hurt him",
+                "guilty about her",
+                "guilty about him",
+                "guilty for hurting",
+                "guilty because she",
+                "guilty because he",
+            ),
             "guilt about hurting partner",
         ),
         (
@@ -471,6 +488,37 @@ def _relationship_signal_labels(text: str) -> list[str]:
         (
             ("stay or leave", "should i leave", "should i stay", "break up", "breaking up"),
             "stay versus leave decision",
+        ),
+    )
+    for markers, label in patterns:
+        if any(marker in normalized for marker in markers):
+            signals.append(label)
+    return list(dict.fromkeys(signals))
+
+
+def _attention_signal_labels(text: str) -> list[str]:
+    normalized = " ".join(text.lower().split())
+    signals: list[str] = []
+    patterns = (
+        (
+            ("adhd", "can't focus", "cannot focus", "concentrate", "focus problem"),
+            "attention difficulty question",
+        ),
+        (
+            ("started last year", "only started", "recent", "recently started", "new for me"),
+            "recent onset",
+        ),
+        (
+            ("after grandfather died", "after my grandfather died", "after he died", "after the loss", "after grief"),
+            "attention changed after bereavement",
+        ),
+        (
+            ("sleep is terrible", "sleep has been terrible", "terrible sleep", "can't sleep", "cannot sleep", "not sleeping", "insomnia"),
+            "sleep disruption",
+        ),
+        (
+            ("what explanation seems most likely", "most likely explanation", "seems most likely", "what is most likely"),
+            "asks for likely explanation",
         ),
     )
     for markers, label in patterns:
@@ -653,6 +701,58 @@ def _stress_driver_response(state: ConversationState) -> str:
     )
 
 
+def _fear_driver_response(state: ConversationState) -> str:
+    state.life_map_items_used = _life_map_items_for_response(
+        state,
+        RouteDecision(
+            "narrative_memory",
+            "Insight",
+            "conversation context",
+            1.0,
+            "Life-map fear synthesis.",
+        ),
+    )
+    future_doors: list[str] = []
+    if any(
+        item in state.recurring_fears or item in state.major_goals
+        for item in ("uncertainty about admissions", "move or study in Germany", "secure admissions")
+    ):
+        future_doors.append("Germany/admissions")
+    if any("Data Science" in item or "psychology" in item for item in state.recurring_decisions) or any(
+        "employability" in item for item in state.recurring_conflicts
+    ):
+        future_doors.append("Psychology/Data Science")
+    if any("business" in item for item in state.recurring_conflicts + state.major_goals + state.recurring_decisions):
+        future_doors.append("business")
+    if state.relationship_signals or any(
+        person in state.important_relationships for person in ("girlfriend", "partner", "boyfriend")
+    ):
+        future_doors.append("relationship commitment")
+
+    if len(future_doors) >= 2:
+        door_text = "\n".join(f"- {door} seems to open one future while closing others." for door in future_doors[:5])
+        return (
+            "Looking across what you have told me, I do not think the deeper fear is "
+            "only failure.\n\n"
+            "It looks more like regret: making one choice and then losing the other "
+            "possible lives you can still imagine.\n\n"
+            f"{door_text}\n\n"
+            "That can make every decision feel irreversible, even when some of them "
+            "are actually testable or adjustable. The fear underneath may be: 'What "
+            "if I choose one version of my life and later realize I abandoned the "
+            "right one?'\n\n"
+            "My read: your next step is not to find the perfect future. It is to mark "
+            "which decisions are truly irreversible, which can be tested, and which "
+            "only need a next step rather than a final answer."
+        )
+
+    return (
+        "From the context I have, the fear seems less like one simple fear and more "
+        "like uncertainty about choosing wrong. I would look for where regret, loss "
+        "of freedom, or disappointing people keeps returning."
+    )
+
+
 def _asks_for_stress_driver(text: str) -> bool:
     normalized = " ".join(text.lower().split())
     return (
@@ -666,6 +766,28 @@ def _asks_for_stress_driver(text: str) -> bool:
         or "main reason i am stressed" in normalized
         or "actually driving" in normalized
         or "actually causing" in normalized
+    )
+
+
+def _asks_for_deeper_fear(text: str) -> bool:
+    normalized = " ".join(text.lower().split())
+    return (
+        "what am i actually afraid of" in normalized
+        or "what am i really afraid of" in normalized
+        or "what is the deeper fear" in normalized
+        or "what's the deeper fear" in normalized
+        or "what fear is underneath" in normalized
+    )
+
+
+def _asks_for_likely_explanation(text: str) -> bool:
+    normalized = " ".join(text.lower().split())
+    return (
+        "what explanation seems most likely" in normalized
+        or "which explanation seems most likely" in normalized
+        or "most likely explanation" in normalized
+        or "what is most likely" in normalized
+        or "what seems most likely" in normalized
     )
 
 
@@ -701,15 +823,17 @@ def _route_from_active_thread(
     if (
         state.active_thread == "adhd_thread"
         and route.intent
-        in {
-            "casual conversation",
-            "general conversation",
-            "general knowledge",
-            "emotional reflection",
+        not in {
+            "crisis / safety",
+            "current factual search",
+            "research paper question",
+            "intervention_request",
+            "ethical_dilemma",
         }
         and (
             _looks_like_followup(text)
-            or any(marker in normalized for marker in ("started", "childhood", "recent", "last year"))
+            or _attention_signal_labels(normalized)
+            or any(marker in normalized for marker in ("started", "childhood", "recent", "last year", "sleep", "grandfather died", "most likely", "explanation"))
         )
     ):
         return RouteDecision(
@@ -722,8 +846,11 @@ def _route_from_active_thread(
         )
     if (
         state.active_thread == "existential_thread"
-        and route.intent in {"general knowledge", "general conversation", "casual conversation"}
-        and _looks_like_followup(text)
+        and route.intent not in {"crisis / safety", "current factual search", "research paper question"}
+        and (
+            _looks_like_followup(text)
+            or any(marker in normalized for marker in ("why care", "anything matter", "point of", "matter?", "career", "money", "success"))
+        )
     ):
         return RouteDecision(
             "existential_question",
@@ -751,6 +878,18 @@ def _route_from_active_thread(
             "conversation context",
             0.88,
             "The message asks for a decision read inside the active relationship thread.",
+            "relationship",
+        )
+    if (
+        state.active_thread == "relationship_thread"
+        and any(marker in normalized for marker in ("two feelings", "feelings mean", "mean together", "together"))
+    ):
+        return RouteDecision(
+            "decision support",
+            "Help me make a decision",
+            "conversation context",
+            0.9,
+            "The user asks for synthesis of feelings inside the active relationship thread.",
             "relationship",
         )
     if (
@@ -809,6 +948,7 @@ def conversation_state_snapshot(state: ConversationState) -> dict[str, object]:
         "important_relationships": list(state.important_relationships),
         "recurring_decisions": list(state.recurring_decisions),
         "relationship_signals": list(state.relationship_signals),
+        "attention_signals": list(state.attention_signals),
         "life_map": _life_map_snapshot(state),
         "life_map_items_used": list(state.life_map_items_used),
     }
@@ -976,6 +1116,12 @@ def _update_narrative_memory(text: str, state: ConversationState) -> None:
         )
     ):
         _remember_once(state.recurring_decisions, "relationship commitment versus leaving decision", limit=8)
+    for label in _attention_signal_labels(normalized):
+        _remember_once(state.attention_signals, label, limit=8)
+    if "attention changed after bereavement" in state.attention_signals:
+        _remember_once(state.recurring_conflicts, "attention problems after grief", limit=8)
+    if "sleep disruption" in state.attention_signals:
+        _remember_once(state.recurring_conflicts, "sleep disruption affecting attention", limit=8)
 
 
 def _affirmative_risk(text: str) -> bool:
@@ -1588,14 +1734,19 @@ def continue_conversation(
             confidence=1.0,
             reason="The user explicitly requested research evidence.",
         )
-    if _asks_for_stress_driver(text):
+    asks_deeper_fear = _asks_for_deeper_fear(text)
+    if _asks_for_stress_driver(text) or asks_deeper_fear:
         _update_narrative_memory(text, state)
         route = RouteDecision(
             intent="narrative_memory",
             response_mode="Insight",
             knowledge_route="conversation context",
             confidence=0.93,
-            reason="The user asks for an accumulated-context explanation of their stress pattern.",
+            reason=(
+                "The user asks for an accumulated-context explanation of their deeper fear."
+                if asks_deeper_fear
+                else "The user asks for an accumulated-context explanation of their stress pattern."
+            ),
             topic="general",
         )
     else:
@@ -1661,7 +1812,12 @@ def continue_conversation(
         )
 
     if route.intent == "narrative_memory":
-        narrative_response = _finalize_response(_stress_driver_response(state), state)
+        narrative_base = (
+            _fear_driver_response(state)
+            if _asks_for_deeper_fear(text)
+            else _stress_driver_response(state)
+        )
+        narrative_response = _finalize_response(narrative_base, state)
         return ConversationReply(
             response=narrative_response,
             analysis=analysis,

@@ -139,6 +139,15 @@ RELATIONSHIP_CONTINUITY_PROBES = (
         ),
         ("relief", "guilt", "values", "neither emotion automatically decides"),
     ),
+    (
+        (
+            "My girlfriend loves me but I don't think I love her anymore.",
+            "Thinking about leaving makes me feel relieved.",
+            "Thinking about hurting her makes me feel guilty.",
+            "What do those two feelings mean together?",
+        ),
+        ("honesty versus protection", "relief suggests", "guilt suggests"),
+    ),
 )
 
 BUSINESS_PROBES = (
@@ -192,12 +201,42 @@ NARRATIVE_MEMORY_PROBES = (
         ),
         ("common thread", "uncertainty", "future is suspended"),
     ),
+    (
+        (
+            "My grandfather died yesterday.",
+            "I am waiting for Germany admissions.",
+            "I love psychology but Data Science pays more.",
+            "My girlfriend wants commitment and I am unsure.",
+            "I want to start a business too.",
+            "What am I actually afraid of?",
+        ),
+        ("deeper fear", "regret", "closing others"),
+    ),
 )
 
 CONVERSATION_CONTINUITY_PROBES = (
     (
         ("I can't focus. Do I have ADHD?", "This only started last year."),
         ("adhd less straightforward", "burnout"),
+    ),
+    (
+        (
+            "I can't focus. Do I have ADHD?",
+            "It started last year.",
+            "It started after my grandfather died.",
+            "Sleep is terrible.",
+            "What explanation seems most likely?",
+        ),
+        ("grief plus disrupted sleep and stress", "more likely than classic adhd"),
+    ),
+    (
+        (
+            "Why does anything matter?",
+            "Why care about career?",
+            "Why care about money?",
+            "Why care about success?",
+        ),
+        ("success matters only", "scoreboard"),
     ),
     (
         ("My grandfather died yesterday.", "I don't know what to do.", "This feels unbearable."),

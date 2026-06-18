@@ -854,3 +854,102 @@ def test_general_knowledge_fallback_does_not_expose_infrastructure():
     assert "enhanced general-answer model" not in lowered
     assert "available in this session" not in lowered
     assert "narrow local rule set" not in lowered
+
+
+def test_adhd_grief_sleep_sequence_synthesizes_likely_explanation():
+    state = ConversationState()
+    first = continue_conversation("I can't focus. Do I have ADHD?", state)
+    second = continue_conversation("It started last year.", first.state)
+    third = continue_conversation("It started after my grandfather died.", second.state)
+    fourth = continue_conversation("Sleep is terrible.", third.state)
+    final = continue_conversation("What explanation seems most likely?", fourth.state)
+    lowered = final.response.lower()
+
+    assert final.state.active_thread == "adhd_thread"
+    assert final.route.intent == "conversation_continuity"
+    assert "grief plus disrupted sleep and stress" in lowered
+    assert "more likely than classic adhd" in lowered
+    assert "does not rule adhd out" in lowered
+    assert "what do you miss most" not in lowered
+
+
+def test_relationship_two_feelings_question_gets_synthesis():
+    state = ConversationState()
+    first = continue_conversation(
+        "My girlfriend loves me but I don't think I love her anymore.",
+        state,
+    )
+    second = continue_conversation("Thinking about leaving makes me feel relieved.", first.state)
+    third = continue_conversation("Thinking about hurting her makes me feel guilty.", second.state)
+    final = continue_conversation("What do those two feelings mean together?", third.state)
+    lowered = final.response.lower()
+
+    assert final.state.active_thread == "relationship_thread"
+    assert final.route.intent == "decision support"
+    assert "honesty versus protection" in lowered
+    assert "relief suggests" in lowered
+    assert "guilt suggests" in lowered
+    assert "heaviness in your body" not in lowered
+
+
+def test_existential_followups_stay_in_philosophical_thread():
+    state = ConversationState()
+    first = continue_conversation("Why does anything matter?", state)
+    second = continue_conversation("Why care about career?", first.state)
+    third = continue_conversation("Why care about money?", second.state)
+    fourth = continue_conversation("Why care about success?", third.state)
+
+    assert fourth.state.active_thread == "existential_thread"
+    assert second.route.intent == "existential_question"
+    assert third.route.intent == "existential_question"
+    assert fourth.route.intent == "existential_question"
+    assert "career does not matter because society says it should" in second.response.lower()
+    assert "money does not give life meaning by itself" in third.response.lower()
+    assert "scoreboard" in fourth.response.lower()
+
+
+def test_casual_to_deep_transition_handles_wasting_life():
+    state = ConversationState()
+    first = continue_conversation("yo", state)
+    second = continue_conversation("bored", first.state)
+    third = continue_conversation("I feel like I'm wasting my life.", second.state)
+    fourth = continue_conversation("Everyone is ahead of me.", third.state)
+
+    assert "life feels too small" in second.response.lower()
+    assert third.route.intent == "identity_exploration"
+    assert "boredom has opened into something deeper" in third.response.lower()
+    assert fourth.route.intent == "cognitive challenge"
+    assert "social comparison" in fourth.response.lower()
+
+
+def test_grief_multi_sentence_batch_answers_all_parts():
+    reply = continue_conversation(
+        "My grandfather died yesterday. I don't want to talk to anyone. "
+        "I feel guilty for laughing today. Tell me how to get through this."
+    )
+    lowered = reply.response.lower()
+
+    assert reply.route.topic == "grief"
+    assert "not wanting to talk to anyone" in lowered
+    assert "guilty for laughing" in lowered
+    assert "does not mean you loved him less" in lowered
+    assert "getting through today" in lowered
+
+
+def test_deeper_fear_synthesis_identifies_regret_and_closing_futures():
+    state = ConversationState()
+    first = continue_conversation("My grandfather died yesterday.", state)
+    second = continue_conversation("I am waiting for Germany admissions.", first.state)
+    third = continue_conversation("I love psychology but Data Science pays more.", second.state)
+    fourth = continue_conversation("My girlfriend wants commitment and I am unsure.", third.state)
+    fifth = continue_conversation("I want to start a business too.", fourth.state)
+    final = continue_conversation("What am I actually afraid of?", fifth.state)
+    lowered = final.response.lower()
+
+    assert final.route.intent == "narrative_memory"
+    assert "deeper fear" in lowered
+    assert "regret" in lowered
+    assert "closing others" in lowered
+    assert "germany/admissions" in lowered
+    assert "psychology/data science" in lowered
+    assert "relationship commitment" in lowered

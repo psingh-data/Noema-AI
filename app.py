@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib
 import os
+from difflib import SequenceMatcher
 
 import streamlit as st
 
@@ -65,7 +66,20 @@ from core.router import (
     mode_for_suggestion,
     suggestions_for_intent,
 )
-from data.storage import initialize_database, record_event, save_feedback
+from data.feedback_store import (
+    FEEDBACK_REASONS,
+    create_session,
+    delete_session_data,
+    initialize_feedback_database,
+    record_message,
+    record_response_metadata,
+    save_interaction_feedback,
+)
+from data.storage import (
+    initialize_database,
+    record_event,
+    save_feedback as save_legacy_feedback,
+)
 from data.retrieval_cache import get_cached_answer, put_cached_answer
 from rag.retriever import index_available, retrieve
 
@@ -104,15 +118,28 @@ st.markdown(
 )
 
 initialize_database()
+initialize_feedback_database()
+
+if st.query_params.get("admin") == "true":
+    from admin_dashboard import render_admin_dashboard
+
+    render_admin_dashboard()
+    st.stop()
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "feedback_given" not in st.session_state:
     st.session_state.feedback_given = set()
+if "feedback_notice" not in st.session_state:
+    st.session_state.feedback_notice = ""
 if "conversation_state" not in st.session_state:
     st.session_state.conversation_state = ConversationState()
 if "approved_memories" not in st.session_state:
     st.session_state.approved_memories = []
+if "feedback_consent" not in st.session_state:
+    st.session_state.feedback_consent = False
+if "noema_feedback_session_id" not in st.session_state:
+    st.session_state.noema_feedback_session_id = None
 if st.session_state.get("routing_build_version") != ROUTING_BUILD_VERSION:
     st.session_state.messages = []
     st.session_state.feedback_given = set()
@@ -135,6 +162,119 @@ def setting(name: str, default=None):
 
 def enabled(value) -> bool:
     return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def feedback_storage_enabled() -> bool:
+    return bool(st.session_state.get("feedback_consent"))
+
+
+def ensure_feedback_session() -> str | None:
+    if not feedback_storage_enabled():
+        return None
+    session_id = st.session_state.get("noema_feedback_session_id")
+    session_id = create_session(
+        session_id=session_id,
+        user_label=st.session_state.get("feedback_user_label", ""),
+        consent_given=True,
+        app_version=NOEMA_VERSION,
+    )
+    st.session_state.noema_feedback_session_id = session_id
+    return session_id
+
+
+def delete_current_feedback_session() -> None:
+    session_id = st.session_state.get("noema_feedback_session_id")
+    if session_id:
+        delete_session_data(session_id)
+    st.session_state.noema_feedback_session_id = None
+    st.session_state.feedback_consent = False
+    st.session_state.feedback_given = set()
+    st.session_state.feedback_notice = "Your saved session data was deleted."
+
+
+def prior_assistant_similarity(content: str) -> float:
+    prior_responses = [
+        message["content"]
+        for message in st.session_state.messages
+        if message.get("role") == "assistant"
+    ]
+    if not prior_responses:
+        return 0.0
+    return max(
+        SequenceMatcher(None, content.lower(), prior.lower()).ratio()
+        for prior in prior_responses[-5:]
+    )
+
+
+def maybe_record_user_message(content: str, turn_index: int) -> str | None:
+    session_id = ensure_feedback_session()
+    if not session_id:
+        return None
+    return record_message(
+        session_id=session_id,
+        role="user",
+        content=content,
+        turn_index=turn_index,
+    )
+
+
+def maybe_record_assistant_message(message: dict, turn_index: int) -> str | None:
+    session_id = ensure_feedback_session()
+    if not session_id:
+        return None
+    message_id = record_message(
+        session_id=session_id,
+        role="assistant",
+        content=message["content"],
+        turn_index=turn_index,
+    )
+    result: ReflectionResult = message["result"]
+    state_snapshot = message.get("conversation_state", {}) or {}
+    ontology = message.get("language_ontology_match", {}) or {}
+    record_response_metadata(
+        message_id=message_id,
+        session_id=session_id,
+        detected_intent=message.get("intent", "general conversation"),
+        detected_topic=message.get("topic", "general"),
+        detected_emotion=result.emotion.emotion,
+        emotion_intensity=result.emotion.intensity,
+        active_thread=str(state_snapshot.get("active_thread") or "general_thread"),
+        conversation_stage=str(state_snapshot.get("conversation_stage") or "conversation"),
+        internet_used=message.get("internet_used", False),
+        research_used=message.get("research_used", False),
+        sources_used=message.get("knowledge_sources", []),
+        ontology_category=str(ontology.get("category") or "none"),
+        symptom_overlap=message.get("possible_clinical_overlaps", []),
+        safety_level=result.safety.level,
+        critic_passed=message.get("critic_passed", False),
+        response_similarity_score=message.get("response_similarity_score", 0.0),
+    )
+    return message_id
+
+
+def submit_feedback(message: dict, reason: str) -> None:
+    event_id = message.get("event_id")
+    rating = "helpful" if reason == "Helpful" else "not_helpful"
+    if event_id is not None:
+        save_legacy_feedback(event_id, 1 if rating == "helpful" else -1)
+
+    message_id = message.get("message_id")
+    session_id = st.session_state.get("noema_feedback_session_id")
+    free_text = st.session_state.get(f"feedback-text-{message_id or event_id}", "")
+    if feedback_storage_enabled() and session_id and message_id:
+        save_interaction_feedback(
+            session_id=session_id,
+            assistant_message_id=message_id,
+            rating=rating,
+            reason=reason,
+            free_text_feedback=free_text,
+        )
+        st.session_state.feedback_notice = "Thank you. Your feedback was saved."
+    else:
+        st.session_state.feedback_notice = (
+            "Thank you. Turn on feedback consent to save detailed feedback for analysis."
+        )
+    st.session_state.feedback_given.add(message_id or event_id)
 
 
 api_key = setting("OPENAI_API_KEY")
@@ -340,6 +480,10 @@ def render_notes(message: dict) -> None:
                 "**Relationship Signals:** "
                 + ", ".join(state_snapshot.get("relationship_signals", []) or ["None"])
             )
+            st.write(
+                "**Attention Signals:** "
+                + ", ".join(state_snapshot.get("attention_signals", []) or ["None"])
+            )
             if state_snapshot.get("life_map_items_used"):
                 st.write("**Life Map Items Used:**")
                 for item in state_snapshot.get("life_map_items_used", []):
@@ -478,6 +622,32 @@ with st.sidebar:
         else "Research retrieval: unavailable"
     )
     st.toggle("Developer/debug mode", key="debug_mode")
+    st.divider()
+    st.header("Privacy & feedback")
+    st.caption(
+        "Optional: allow Noema to store this session locally for product evaluation. "
+        "Avoid entering names, emails, or phone numbers."
+    )
+    st.checkbox(
+        "I consent to local feedback and transcript storage for this session",
+        key="feedback_consent",
+    )
+    if st.session_state.feedback_consent:
+        st.text_input(
+            "Optional session label",
+            key="feedback_user_label",
+            placeholder="e.g. test user 1",
+            help="Do not enter your real name, email, or phone number.",
+        )
+        ensure_feedback_session()
+        st.caption("Feedback storage: on")
+    else:
+        st.caption("Feedback storage: off")
+    if st.button("Delete my session data"):
+        delete_current_feedback_session()
+        st.rerun()
+    if st.session_state.get("feedback_notice"):
+        st.caption(st.session_state.feedback_notice)
     st.caption(
         f"Approved session memories: {len(st.session_state.approved_memories)}"
     )
@@ -493,10 +663,10 @@ country_code = {
 header_left, header_right = st.columns([6, 1])
 with header_left:
     privacy_text = (
-        "Messages are sent to the configured AI service to generate replies; raw "
-        "messages are not written to Noema's local analytics database."
+        "Messages may be sent to configured AI or retrieval services to generate "
+        "replies. Local feedback storage is off unless you consent in the sidebar."
         if api_key or tavily_api_key
-        else "Original messages remain only in this live session."
+        else "Local feedback storage is off unless you consent in the sidebar."
     )
     st.markdown(
         f"""
@@ -505,8 +675,9 @@ with header_left:
         or request current facts and research. Noema chooses the route from
         your words; you do not need to select a mode first.<br><br>
         <strong>Privacy:</strong> {privacy_text}
-        Personal context is remembered only for this session and only after
-        you explicitly approve it.
+        If you consent, Noema stores this session locally for evaluation and
+        improvement. Avoid entering names, emails, or phone numbers. You can
+        delete your session data from the sidebar.
         </div>
         """,
         unsafe_allow_html=True,
@@ -525,18 +696,21 @@ for index, message in enumerate(st.session_state.messages):
         st.markdown(message["content"])
         if message["role"] == "assistant":
             render_notes(message)
-            event_id = message["event_id"]
-            if event_id not in st.session_state.feedback_given:
-                st.caption("Was this response helpful?")
-                helpful, unhelpful, _ = st.columns([1, 1, 5])
-                if helpful.button("Yes", key=f"yes-{index}"):
-                    save_feedback(event_id, 1)
-                    st.session_state.feedback_given.add(event_id)
-                    st.rerun()
-                if unhelpful.button("No", key=f"no-{index}"):
-                    save_feedback(event_id, -1)
-                    st.session_state.feedback_given.add(event_id)
-                    st.rerun()
+            feedback_key = message.get("message_id") or message.get("event_id")
+            if feedback_key not in st.session_state.feedback_given:
+                st.caption("Help improve Noema: how was this response?")
+                st.text_area(
+                    "What would have helped more?",
+                    key=f"feedback-text-{feedback_key}",
+                    height=80,
+                    placeholder="Optional. Please avoid names, emails, or phone numbers.",
+                )
+                feedback_columns = st.columns(5)
+                for button_index, reason in enumerate(FEEDBACK_REASONS):
+                    column = feedback_columns[button_index % len(feedback_columns)]
+                    if column.button(reason, key=f"feedback-{index}-{reason}"):
+                        submit_feedback(message, reason)
+                        st.rerun()
             else:
                 st.caption("Thank you for the feedback.")
             if index == len(st.session_state.messages) - 1:
@@ -558,7 +732,10 @@ if prompt and prompt.strip():
     knowledge_override = st.session_state.pop("next_knowledge_route", None)
     st.session_state.pop("suggestion_selected", None)
     history_before = list(st.session_state.messages)
-    st.session_state.messages.append({"role": "user", "content": clean_prompt})
+    user_message_id = maybe_record_user_message(clean_prompt, len(history_before))
+    st.session_state.messages.append(
+        {"role": "user", "content": clean_prompt, "message_id": user_message_id}
+    )
 
     reply = continue_conversation(
         clean_prompt,
@@ -845,8 +1022,13 @@ if prompt and prompt.strip():
         "critic_passed": critic_result.passed,
         "critic_failures": list(critic_failures),
         "critic_repaired": critic_repaired,
+        "response_similarity_score": prior_assistant_similarity(response_text),
     }
     assistant_message["event_id"] = record_reply(assistant_message)
+    assistant_message["message_id"] = maybe_record_assistant_message(
+        assistant_message,
+        len(history_before) + 1,
+    )
     st.session_state.messages.append(assistant_message)
     st.rerun()
 
