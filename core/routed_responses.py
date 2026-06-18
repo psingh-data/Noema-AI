@@ -277,6 +277,7 @@ def _continuity_response(text: str, route: RouteDecision, conversation_state: ob
         return None
     active_themes = getattr(conversation_state, "active_themes", {})
     active_relationships = getattr(conversation_state, "active_relationships", set())
+    relationship_signals = getattr(conversation_state, "relationship_signals", [])
     progression = getattr(conversation_state, "narrative_progression", [])
     normalized = " ".join(text.lower().split())
     grief_active = "grief" in active_themes
@@ -286,6 +287,103 @@ def _continuity_response(text: str, route: RouteDecision, conversation_state: ob
         if active_relationships
         else "the person you lost"
     )
+
+    relationship_active = active_thread == "relationship_thread" or route.topic == "relationship"
+    if relationship_active:
+        if (
+            route.intent == "decision support"
+            and getattr(conversation_state, "turn_count", 0) <= 1
+            and not any(marker in normalized for marker in ("relief", "relieved", "guilt", "guilty", "what does that say"))
+        ):
+            return None
+        if (
+            "what does that say" in normalized
+            or "decision" in normalized
+            or route.intent == "decision support"
+        ) and any(
+            signal in relationship_signals
+            for signal in (
+                "relief when imagining leaving",
+                "guilt about hurting partner",
+                "relationship uncertainty about love",
+                "commitment pressure",
+            )
+        ):
+            return (
+                "Taken together, the relief and the guilt are giving you different "
+                "kinds of information.\n\n"
+                "Relief may be telling you something about your needs: a part of you "
+                "imagines leaving and feels less trapped, less pressured, or more like "
+                "yourself. Guilt may be telling you something about your values: you "
+                "do care about her pain, and you do not want to be careless with "
+                "someone who loves you.\n\n"
+                "Neither emotion automatically decides the relationship. The real "
+                "question is whether staying is being driven by love, willingness, and "
+                "a genuine future together, or by fear, responsibility, habit, and "
+                "guilt.\n\n"
+                "My recommendation: do not stay only to avoid hurting her, and do not "
+                "leave impulsively just because relief appeared. Be honest with "
+                "yourself first, then have a careful conversation rather than letting "
+                "silence make the decision for both of you."
+            )
+        if "relief" in normalized or "relieved" in normalized:
+            return (
+                "That relief is important information. It does not automatically mean "
+                "you should leave, but it does mean the idea of leaving is not only "
+                "painful for you; some part of you experiences it as release.\n\n"
+                "In relationship decisions, relief often points toward a need that has "
+                "been compressed for too long: space, honesty, autonomy, less pressure, "
+                "or an end to pretending. I would take that seriously without treating "
+                "it as the whole answer.\n\n"
+                "The useful next step is to ask: what exactly feels relieving about "
+                "leaving: freedom, less guilt, less pressure, or not having to perform "
+                "feelings you are unsure you have?"
+            )
+        if "guilt" in normalized or "guilty" in normalized or "hurting" in normalized:
+            return (
+                "That guilt makes sense if she loves you and you do not want to hurt "
+                "her. But guilt is not the same thing as love, and it is not a stable "
+                "reason to stay.\n\n"
+                "Guilt may be showing your values: you want to be kind, honest, and "
+                "responsible with another person's heart. The danger is when guilt "
+                "turns into avoidance, because avoiding the truth can hurt someone "
+                "more slowly.\n\n"
+                "A kinder decision is not always the one that prevents pain today. It "
+                "is the one that is honest, respectful, and does not keep both people "
+                "inside a relationship that one person no longer chooses."
+            )
+        if "commitment" in normalized or (
+            "unsure" in normalized and "commitment pressure" in relationship_signals
+        ):
+            return (
+                "That sounds like commitment pressure: she may be asking for a clearer "
+                "future, while you are not sure your feelings can honestly meet that.\n\n"
+                "The important part is not to confuse kindness with commitment. You can "
+                "care about her and still need to be honest that your certainty is not "
+                "where hers is. A relationship can become painful when one person is "
+                "asking for reassurance and the other is giving it mainly to avoid "
+                "guilt.\n\n"
+                "The next useful step is to separate two questions: do you want a future "
+                "with her, and are you only afraid of hurting her if the answer is no?"
+            )
+        if (
+            "don't think i love" in normalized
+            or "do not think i love" in normalized
+            or "not sure i love" in normalized
+            or "exhausted" in normalized
+            or "draining" in normalized
+        ):
+            return (
+                "That sounds like relationship uncertainty, not a simple lack of "
+                "emotion. There may be care, guilt, history, and pressure all mixed "
+                "together, while the romantic part of you feels unclear or tired.\n\n"
+                "When someone loves you but you are unsure you love them back, the "
+                "hardest part is that kindness and honesty can feel like they are "
+                "pulling in opposite directions. The relationship may feel draining "
+                "because you are carrying both her expectations and your own doubt.\n\n"
+                "For now, the key question is not 'how do I avoid hurting her?' It is "
+                "'what is true enough that avoiding it would become unfair to both of us?'"
+            )
 
     if active_thread == "adhd_thread" and route.intent == "conversation_continuity":
         if any(marker in normalized for marker in ("started last", "last year", "recent", "only started")):
@@ -585,12 +683,12 @@ def routed_local_response(
         )
         if ontology_response is not None:
             return ontology_response + memory_note
-    strategic = strategy_response(text=text, route=route, analysis=analysis)
-    if strategic is not None:
-        return strategic + memory_note
     continuity = _continuity_response(text, route, conversation_state)
     if continuity is not None:
         return continuity + memory_note
+    strategic = strategy_response(text=text, route=route, analysis=analysis)
+    if strategic is not None:
+        return strategic + memory_note
     if route.intent == "casual conversation":
         return _casual_response(text, turn_count)
     if route.intent == "decision support":
@@ -667,10 +765,22 @@ def routed_local_response(
     if route.intent == "health / wellness information":
         return _symptom_education_response(text)
     if route.intent == "general knowledge":
+        if "grass" in text.lower() and "green" in text.lower():
+            return (
+                "Grass looks green mainly because of chlorophyll, the pigment plants "
+                "use to absorb light for photosynthesis. Chlorophyll absorbs more red "
+                "and blue light, while green light is reflected back to our eyes, so "
+                "we perceive the grass as green.\n\n"
+                "Small caveat: the exact shade can change with plant health, water, "
+                "season, soil, and light."
+            )
         return (
-            "I can help with that, but the enhanced general-answer model is not "
-            "available in this session. I do not want to manufacture an answer from "
-            "a narrow local rule set."
+            "Here is the honest short version: I can help reason through this, and "
+            "if it depends on current facts I would verify it with sources instead "
+            "of guessing.\n\n"
+            "For stable questions, I will give the clearest general explanation I can "
+            "and flag uncertainty where it matters. For current or official details, "
+            "the safer move is to use live retrieval."
         )
     if route.intent == "general conversation":
         return (

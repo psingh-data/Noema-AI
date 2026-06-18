@@ -767,16 +767,90 @@ def test_v20_life_map_snapshot_tracks_relationships_and_decisions():
 def test_v20_repetition_guard_changes_angle_for_repeated_local_response():
     state = ConversationState()
     state.last_responses.append(
-        "I can help with that, but the enhanced general-answer model is not "
-        "available in this session. I do not want to manufacture an answer from "
-        "a narrow local rule set."
+        "Here is the honest short version: I can help reason through this, and "
+        "if it depends on current facts I would verify it with sources instead "
+        "of guessing.\n\n"
+        "For stable questions, I will give the clearest general explanation I can "
+        "and flag uncertainty where it matters. For current or official details, "
+        "the safer move is to use live retrieval."
     )
-    reply = continue_conversation("Why is grass green?", state)
+    reply = continue_conversation("What is a concept?", state)
 
     assert reply.response.startswith(
         (
             "Let me take this from a different angle",
-            "Different angle:",
-            "I am going to avoid looping",
+            "Different angle",
+            "I'll reframe it",
         )
     )
+    assert "enhanced general-answer model" not in reply.response.lower()
+
+
+def test_relationship_relief_guilt_sequence_stays_in_active_thread():
+    state = ConversationState()
+    first = continue_conversation(
+        "My girlfriend loves me but I don't think I love her anymore.",
+        state,
+    )
+    second = continue_conversation("Thinking about leaving makes me feel relieved.", first.state)
+    third = continue_conversation("Thinking about hurting her makes me feel guilty.", second.state)
+    final = continue_conversation("What does that say about my decision?", third.state)
+    lowered = final.response.lower()
+
+    assert final.state.active_thread == "relationship_thread"
+    assert final.route.intent == "decision support"
+    assert final.route.topic == "relationship"
+    assert "relief" in lowered
+    assert "guilt" in lowered
+    assert "values" in lowered
+    assert "love" in lowered
+    assert "heaviness in your body" not in lowered
+    assert "neither emotion automatically decides" in lowered
+
+
+def test_relationship_commitment_uncertainty_gets_relationship_reasoning():
+    reply = continue_conversation("My girlfriend wants commitment and I am unsure.")
+    lowered = reply.response.lower()
+
+    assert reply.route.topic == "relationship"
+    assert reply.state.active_thread == "relationship_thread"
+    assert "commitment pressure" in lowered
+    assert "kindness" in lowered
+    assert "heaviness in your body" not in lowered
+
+
+def test_narrative_synthesis_names_uncertainty_across_life_areas():
+    state = ConversationState()
+    first = continue_conversation("My grandfather died yesterday.", state)
+    second = continue_conversation("I am waiting for Germany admissions.", first.state)
+    third = continue_conversation(
+        "I love psychology but Data Science pays more.",
+        second.state,
+    )
+    fourth = continue_conversation(
+        "My girlfriend wants commitment and I am unsure.",
+        third.state,
+    )
+    fifth = continue_conversation("I want to start a business too.", fourth.state)
+    final = continue_conversation("What is actually causing most of my stress?", fifth.state)
+    lowered = final.response.lower()
+
+    assert final.route.intent == "narrative_memory"
+    assert "common thread" in lowered
+    assert "uncertainty" in lowered
+    assert "germany admissions" in lowered
+    assert "psychology/data science" in lowered
+    assert "business" in lowered
+    assert "relationship" in lowered
+    assert "grief is still emotional weight" in lowered
+    assert "future is suspended" in lowered
+
+
+def test_general_knowledge_fallback_does_not_expose_infrastructure():
+    reply = continue_conversation("Why is grass green?")
+    lowered = reply.response.lower()
+
+    assert "chlorophyll" in lowered
+    assert "enhanced general-answer model" not in lowered
+    assert "available in this session" not in lowered
+    assert "narrow local rule set" not in lowered

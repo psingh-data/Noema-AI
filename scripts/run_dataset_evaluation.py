@@ -129,6 +129,18 @@ RELATIONSHIP_PROBES = (
     "My girlfriend and I keep fighting. I still love her. I am exhausted. Should I stay or leave?",
 )
 
+RELATIONSHIP_CONTINUITY_PROBES = (
+    (
+        (
+            "My girlfriend loves me but I don't think I love her anymore.",
+            "Thinking about leaving makes me feel relieved.",
+            "Thinking about hurting her makes me feel guilty.",
+            "What does that say about my decision?",
+        ),
+        ("relief", "guilt", "values", "neither emotion automatically decides"),
+    ),
+)
+
 BUSINESS_PROBES = (
     "I want to quit my job and start a business tomorrow.",
 )
@@ -168,6 +180,17 @@ NARRATIVE_MEMORY_PROBES = (
             "What do you think is actually driving most of my stress?",
         ),
         ("emotional weight", "future"),
+    ),
+    (
+        (
+            "My grandfather died yesterday.",
+            "I am waiting for Germany admissions.",
+            "I love psychology but Data Science pays more.",
+            "My girlfriend wants commitment and I am unsure.",
+            "I want to start a business too.",
+            "What is actually causing most of my stress?",
+        ),
+        ("common thread", "uncertainty", "future is suspended"),
     ),
 )
 
@@ -403,6 +426,20 @@ def evaluate(input_path: Path) -> dict[str, Any]:
         )
         for probe in RELATIONSHIP_PROBES
     )
+    for turns, expected_markers in RELATIONSHIP_CONTINUITY_PROBES:
+        relationship_state = None
+        relationship_reply = None
+        for turn in turns:
+            relationship_reply = continue_conversation(turn, relationship_state)
+            relationship_state = relationship_reply.state
+        lowered = relationship_reply.response.lower() if relationship_reply else ""
+        if (
+            relationship_reply
+            and relationship_reply.route.topic == "relationship"
+            and all(marker in lowered for marker in expected_markers)
+            and "heaviness in your body" not in lowered
+        ):
+            relationship_successes += 1
     business_successes = sum(
         (
             (reply := continue_conversation(probe)).route.intent == "decision support"
@@ -616,7 +653,7 @@ def evaluate(input_path: Path) -> dict[str, Any]:
             ),
             "relationship_routing_accuracy": _ratio(
                 relationship_successes,
-                len(RELATIONSHIP_PROBES),
+                len(RELATIONSHIP_PROBES) + len(RELATIONSHIP_CONTINUITY_PROBES),
             ),
             "business_routing_accuracy": _ratio(
                 business_successes,
@@ -650,7 +687,7 @@ def evaluate(input_path: Path) -> dict[str, Any]:
             ),
             "relationship_reasoning_score": _ratio(
                 relationship_successes,
-                len(RELATIONSHIP_PROBES),
+                len(RELATIONSHIP_PROBES) + len(RELATIONSHIP_CONTINUITY_PROBES),
             ),
             "ethical_reasoning_score": _ratio(
                 ethical_successes,

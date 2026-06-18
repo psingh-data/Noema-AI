@@ -1,6 +1,7 @@
 """Adaptive, psychologically informed multi-turn conversation."""
 
 from __future__ import annotations
+
 import re
 from dataclasses import dataclass, field
 from difflib import SequenceMatcher
@@ -83,6 +84,7 @@ class ConversationState:
     major_goals: list[str] = field(default_factory=list)
     important_relationships: list[str] = field(default_factory=list)
     recurring_decisions: list[str] = field(default_factory=list)
+    relationship_signals: list[str] = field(default_factory=list)
     life_map_items_used: list[str] = field(default_factory=list)
     last_responses: list[str] = field(default_factory=list)
 
@@ -277,7 +279,7 @@ def _looks_like_followup(text: str) -> bool:
     normalized = " ".join(text.lower().split())
     return (
         len(normalized.split()) <= 8
-        or normalized.startswith(("this ", "that ", "it ", "yes", "no"))
+        or normalized.startswith(("this ", "that ", "it ", "yes", "no", "thinking about"))
         or any(
             marker in normalized
             for marker in (
@@ -289,6 +291,9 @@ def _looks_like_followup(text: str) -> bool:
                 "same thing",
                 "that too",
                 "what about",
+                "what does that say",
+                "that makes me",
+                "it makes me",
             )
         )
     )
@@ -300,6 +305,8 @@ def _thread_for_route(text: str, route: RouteDecision, state: ConversationState)
         return "adhd_thread"
     if "adhd" in normalized or "can't focus" in normalized or "cannot focus" in normalized:
         return "adhd_thread"
+    if state.active_thread == "relationship_thread" and _relationship_signal_labels(normalized):
+        return "relationship_thread"
     if route.intent in THREAD_BY_INTENT:
         return THREAD_BY_INTENT[route.intent]
     if route.topic in THREAD_BY_TOPIC:
@@ -358,6 +365,7 @@ def _life_map_snapshot(state: ConversationState) -> dict[str, list[str]]:
         "major_values": list(state.recurring_values),
         "important_relationships": list(state.important_relationships),
         "recurring_decisions": list(state.recurring_decisions),
+        "relationship_signals": list(state.relationship_signals),
     }
 
 
@@ -371,6 +379,8 @@ def _life_map_items_for_response(state: ConversationState, route: RouteDecision)
         state.recurring_conflicts[:2],
         state.recurring_values[:2],
         state.major_goals[:2],
+        state.recurring_decisions[:2],
+        state.relationship_signals[:2],
     ):
         items.extend(source)
     return list(dict.fromkeys(items))[:8]
@@ -398,10 +408,12 @@ def _finalize_response(response: str, state: ConversationState) -> str:
             )
             response = alternatives[len(state.last_responses) % len(alternatives)]
         else:
-            response = (
-                "Let me take this from a different angle instead of repeating myself.\n\n"
-                + response
+            repeat_openers = (
+                "Let me take this from a different angle instead of repeating myself.",
+                "Different angle, because repeating the same wording would not help.",
+                "I'll reframe it so this does not become the same answer again.",
             )
+            response = repeat_openers[len(state.last_responses) % len(repeat_openers)] + "\n\n" + response
     if response:
         _remember_once(state.last_responses, response, limit=3)
     return response
@@ -432,10 +444,49 @@ def _detect_relationships(text: str) -> set[str]:
     return relationships
 
 
+def _relationship_signal_labels(text: str) -> list[str]:
+    normalized = " ".join(text.lower().split())
+    signals: list[str] = []
+    patterns = (
+        (
+            ("don't think i love", "do not think i love", "not sure i love", "don't love her anymore", "dont love her anymore", "don't love him anymore"),
+            "relationship uncertainty about love",
+        ),
+        (
+            ("thinking about leaving", "leaving makes me feel relieved", "feel relieved", "feels relieved", "relief"),
+            "relief when imagining leaving",
+        ),
+        (
+            ("feel guilty", "feels guilty", "guilty", "hurting her", "hurting him", "hurt her", "hurt him"),
+            "guilt about hurting partner",
+        ),
+        (
+            ("wants commitment", "commitment", "marriage", "future together"),
+            "commitment pressure",
+        ),
+        (
+            ("exhausted", "draining", "drained", "tired of this relationship"),
+            "relationship exhaustion",
+        ),
+        (
+            ("stay or leave", "should i leave", "should i stay", "break up", "breaking up"),
+            "stay versus leave decision",
+        ),
+    )
+    for markers, label in patterns:
+        if any(marker in normalized for marker in markers):
+            signals.append(label)
+    return list(dict.fromkeys(signals))
+
+
 def _emotion_label(text: str, analysis: ReflectionResult) -> str | None:
     normalized = " ".join(text.lower().split())
     if "suffocat" in normalized or "can't breathe" in normalized:
         return "overwhelm"
+    if "relief" in normalized or "relieved" in normalized:
+        return "relief"
+    if "guilt" in normalized or "guilty" in normalized:
+        return "guilt"
     if "don't know" in normalized or "do not know" in normalized or "confused" in normalized:
         return "confusion"
     if analysis.emotion.emotion not in {"neutral", "distress"}:
@@ -461,6 +512,13 @@ def _concern_label(text: str, emotion: str | None, theme: str | None) -> str | N
     relationships = _detect_relationships(normalized)
     if theme == "grief" and relationships:
         return f"grief connected to {sorted(relationships)[0]}"
+    if theme == "relationship":
+        if "relief" in normalized or "relieved" in normalized:
+            return "relief about leaving may be important relationship information"
+        if "guilt" in normalized or "guilty" in normalized or "hurting" in normalized:
+            return "guilt about hurting partner is creating a values conflict"
+        if _relationship_signal_labels(normalized):
+            return "relationship uncertainty needs careful decision support"
     if "what to do" in normalized or "don't know" in normalized or "do not know" in normalized:
         return "uncertainty about what to do next"
     if "suffocat" in normalized or "can't breathe" in normalized:
@@ -494,6 +552,8 @@ def _summarize_state(state: ConversationState) -> str:
         parts.append("emotional progression: " + " -> ".join(emotions))
     if relationships:
         parts.append("relationships: " + ", ".join(relationships))
+    if state.relationship_signals:
+        parts.append("relationship signals: " + ", ".join(state.relationship_signals[-3:]))
     if state.unresolved_concerns:
         parts.append("open concern: " + state.unresolved_concerns[-1])
     return "Conversation state - " + "; ".join(parts) if parts else ""
@@ -510,6 +570,45 @@ def _stress_driver_response(state: ConversationState) -> str:
             "Life-map explanation.",
         ),
     )
+    uncertainty_buckets: list[str] = []
+    if any(
+        item in state.recurring_fears or item in state.major_goals
+        for item in ("uncertainty about admissions", "move or study in Germany", "secure admissions")
+    ):
+        uncertainty_buckets.append("Germany admissions are still unresolved")
+    if any("employability" in item for item in state.recurring_conflicts) or any(
+        "Data Science" in item or "psychology" in item for item in state.recurring_decisions
+    ):
+        uncertainty_buckets.append("psychology/Data Science is pulling interest against security")
+    if any("business" in item for item in state.recurring_conflicts + state.major_goals + state.recurring_decisions):
+        uncertainty_buckets.append("the business idea adds another possible future")
+    if state.relationship_signals or "girlfriend" in state.important_relationships or "partner" in state.important_relationships:
+        uncertainty_buckets.append("the relationship has commitment, guilt, or leaving questions")
+
+    if len(uncertainty_buckets) >= 2:
+        grief_line = (
+            "Grief is still emotional weight in the background, and it may have lowered "
+            "your emotional bandwidth. But from the pattern, I do not think grief is "
+            "the whole center of the stress anymore.\n\n"
+            if state.major_losses
+            else ""
+        )
+        bucket_lines = "\n".join(f"- {bucket}" for bucket in uncertainty_buckets[:5])
+        return (
+            "Looking across everything you have told me, the common thread looks like "
+            "uncertainty, not one isolated problem.\n\n"
+            f"{bucket_lines}\n\n"
+            f"{grief_line}"
+            "My read: the stress is coming from the feeling that your future is "
+            "suspended across several doors at once. It is not just that one decision "
+            "is hard; it is that admissions, career identity, business, and relationship "
+            "questions are all asking for answers before you feel ready.\n\n"
+            "The practical priority is to stop treating every open question as equally "
+            "urgent. Keep Germany/admissions or career stability as the main track, "
+            "treat the business as a small experiment, and handle the relationship "
+            "honestly instead of letting guilt make the decision for you."
+        )
+
     drivers: list[str] = []
     if state.major_losses:
         drivers.append(
@@ -559,9 +658,14 @@ def _asks_for_stress_driver(text: str) -> bool:
     return (
         "driving most of my stress" in normalized
         or "what is driving my stress" in normalized
+        or "causing most of my stress" in normalized
+        or "what is causing my stress" in normalized
+        or "what's causing my stress" in normalized
+        or "main cause of my stress" in normalized
         or "why am i so stressed" in normalized
         or "main reason i am stressed" in normalized
         or "actually driving" in normalized
+        or "actually causing" in normalized
     )
 
 
@@ -631,8 +735,33 @@ def _route_from_active_thread(
         )
     if (
         state.active_thread == "relationship_thread"
-        and route.intent in {"casual conversation", "general conversation", "emotional reflection"}
+        and (
+            "decision" in normalized
+            or "what does that say" in normalized
+            or "should i" in normalized
+            or "stay" in normalized
+            or "leave" in normalized
+            or "break up" in normalized
+        )
         and _looks_like_followup(text)
+    ):
+        return RouteDecision(
+            "decision support",
+            "Help me make a decision",
+            "conversation context",
+            0.88,
+            "The message asks for a decision read inside the active relationship thread.",
+            "relationship",
+        )
+    if (
+        state.active_thread == "relationship_thread"
+        and route.intent in {
+            "casual conversation",
+            "general conversation",
+            "general knowledge",
+            "emotional reflection",
+        }
+        and (_looks_like_followup(text) or bool(_relationship_signal_labels(normalized)))
     ):
         return RouteDecision(
             "emotional reflection",
@@ -679,6 +808,7 @@ def conversation_state_snapshot(state: ConversationState) -> dict[str, object]:
         "major_goals": list(state.major_goals),
         "important_relationships": list(state.important_relationships),
         "recurring_decisions": list(state.recurring_decisions),
+        "relationship_signals": list(state.relationship_signals),
         "life_map": _life_map_snapshot(state),
         "life_map_items_used": list(state.life_map_items_used),
     }
@@ -781,6 +911,8 @@ def _update_narrative_memory(text: str, state: ConversationState) -> None:
     for marker, label in conflict_patterns:
         if marker in normalized:
             _remember_once(state.recurring_conflicts, label, limit=8)
+    if _relationship_signal_labels(normalized):
+        _remember_once(state.recurring_conflicts, "relationship needs versus responsibility", limit=8)
 
     value_patterns = (
         ("meaningful", "meaning"),
@@ -831,6 +963,19 @@ def _update_narrative_memory(text: str, state: ConversationState) -> None:
     for marker, label in decision_patterns:
         if marker in normalized:
             _remember_once(state.recurring_decisions, label, limit=8)
+    for label in _relationship_signal_labels(normalized):
+        _remember_once(state.relationship_signals, label, limit=8)
+    if any(
+        signal in state.relationship_signals
+        for signal in (
+            "relationship uncertainty about love",
+            "relief when imagining leaving",
+            "guilt about hurting partner",
+            "commitment pressure",
+            "stay versus leave decision",
+        )
+    ):
+        _remember_once(state.recurring_decisions, "relationship commitment versus leaving decision", limit=8)
 
 
 def _affirmative_risk(text: str) -> bool:

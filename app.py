@@ -336,6 +336,10 @@ def render_notes(message: dict) -> None:
                 "**Recurring Decisions:** "
                 + ", ".join(state_snapshot.get("recurring_decisions", []) or ["None"])
             )
+            st.write(
+                "**Relationship Signals:** "
+                + ", ".join(state_snapshot.get("relationship_signals", []) or ["None"])
+            )
             if state_snapshot.get("life_map_items_used"):
                 st.write("**Life Map Items Used:**")
                 for item in state_snapshot.get("life_map_items_used", []):
