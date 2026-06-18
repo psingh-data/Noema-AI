@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import pandas as pd
 import plotly.express as px
@@ -55,6 +56,27 @@ def _helpfulness_by_flag(
         .reset_index(name="helpful_rate")
     )
     st.plotly_chart(px.bar(summary, x=flag, y="helpful_rate", title=title), width="stretch")
+
+
+def _render_export_downloads(csv_path: Path, jsonl_path: Path) -> None:
+    if not csv_path.exists() or not jsonl_path.exists():
+        st.warning("Export files were not found. Generate the export again.")
+        return
+    left, right = st.columns(2)
+    left.download_button(
+        "Download CSV",
+        data=csv_path.read_bytes(),
+        file_name=csv_path.name,
+        mime="text/csv",
+        width="stretch",
+    )
+    right.download_button(
+        "Download JSONL",
+        data=jsonl_path.read_bytes(),
+        file_name=jsonl_path.name,
+        mime="application/x-jsonlines",
+        width="stretch",
+    )
 
 
 def render_admin_dashboard() -> None:
@@ -139,9 +161,13 @@ def render_admin_dashboard() -> None:
     if exports_visible(st.session_state.get("admin_authenticated", False)):
         if st.button("Generate feedback export"):
             csv_path, jsonl_path = export_feedback_data(export_dir=DEFAULT_EXPORT_DIR)
+            st.session_state.noema_export_paths = (str(csv_path), str(jsonl_path))
             st.success("Feedback export generated.")
             st.code(str(csv_path))
             st.code(str(jsonl_path))
+        export_paths = st.session_state.get("noema_export_paths")
+        if export_paths:
+            _render_export_downloads(Path(export_paths[0]), Path(export_paths[1]))
         st.caption(
             "Exports are written to data/exports/noema_feedback_export.csv and "
             "data/exports/noema_feedback_export.jsonl."

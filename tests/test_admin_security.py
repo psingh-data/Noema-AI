@@ -30,6 +30,14 @@ def test_exports_hidden_without_auth():
     assert exports_visible(True)
 
 
+def test_admin_dashboard_uses_download_buttons_for_exports():
+    source = inspect.getsource(admin_dashboard)
+    assert "download_button" in source
+    assert "Download CSV" in source
+    assert "Download JSONL" in source
+    assert "exports_visible" in source
+
+
 def test_secret_is_read_from_mapping_without_exposure():
     assert (
         configured_admin_password(
