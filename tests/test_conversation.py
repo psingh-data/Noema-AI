@@ -579,6 +579,34 @@ def test_humanization_reflects_before_question_for_low_self_worth():
     assert reply.reasoning_style == "reflective"
 
 
+def test_human_tone_adds_emotional_texture_to_adhd_reasoning():
+    reply = continue_conversation("I can't focus. Do I have ADHD?")
+    lowered = reply.response.lower()
+
+    assert "this can feel personal" in lowered
+    assert "self-blame" in lowered
+    assert "adhd-like attention regulation" in lowered
+    assert "you have adhd" not in lowered
+
+
+def test_human_tone_adds_emotional_texture_to_mixed_life_synthesis():
+    reply = continue_conversation(
+        "My grandfather died last year.\n\n"
+        "I'm waiting for Germany admissions.\n\n"
+        "My girlfriend wants me to settle down.\n\n"
+        "I love psychology but Data Science seems safer.\n\n"
+        "Part of me wants to start a business.\n\n"
+        "I feel like everyone my age is ahead of me.\n\n"
+        "I don't even know what decision I'm supposed to make anymore."
+    )
+    lowered = reply.response.lower()
+
+    assert "no wonder your mind feels noisy" in lowered
+    assert "different version of your future" in lowered
+    assert "uncertainty" in lowered
+    assert "what do you miss most" not in lowered
+
+
 def test_adhd_question_explains_alternatives_without_diagnosis():
     reply = continue_conversation("I can't focus. Do I have ADHD?")
     lowered = reply.response.lower()
@@ -873,6 +901,25 @@ def test_adhd_grief_sleep_sequence_synthesizes_likely_explanation():
     assert "what do you miss most" not in lowered
 
 
+def test_adhd_grief_sleep_batch_synthesizes_likely_explanation():
+    reply = continue_conversation(
+        "I can't focus and procrastinate constantly.\n\n"
+        "Do I have ADHD?\n\n"
+        "This started last year.\n\n"
+        "It started after my grandfather died.\n\n"
+        "My sleep has been terrible too.\n\n"
+        "What explanation seems most likely?"
+    )
+    lowered = reply.response.lower()
+
+    assert reply.state.active_thread == "adhd_thread"
+    assert reply.route.intent == "health / wellness information"
+    assert "grief plus disrupted sleep and stress" in lowered
+    assert "more likely than classic adhd" in lowered
+    assert "does not rule adhd out" in lowered
+    assert "what do you miss most" not in lowered
+
+
 def test_relationship_two_feelings_question_gets_synthesis():
     state = ConversationState()
     first = continue_conversation(
@@ -906,6 +953,22 @@ def test_existential_followups_stay_in_philosophical_thread():
     assert "career does not matter because society says it should" in second.response.lower()
     assert "money does not give life meaning by itself" in third.response.lower()
     assert "scoreboard" in fourth.response.lower()
+
+
+def test_existential_batch_answers_each_followup_topic():
+    reply = continue_conversation(
+        "If everyone dies eventually, why does anything matter?\n\n"
+        "Then why should I care about my career?\n\n"
+        "Then why should I care about money?\n\n"
+        "Then why should I care about success?"
+    )
+    lowered = reply.response.lower()
+
+    assert reply.route.intent == "existential_question"
+    assert "career" in lowered
+    assert "money" in lowered
+    assert "success" in lowered
+    assert "scoreboard" in lowered
 
 
 def test_casual_to_deep_transition_handles_wasting_life():
@@ -953,3 +1016,25 @@ def test_deeper_fear_synthesis_identifies_regret_and_closing_futures():
     assert "germany/admissions" in lowered
     assert "psychology/data science" in lowered
     assert "relationship commitment" in lowered
+
+
+def test_mixed_life_batch_does_not_collapse_into_grief_template():
+    reply = continue_conversation(
+        "My grandfather died last year.\n\n"
+        "I'm waiting for Germany admissions.\n\n"
+        "My girlfriend wants me to settle down.\n\n"
+        "I love psychology but Data Science seems safer.\n\n"
+        "Part of me wants to start a business.\n\n"
+        "I feel like everyone my age is ahead of me.\n\n"
+        "I don't even know what decision I'm supposed to make anymore."
+    )
+    lowered = reply.response.lower()
+
+    assert reply.route.intent == "mixed complex life problem"
+    assert reply.state.active_thread == "life_synthesis_thread"
+    assert "germany admissions" in lowered
+    assert "psychology" in lowered
+    assert "data science" in lowered
+    assert "business" in lowered
+    assert "uncertainty" in lowered
+    assert "what do you miss most" not in lowered

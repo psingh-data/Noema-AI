@@ -19,6 +19,7 @@ from core.language_ontology import (
     empty_language_ontology_match,
     match_language_ontology,
 )
+from core.human_tone import humanize_response
 from core.pipeline import ReflectionResult, process_reflection
 from core.routed_responses import routed_local_response
 from core.router import RouteDecision, route_message
@@ -250,6 +251,7 @@ THREAD_BY_INTENT = {
     "achievement_self_worth": "identity_thread",
     "existential_question": "existential_thread",
     "ethical_dilemma": "ethical_thread",
+    "mixed complex life problem": "life_synthesis_thread",
     "structured_problem_solving": "planning_thread",
     "intervention_request": "intervention_thread",
 }
@@ -1796,6 +1798,12 @@ def continue_conversation(
             route,
             current_clinical_overlaps,
         )
+        routed_response = humanize_response(
+            routed_response,
+            user_text=text,
+            route=route,
+            turn_count=turn_index,
+        )
         routed_response = _finalize_response(routed_response, state)
         return ConversationReply(
             response=routed_response,
@@ -1816,6 +1824,12 @@ def continue_conversation(
             _fear_driver_response(state)
             if _asks_for_deeper_fear(text)
             else _stress_driver_response(state)
+        )
+        narrative_base = humanize_response(
+            narrative_base,
+            user_text=text,
+            route=route,
+            turn_count=turn_index,
         )
         narrative_response = _finalize_response(narrative_base, state)
         return ConversationReply(
@@ -1850,6 +1864,12 @@ def continue_conversation(
         response,
         route,
         current_clinical_overlaps,
+    )
+    response = humanize_response(
+        response,
+        user_text=text,
+        route=route,
+        turn_count=turn_index,
     )
     response = _finalize_response(response, state)
     return ConversationReply(

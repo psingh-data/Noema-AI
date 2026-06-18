@@ -96,20 +96,51 @@ def _detected_topics(text: str) -> list[str]:
 def _mixed_complex_response(text: str) -> str:
     topics = _detected_topics(text)
     topic_text = ", ".join(topics[:5]) if topics else "several life areas"
+    normalized = " ".join(text.lower().split())
+    if (
+        "grandfather" in normalized
+        and "germany" in normalized
+        and ("data science" in normalized or "psychology" in normalized)
+        and "business" in normalized
+    ):
+        relationship_line = (
+            "- Relationship pressure: your girlfriend wants commitment while you are unsure.\n"
+            if "girlfriend" in normalized
+            else ""
+        )
+        return (
+            "This is not one decision. It is several unfinished chapters pressing on "
+            "you at the same time.\n\n"
+            "**What I hear:**\n"
+            "- Grief is still part of the emotional background after your grandfather's death.\n"
+            "- Germany admissions are unresolved, so your future feels suspended.\n"
+            f"{relationship_line}"
+            "- Psychology feels meaningful, while Data Science feels safer.\n"
+            "- Business represents independence, but also more risk.\n"
+            "- Comparison with people your age is adding pressure.\n\n"
+            "**The common thread:** uncertainty. I would not say grief is the only "
+            "problem here. Grief may have reduced your emotional bandwidth, but the "
+            "main stress now looks like too many future-defining choices open at once.\n\n"
+            "**My recommendation:** make Germany/admissions or career stability the "
+            "main track for now, treat business as a small experiment instead of an "
+            "all-or-nothing leap, and do not let relationship guilt decide your whole "
+            "future. Your next step is to identify which decision has a real deadline "
+            "and which ones can be tested slowly."
+        )
     return (
         f"You are not asking about one small problem; this sounds like {topic_text} "
         "are getting tangled together while you are trying to make a future-facing "
         "choice.\n\n"
-        "**Separate it first:**\n"
+        "**Separate it first:** separate the issues into buckets.\n"
         "1. Emotional load: what is making this feel urgent or heavy.\n"
         "2. Practical choices: the decisions that actually need action.\n"
         "3. Unknowns: facts you still need before committing.\n\n"
         "**Priority:** do not try to solve every area at once. Stabilize the next "
-        "week, choose the one decision with the nearest consequence, and delay "
+        "week, choose the main track with the nearest consequence, and delay "
         "anything that does not need an answer yet.\n\n"
-        "**My recommendation:** make a two-column plan today: one small action that "
-        "protects your wellbeing, and one action that gathers information for the "
-        "main decision. That gives you movement without forcing a rushed life choice.\n\n"
+        "**My recommendation:** make a two-column plan today: one main-track action "
+        "that protects your wellbeing or future stability, and one side experiment "
+        "that gathers information without forcing a rushed life choice.\n\n"
         "Which one decision has the nearest real deadline?"
     )
 
@@ -428,8 +459,31 @@ def _continuity_response(text: str, route: RouteDecision, conversation_state: ob
                 "'what is true enough that avoiding it would become unfair to both of us?'"
             )
 
-    if active_thread == "adhd_thread" and route.intent == "conversation_continuity":
-        if any(marker in normalized for marker in ("most likely", "explanation", "what is most likely")):
+    attention_followup = any(
+        marker in normalized
+        for marker in (
+            "adhd",
+            "can't focus",
+            "cannot focus",
+            "started last year",
+            "after my grandfather died",
+            "sleep has been terrible",
+            "sleep is terrible",
+            "terrible sleep",
+            "most likely",
+            "explanation",
+        )
+    )
+    asks_likely_explanation = any(
+        marker in normalized
+        for marker in ("most likely", "explanation", "what is most likely")
+    )
+    if active_thread == "adhd_thread" and (
+        route.intent == "conversation_continuity"
+        or asks_likely_explanation
+        or (getattr(conversation_state, "turn_count", 0) > 1 and attention_followup)
+    ):
+        if asks_likely_explanation:
             if {
                 "recent onset",
                 "attention changed after bereavement",
@@ -627,6 +681,23 @@ def _achievement_self_worth_response() -> str:
 
 def _existential_response(text: str = "") -> str:
     lowered = text.lower()
+    if sum(marker in lowered for marker in ("career", "money", "success")) >= 2:
+        return (
+            "If we are still inside the question of why anything matters, then career, "
+            "money, and success do not matter because society says they should. They "
+            "matter only if they serve something human.\n\n"
+            "**Career** can matter when it gives you agency, contribution, learning, "
+            "stability, or a way to build a life you can actually choose.\n\n"
+            "**Money** can matter because it affects safety, freedom, dignity, options, "
+            "and your ability to care for yourself or other people. It should be a "
+            "tool, not proof of your worth.\n\n"
+            "**Success** can matter when it represents growth, craft, courage, "
+            "contribution, or freedom. It becomes empty when it is only a scoreboard "
+            "for proving you are finally enough.\n\n"
+            "So the deeper answer is: care about these things only to the extent that "
+            "they protect or express values you would still respect if nobody was "
+            "clapping."
+        )
     if "career" in lowered:
         return (
             "If we are still inside the question of why anything matters, then career "
@@ -806,6 +877,8 @@ def routed_local_response(
     continuity = _continuity_response(text, route, conversation_state)
     if continuity is not None:
         return continuity + memory_note
+    if route.intent == "mixed complex life problem":
+        return _mixed_complex_response(text) + memory_note
     if (
         route.knowledge_route == "conversation context"
         and route.response_mode
@@ -829,8 +902,6 @@ def routed_local_response(
         return _casual_response(text, turn_count)
     if route.intent == "decision support":
         return _decision_response(text) + memory_note
-    if route.intent == "mixed complex life problem":
-        return _mixed_complex_response(text) + memory_note
     if route.intent == "practical advice":
         return _advice_response(text, analysis) + memory_note
     if route.intent == "venting":

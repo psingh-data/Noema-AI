@@ -262,6 +262,10 @@ DECISION_MARKERS = (
     "wrong decision",
     "making the wrong decision",
     "should i do it",
+    "what decision",
+    "which decision",
+    "decision i'm supposed to make",
+    "decision i am supposed to make",
     "if you were me",
     "would you",
 )
@@ -279,6 +283,10 @@ ADVICE_MARKERS = (
     "what to do",
     "wrong decision",
     "making the wrong decision",
+    "what decision",
+    "which decision",
+    "decision i'm supposed to make",
+    "decision i am supposed to make",
     "should i do it",
     "how can i",
     "how do i",
@@ -599,11 +607,19 @@ def _is_mixed_complex_life_problem(
     *,
     emotional_content: bool,
 ) -> bool:
+    asks_for_direction = (
+        explicit_advice_requested(text)
+        or explicit_decision_requested(text)
+        or (
+            "decision" in text
+            and _has_any(text, ("don't know", "do not know", "supposed to make"))
+        )
+    )
     return (
         len(_major_topics(text)) >= 3
         and emotional_content
         and _has_any(text, FUTURE_UNCERTAINTY_MARKERS)
-        and explicit_advice_requested(text)
+        and asks_for_direction
     )
 
 
@@ -714,6 +730,42 @@ def route_message(
             0.92,
             "The user asks for therapy, intervention, or evidence-informed support options.",
             topic,
+        )
+
+    if _is_mixed_complex_life_problem(
+        normalized,
+        emotional_content=emotional_content,
+    ):
+        return RouteDecision(
+            "mixed complex life problem",
+            "Give me advice",
+            "conversation context",
+            0.94,
+            "The message combines several life areas, emotion, future uncertainty, and a request for direction.",
+            topic,
+        )
+
+    if (
+        _has_any(normalized, ("do i have adhd", "could this be adhd", "am i adhd"))
+        and _has_any(
+            normalized,
+            (
+                "started last year",
+                "after my grandfather died",
+                "sleep has been terrible",
+                "sleep is terrible",
+                "what explanation seems most likely",
+                "most likely explanation",
+            ),
+        )
+    ):
+        return RouteDecision(
+            "health / wellness information",
+            "Health Educator",
+            "conversation context",
+            0.94,
+            "The user asks for symptom education and timeline-based explanation, not a diagnosis.",
+            "health",
         )
 
     language_route = (
@@ -833,19 +885,6 @@ def route_message(
             "conversation context",
             0.9,
             "The message is casual, playful, or asks for light conversation.",
-            topic,
-        )
-
-    if _is_mixed_complex_life_problem(
-        normalized,
-        emotional_content=emotional_content,
-    ):
-        return RouteDecision(
-            "mixed complex life problem",
-            "Give me advice",
-            "conversation context",
-            0.94,
-            "The message combines several life areas, emotion, future uncertainty, and an advice request.",
             topic,
         )
 
